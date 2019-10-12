@@ -31,6 +31,8 @@ class User
      */
     private $password;
 
+    private $confirm_password;
+
     public function getId(): ?int
     {
         return $this->id;
