@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/inscription", name="securityRegistration"
+     * @Route("/inscription", name="securityRegistration")
 )     */
     public function registration() {
         $user = new User();
