@@ -20,6 +20,10 @@ security:
             form_login:
                 login_path: securityLogin
                 check_path: securityLogin
+                default_target_path: securityCheckActivation
+            logout:
+                path: securityLogout
+                target: home
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

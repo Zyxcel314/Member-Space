@@ -2,13 +2,134 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69c17e35-fcc5-4283-8598-e8a0a841806e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/security/home.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Member-Space.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Member-Space.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/security/index.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/UrlGenerator.php" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/UrlGenerator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/UrlMatcher.php" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/UrlMatcher.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/annotations.php" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/annotations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/C/aKTWdAZRqIYb+-O0tG2g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/C/aKTWdAZRqIYb+-O0tG2g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/R/0Oof8ybB2zIl+tEzwhhg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/R/0Oof8ybB2zIl+tEzwhhg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/U/Cd+PCJDxH3rCrnCz5v3g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/+/U/Cd+PCJDxH3rCrnCz5v3g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/H/5YvBFjjcghEve4kMcVWQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/H/5YvBFjjcghEve4kMcVWQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/H/J-Nco+JcaW71Ozk5SH5w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/H/J-Nco+JcaW71Ozk5SH5w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/J/kZvjbzqQWjywYl92mYTQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/J/kZvjbzqQWjywYl92mYTQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/S/LYmk-vIkOH9DPwtPIKRg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/0/S/LYmk-vIkOH9DPwtPIKRg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/N/A+FjMlTTl4dN9JYJShCA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/N/A+FjMlTTl4dN9JYJShCA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/N/XjHlLW0V-DP-vdrGKzaw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/N/XjHlLW0V-DP-vdrGKzaw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/O/uP9esyNkn0A7Nya-k8iA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/1/O/uP9esyNkn0A7Nya-k8iA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/2/C/6Q8Tsru61qZ9+CvvFipA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/2/C/6Q8Tsru61qZ9+CvvFipA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/2/R/H0+ON7t67qJgboCfqZ5w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/2/R/H0+ON7t67qJgboCfqZ5w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/3/N/TjsKY6tAk15BJDzcBkbQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/3/N/TjsKY6tAk15BJDzcBkbQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/4/X/eThDn8HUuYU0Sgg6JEtA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/4/X/eThDn8HUuYU0Sgg6JEtA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/5/K/Hx7ZkAzuyRdTELDRcV+w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/5/K/Hx7ZkAzuyRdTELDRcV+w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/5/Y/ptce27IBAMbTZWiP4hbg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/5/Y/ptce27IBAMbTZWiP4hbg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/2/QS7Nd7rO0vk1PgHw9teA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/2/QS7Nd7rO0vk1PgHw9teA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/J/Oo+u4PsnGX6K5Be-OsPw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/J/Oo+u4PsnGX6K5Be-OsPw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/Q/2WmCCiJD0Xcb62S7lDEA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/6/Q/2WmCCiJD0Xcb62S7lDEA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/7/A/EyZpsKvRG3XUDycjwOSg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/7/A/EyZpsKvRG3XUDycjwOSg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/7/A/qQhEpzn-Jdy-Hrh0N4SQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/7/A/qQhEpzn-Jdy-Hrh0N4SQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/8/X/CiKLMaSJPcYkiwWWs2uA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/8/X/CiKLMaSJPcYkiwWWs2uA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/9/W/zOY8ms0Cs18Wl3DiSRrQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/9/W/zOY8ms0Cs18Wl3DiSRrQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/A/G/DZUwxIhInZg3bYYDezJA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/A/G/DZUwxIhInZg3bYYDezJA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/A/S/tjtbhL1sc5V1VKcuLV2g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/A/S/tjtbhL1sc5V1VKcuLV2g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/B/N/zW4FQGB9PsNJdaIsrGFA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/B/N/zW4FQGB9PsNJdaIsrGFA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/B/Q/hvbupTiNXRmGbv8-eHRg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/B/Q/hvbupTiNXRmGbv8-eHRg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/0/BRniY5krNDCajvVEbEMQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/0/BRniY5krNDCajvVEbEMQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/O/r92Sm4NUVN2RrOZ7ZnJQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/O/r92Sm4NUVN2RrOZ7ZnJQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/R/0cBkVzi2Rm1imSvD6I3w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/C/R/0cBkVzi2Rm1imSvD6I3w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/9/cu-oVjtxwXjTe85tYJDQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/9/cu-oVjtxwXjTe85tYJDQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/H/PvEhyJbjKIaa0mCPz2eA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/H/PvEhyJbjKIaa0mCPz2eA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/L/eqJUVs4G-RxyoVkvTXNg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/L/eqJUVs4G-RxyoVkvTXNg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/O/sBJCX5VOLHvCKPUqc+aQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/O/sBJCX5VOLHvCKPUqc+aQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/U/Jwcb6mT9UlvE-KchWirA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/U/Jwcb6mT9UlvE-KchWirA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/X/mHNDLVATjL7OtxQpnBmQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/D/X/mHNDLVATjL7OtxQpnBmQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/4/0iyl4aSA+Ms30cKGQPjg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/4/0iyl4aSA+Ms30cKGQPjg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/G/-j9vorXlCbf34N-9z4ow" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/G/-j9vorXlCbf34N-9z4ow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/K/3ddwC60HeaEHA95S9URw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/K/3ddwC60HeaEHA95S9URw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/O/pAH49zhhG7XqzlI6NkIw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/E/O/pAH49zhhG7XqzlI6NkIw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/9/HNmVqJOvqfw702hc5DUw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/9/HNmVqJOvqfw702hc5DUw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/O/azstdxA+QUqM2wyDXSmg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/O/azstdxA+QUqM2wyDXSmg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/R/ShYkoUOT4Xsruit6Mmsg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/R/ShYkoUOT4Xsruit6Mmsg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/U/TlM-ABKYydAQqxrM4PwA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/U/TlM-ABKYydAQqxrM4PwA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/Y/rbZ+IsfMPrdUkREd-ejQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/Y/rbZ+IsfMPrdUkREd-ejQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/Z/UX8wifFQffXDHptJPiXQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/F/Z/UX8wifFQffXDHptJPiXQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/G/A/AJb+CPFJMgkjEzfZnyZg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/G/A/AJb+CPFJMgkjEzfZnyZg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/G/U/Ut+MxEXBkT+Mh6Z5OllA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/G/U/Ut+MxEXBkT+Mh6Z5OllA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/H/9/CAiCrr2YzF3gdbqYrb4Q" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/H/9/CAiCrr2YzF3gdbqYrb4Q" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/I/1/ROJpIc-d9zT8K1qImt4Q" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/I/1/ROJpIc-d9zT8K1qImt4Q" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/E/w0MYeEsFlzIVH0xzwIjQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/E/w0MYeEsFlzIVH0xzwIjQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/H/1ctvs8QT6cS7lnH6gLeQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/H/1ctvs8QT6cS7lnH6gLeQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/K/l7VmZ80aiCvaSWJvf7wA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/K/l7VmZ80aiCvaSWJvf7wA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/K/wWgcJpnRPHJsAZ034w7A" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/K/wWgcJpnRPHJsAZ034w7A" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/L/IB-32i0hPteuufDcVjYg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/L/IB-32i0hPteuufDcVjYg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/L/ZRIGVDeFNMrv2dH-gesw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/L/ZRIGVDeFNMrv2dH-gesw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/S/CRgfGZbXWIKaIUWsuUsw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/J/S/CRgfGZbXWIKaIUWsuUsw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/K/Q/f3rBEnBbpTqnNiPmpTsA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/K/Q/f3rBEnBbpTqnNiPmpTsA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/K/Z/B7-AMcmVvXGF+b2GTR9w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/K/Z/B7-AMcmVvXGF+b2GTR9w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/1/O+a-2GjD7i2vVKhy8n9g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/1/O+a-2GjD7i2vVKhy8n9g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/7/utIu+jQC+ICra+Frwgiw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/7/utIu+jQC+ICra+Frwgiw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/A/MLD1I14x4h3-mfB4msgw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/L/A/MLD1I14x4h3-mfB4msgw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/M/Y/0vw3Y5yc5cRJRscw4zyQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/M/Y/0vw3Y5yc5cRJRscw4zyQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/M/Z/p3O1hEFZkPK19fisdqRA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/M/Z/p3O1hEFZkPK19fisdqRA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/3/jqrL3LL8tOj9ZEuGmhog" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/3/jqrL3LL8tOj9ZEuGmhog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/5/mRxwM2atGxkWOSAKs5bw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/5/mRxwM2atGxkWOSAKs5bw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/L/7hn06r1T-g5uRBeHvoCQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/N/L/7hn06r1T-g5uRBeHvoCQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/O/H/EV3DlUKYQqOUa+mY9hWA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/O/H/EV3DlUKYQqOUa+mY9hWA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/O/S/-OrxtBzpqLcIdq56aPEg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/O/S/-OrxtBzpqLcIdq56aPEg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/8/ahyOnnwucVXg6+m7la1Q" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/8/ahyOnnwucVXg6+m7la1Q" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/J/65PQ-J1pbYYV+aS+XS3g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/J/65PQ-J1pbYYV+aS+XS3g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/V/1s+UAfLsIuJiiQx6r-lA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/P/V/1s+UAfLsIuJiiQx6r-lA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Q/2/OpskirTTK1TEwWkhxK-w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Q/2/OpskirTTK1TEwWkhxK-w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/R/+/btBapQ3lVssqjXp0NNZg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/R/+/btBapQ3lVssqjXp0NNZg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/R/P/W6tqyqAAenzTc3km6UDQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/R/P/W6tqyqAAenzTc3km6UDQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/C/uZIy4K2AznZQtWOfXTwg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/C/uZIy4K2AznZQtWOfXTwg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/G/QjRcPQohVwQlQPkzNldw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/G/QjRcPQohVwQlQPkzNldw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/O/dXw6ipSJ4b7JE6xvFVxQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/S/O/dXw6ipSJ4b7JE6xvFVxQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/8/RAYA7f3cgi6pEITwt97w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/8/RAYA7f3cgi6pEITwt97w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/C/rd+PMd0b9JwpaSXavC7g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/C/rd+PMd0b9JwpaSXavC7g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/N/fZUyuXWPIr9ZcGxEKI5Q" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/N/fZUyuXWPIr9ZcGxEKI5Q" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/V/s3SgEryTycFMw8d76ddQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/V/s3SgEryTycFMw8d76ddQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/W/BchEXkK0hFTSv9uHLNow" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/T/W/BchEXkK0hFTSv9uHLNow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/9/072rYB0h6nqae59X9luQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/9/072rYB0h6nqae59X9luQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/G/N-meF9qLuTb-uoEqNxUA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/G/N-meF9qLuTb-uoEqNxUA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/L/jDRZHx3EbOerWUWfe4yA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/U/L/jDRZHx3EbOerWUWfe4yA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/2/Hg77vH89LbfNL5glg1Dg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/2/Hg77vH89LbfNL5glg1Dg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/C/vTCAvjV+q1ZKE2dPp6zA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/C/vTCAvjV+q1ZKE2dPp6zA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/M/8eQ0TfauazgBmj8uUsTg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/M/8eQ0TfauazgBmj8uUsTg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/S/YTMHwjJ9j55kLmoMhsdg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/S/YTMHwjJ9j55kLmoMhsdg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/U/VEmnHuJZbnu2bQmmy9sg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/V/U/VEmnHuJZbnu2bQmmy9sg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/P/+5qHMvbHVvxJb8SxG8cg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/P/+5qHMvbHVvxJb8SxG8cg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/P/xbjysVQ3g7V7Bg0336+w" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/P/xbjysVQ3g7V7Bg0336+w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/R/rnTGcT4kXILoQHuBQd5g" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/R/rnTGcT4kXILoQHuBQd5g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/U/TxOL61Cj-r6hrgRpzPEA" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/U/TxOL61Cj-r6hrgRpzPEA" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/Z/er1mI05tXBKxdFD-Uwig" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/W/Z/er1mI05tXBKxdFD-Uwig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/X/H/8YKCDEesz0YidTB1+oug" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/X/H/8YKCDEesz0YidTB1+oug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/X/O/g5ELLYta3SVoiCEsD6Og" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/X/O/g5ELLYta3SVoiCEsD6Og" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/F/nSqX6Udw4Jtj1TqTWkVQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/F/nSqX6Udw4Jtj1TqTWkVQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/H/9yE+gLqfqOLXGcexBNHQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/H/9yE+gLqfqOLXGcexBNHQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/Y/8AZJ1EJ0tJcf1Is3D3Ng" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Y/Y/8AZJ1EJ0tJcf1Is3D3Ng" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/B/PWEHkV+pLc+MtC+Q8aJQ" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/B/PWEHkV+pLc+MtC+Q8aJQ" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/R/lTv3clhBqMZmEpsBaCvg" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/R/lTv3clhBqMZmEpsBaCvg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/Y/NX9i-Ib8cErVwarmVExw" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/pools/H52yKt5OqW/Z/Y/NX9i-Ib8cErVwarmVExw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.php" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.php.meta" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.php.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.xml.meta" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainer.xml.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainerCompiler.log" beforeDir="false" afterPath="$PROJECT_DIR$/var/cache/dev/srcApp_KernelDevDebugContainerCompiler.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/ocramius/package-versions/src/PackageVersions/Versions.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/ocramius/package-versions/src/PackageVersions/Versions.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -135,12 +256,8 @@
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="734" />
-    <option name="width" value="964" />
-    <option name="height" value="1080" />
   </component>
   <component name="ProjectId" id="1Ry9sKak7E5zF6OdGg9Nz3oCpV2" />
   <component name="ProjectLevelVcsManager">
@@ -157,6 +274,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

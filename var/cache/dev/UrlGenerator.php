@@ -15,6 +15,11 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception::showAction'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception::cssAction'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], []],
+    'home' => [[], ['_controller' => 'App\\Controller\\SecurityController::home'], [], [['text', '/home']], [], []],
     'securityRegistration' => [[], ['_controller' => 'App\\Controller\\SecurityController::registration'], [], [['text', '/inscription']], [], []],
     'securityLogin' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], []],
+    'securityCheckActivation' => [[], ['_controller' => 'App\\Controller\\SecurityController::checkActivation'], [], [['text', '/checkActivation']], [], []],
+    'securityLogout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], []],
+    'securitySendConfirmationEmail' => [['email'], ['_controller' => 'App\\Controller\\SecurityController::sendConfirmationEmail'], [], [['variable', '/', '[^/]++', 'email', true], ['text', '/emailConfirmation']], [], []],
+    'securityActivationUser' => [['email'], ['_controller' => 'App\\Controller\\SecurityController::activationUser'], [], [['variable', '/', '[^/]++', 'email', true], ['text', '/activationUser']], [], []],
 ];

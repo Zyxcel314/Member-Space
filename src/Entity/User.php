@@ -41,6 +41,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActivated = 0;
+
+    /**
      * @Assert\EqualTo(propertyPath="password", message="Veuillez saisir le mot de passe identique")
      */
     private $confirm_password;
@@ -115,5 +120,21 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return int
+     */
+    public function getIsActivated(): int
+    {
+        return $this->isActivated;
+    }
+
+    /**
+     * @param int $isActivated
+     */
+    public function setIsActivated(int $isActivated): void
+    {
+        $this->isActivated = $isActivated;
     }
 }

@@ -1,0 +1,8 @@
+<nav>
+    <a href="{{ path('securityRegistration') }}">Inscription</a>
+    {% if not app.user %}
+        <a href="{{ path('securityLogin') }}">Connexion</a>
+    {% else %}
+        <a href="{{ path('securityLogout') }}">Déconnexion</a>
+    {% endif %}
+</nav>
