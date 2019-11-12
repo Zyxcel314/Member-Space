@@ -22,4 +22,9 @@ return [
     'securityLogout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], []],
     'securitySendConfirmationEmail' => [['email'], ['_controller' => 'App\\Controller\\SecurityController::sendConfirmationEmail'], [], [['variable', '/', '[^/]++', 'email', true], ['text', '/emailConfirmation']], [], []],
     'securityActivationUser' => [['email'], ['_controller' => 'App\\Controller\\SecurityController::activationUser'], [], [['variable', '/', '[^/]++', 'email', true], ['text', '/activationUser']], [], []],
+    'user_index' => [[], ['_controller' => 'App\\Controller\\UserController::index'], [], [['text', '/user/']], [], []],
+    'user_new' => [[], ['_controller' => 'App\\Controller\\UserController::new'], [], [['text', '/user/new']], [], []],
+    'user_show' => [['id'], ['_controller' => 'App\\Controller\\UserController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/user']], [], []],
+    'user_edit' => [['id'], ['_controller' => 'App\\Controller\\UserController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/user']], [], []],
+    'user_delete' => [['id'], ['_controller' => 'App\\Controller\\UserController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/user']], [], []],
 ];

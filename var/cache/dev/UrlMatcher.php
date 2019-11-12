@@ -18,6 +18,8 @@ return [
         '/login' => [[['_route' => 'securityLogin', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/checkActivation' => [[['_route' => 'securityCheckActivation', '_controller' => 'App\\Controller\\SecurityController::checkActivation'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'securityLogout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
+        '/user' => [[['_route' => 'user_index', '_controller' => 'App\\Controller\\UserController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/user/new' => [[['_route' => 'user_new', '_controller' => 'App\\Controller\\UserController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -38,6 +40,11 @@ return [
                 .')'
                 .'|/emailConfirmation/([^/]++)(*:196)'
                 .'|/activationUser/([^/]++)(*:228)'
+                .'|/user/([^/]++)(?'
+                    .'|(*:253)'
+                    .'|/edit(*:266)'
+                    .'|(*:274)'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -49,8 +56,11 @@ return [
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception::cssAction'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         196 => [[['_route' => 'securitySendConfirmationEmail', '_controller' => 'App\\Controller\\SecurityController::sendConfirmationEmail'], ['email'], null, null, false, true, null]],
-        228 => [
-            [['_route' => 'securityActivationUser', '_controller' => 'App\\Controller\\SecurityController::activationUser'], ['email'], null, null, false, true, null],
+        228 => [[['_route' => 'securityActivationUser', '_controller' => 'App\\Controller\\SecurityController::activationUser'], ['email'], null, null, false, true, null]],
+        253 => [[['_route' => 'user_show', '_controller' => 'App\\Controller\\UserController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        266 => [[['_route' => 'user_edit', '_controller' => 'App\\Controller\\UserController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        274 => [
+            [['_route' => 'user_delete', '_controller' => 'App\\Controller\\UserController::delete'], ['id'], ['DELETE' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

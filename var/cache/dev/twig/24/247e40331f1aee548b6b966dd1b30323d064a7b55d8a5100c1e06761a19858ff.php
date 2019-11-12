@@ -482,6 +482,6 @@ class __TwigTemplate_50d7f90b4178551eb13c7d769c9b4e9bb83c466ccf9edaf6e62eafeabdf
         {% endfor %}
     </table>
 {% endmacro %}
-", "@WebProfiler/Collector/events.html.twig", "/home/thomas/Code/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
+", "@WebProfiler/Collector/events.html.twig", "/home/nohan/Bureau/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
     }
 }

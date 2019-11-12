@@ -81,6 +81,6 @@ class __TwigTemplate_cd1779e3edde726e3df480fb8d4894718b1c6d819ad1616de308940f7fd
     public function getSourceContext()
     {
         return new Source("{% block panel '' %}
-", "@WebProfiler/Profiler/ajax_layout.html.twig", "/home/thomas/Code/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/ajax_layout.html.twig");
+", "@WebProfiler/Profiler/ajax_layout.html.twig", "/home/nohan/Bureau/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/ajax_layout.html.twig");
     }
 }

@@ -156,6 +156,6 @@ class __TwigTemplate_78ba4a9db40c9138da666d9e7d7769e14207eea3044c1dcb0f963b476fb
     <h2>{{ messages[about].title }}</h2>
     <p>{{ messages[about].message }}</p>
 {% endblock %}
-", "@WebProfiler/Profiler/info.html.twig", "/home/thomas/Code/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/info.html.twig");
+", "@WebProfiler/Profiler/info.html.twig", "/home/nohan/Bureau/GitKraken/Member-Space/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/info.html.twig");
     }
 }
