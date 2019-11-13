@@ -27,7 +27,7 @@ class InformationMajeur
     private $communicationResponsableLegal;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", mappedBy="id√_informationMajeur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", mappedBy="id_informationMajeur", cascade={"persist", "remove"})
      */
     private $membreFamille;
 

@@ -21,6 +21,7 @@ class UsersFixtures extends Fixture
                 ['email' => 'toto1@toto.com', 'username' => 'toto1', 'password' => '1234'],
                 ['email' => 'toto2@toto.com', 'username' => 'toto2', 'password' => '1234'],
                 ['email' => 'toto3@toto.com', 'username' => 'yolesnoob', 'password' => '1234'],
+            ['email' => 'toto4@toto.com', 'username' => 'yolesnoob', 'password' => '1234'],
         ];
         foreach ($users as $user)
         {
