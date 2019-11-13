@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    {{ include('representant_famille/_form.html.twig') }}
+
+
+    <a href="{{ path('home') }}">Retour</a>
+{% endblock %}

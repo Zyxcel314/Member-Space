@@ -48,23 +48,28 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 <html>
     <head>
         <meta charset=\"UTF-8\">
+        <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">
+        <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\" integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\" crossorigin=\"anonymous\"></script>
+        <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\" integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\" crossorigin=\"anonymous\"></script>
+
         <title>";
-        // line 5
+        // line 10
         $this->displayBlock('title', $context, $blocks);
         echo "</title>
         ";
-        // line 6
+        // line 11
         $this->displayBlock('stylesheets', $context, $blocks);
-        // line 7
+        // line 12
         echo "    </head>
     <body>
         ";
-        // line 9
+        // line 14
         $this->displayBlock('body', $context, $blocks);
-        // line 10
+        // line 15
         echo "        ";
         $this->displayBlock('javascripts', $context, $blocks);
-        // line 11
+        // line 16
         echo "    </body>
 </html>
 ";
@@ -76,7 +81,7 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 
     }
 
-    // line 5
+    // line 10
     public function block_title($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -95,7 +100,7 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 
     }
 
-    // line 6
+    // line 11
     public function block_stylesheets($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -113,7 +118,7 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 
     }
 
-    // line 9
+    // line 14
     public function block_body($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -131,7 +136,7 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 
     }
 
-    // line 10
+    // line 15
     public function block_javascripts($context, array $blocks = [])
     {
         $macros = $this->macros;
@@ -156,7 +161,7 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 
     public function getDebugInfo()
     {
-        return array (  135 => 10,  117 => 9,  99 => 6,  80 => 5,  68 => 11,  65 => 10,  63 => 9,  59 => 7,  57 => 6,  53 => 5,  47 => 1,);
+        return array (  140 => 15,  122 => 14,  104 => 11,  85 => 10,  73 => 16,  70 => 15,  68 => 14,  64 => 12,  62 => 11,  58 => 10,  47 => 1,);
     }
 
     public function getSourceContext()
@@ -165,6 +170,11 @@ class __TwigTemplate_b11bc825a697edcddf44b0070ac86a4a6c7477cd5c36142e076b73c91ff
 <html>
     <head>
         <meta charset=\"UTF-8\">
+        <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">
+        <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\" integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\" crossorigin=\"anonymous\"></script>
+        <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\" integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\" crossorigin=\"anonymous\"></script>
+
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
