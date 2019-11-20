@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RepresentantFamilleRepository")
  */
-class RepresentantFamille
+class RepresentantFamille implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -75,6 +76,11 @@ class RepresentantFamille
      * @ORM\OneToOne(targetEntity="App\Entity\InformationsFamille", cascade={"persist", "remove"})
      */
     private $id_informationsFamille;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estActive;
 
     public function getId(): ?int
     {
@@ -223,5 +229,85 @@ class RepresentantFamille
         $this->id_informationsFamille = $id_informationsFamille;
 
         return $this;
+    }
+
+    public function getEstActive(): ?bool
+    {
+        return $this->estActive;
+    }
+
+    public function setEstActive(bool $estActive): self
+    {
+        $this->estActive = $estActive;
+
+        return $this;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     *     public function getRoles()
+     *     {
+     *         return ['ROLE_USER'];
+     *     }
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string|null The encoded password if any
+     */
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+        return getMotdepasse();
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+        return $this->getLogin();
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

@@ -396,6 +396,13 @@
         <argument type="service" id=".service_locator.CDOTD6..App\Controller\AdminController"/>
       </call>
     </service>
+    <service id="App\Controller\Controller" class="App\Controller\Controller" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.CDOTD6..App\Controller\Controller"/>
+      </call>
+    </service>
     <service id="App\Controller\GestionnaireController" class="App\Controller\GestionnaireController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -3318,7 +3325,7 @@
     </service>
     <service id="security.encoder_factory.generic" class="Symfony\Component\Security\Core\Encoder\EncoderFactory" public="false">
       <argument type="collection">
-        <argument key="App\Entity\User" type="collection">
+        <argument key="App\Entity\RepresentantFamille" type="collection">
           <argument key="class">Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder</argument>
           <argument key="arguments" type="collection">
             <argument>13</argument>
@@ -3386,7 +3393,7 @@
       <argument type="service" id="security.token_storage" on-invalid="null"/>
       <call method="registerListener">
         <argument>main</argument>
-        <argument>securityLogout</argument>
+        <argument>deconnexion</argument>
         <argument>logout</argument>
         <argument>_csrf_token</argument>
         <argument>null</argument>
@@ -3754,8 +3761,8 @@
     </service>
     <service id="security.user.provider.concrete.users" class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" public="false">
       <argument type="service" id="doctrine"/>
-      <argument>App\Entity\User</argument>
-      <argument>email</argument>
+      <argument>App\Entity\RepresentantFamille</argument>
+      <argument>login</argument>
       <argument>null</argument>
     </service>
     <service id="security.firewall.map.config.dev" class="Symfony\Bundle\SecurityBundle\Security\FirewallConfig" public="false">
@@ -3816,7 +3823,7 @@
       <argument type="collection">
         <argument key="csrf_parameter">_csrf_token</argument>
         <argument key="csrf_token_id">logout</argument>
-        <argument key="logout_path">securityLogout</argument>
+        <argument key="logout_path">deconnexion</argument>
       </argument>
       <call method="addHandler">
         <argument type="service" id="security.logout.handler.csrf_token_clearing"/>
@@ -3841,8 +3848,8 @@
       <argument type="collection"/>
       <call method="setOptions">
         <argument type="collection">
-          <argument key="login_path">securityLogin</argument>
-          <argument key="default_target_path">securityCheckActivation</argument>
+          <argument key="login_path">connexion</argument>
+          <argument key="default_target_path">home</argument>
           <argument key="always_use_default_target_path">false</argument>
           <argument key="target_path_parameter">_target_path</argument>
           <argument key="use_referer">false</argument>
@@ -3859,7 +3866,7 @@
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <call method="setOptions">
         <argument type="collection">
-          <argument key="login_path">securityLogin</argument>
+          <argument key="login_path">connexion</argument>
           <argument key="failure_path">null</argument>
           <argument key="failure_forward">false</argument>
           <argument key="failure_path_parameter">_failure_path</argument>
@@ -3876,7 +3883,7 @@
       <argument type="service" id="security.authentication.success_handler.main.form_login"/>
       <argument type="service" id="security.authentication.failure_handler.main.form_login"/>
       <argument type="collection">
-        <argument key="check_path">securityLogin</argument>
+        <argument key="check_path">connexion</argument>
         <argument key="use_forward">false</argument>
         <argument key="require_previous_session">false</argument>
         <argument key="username_parameter">_username</argument>
@@ -3892,7 +3899,7 @@
     <service id="security.authentication.form_entry_point.main" class="Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint" public="false">
       <argument type="service" id="http_kernel"/>
       <argument type="service" id="security.http_utils"/>
-      <argument>securityLogin</argument>
+      <argument>connexion</argument>
       <argument>false</argument>
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
@@ -3938,7 +3945,7 @@
       <tag name="console.command" command="security:encode-password"/>
       <argument type="service" id="security.encoder_factory.generic"/>
       <argument type="collection">
-        <argument>App\Entity\User</argument>
+        <argument>App\Entity\RepresentantFamille</argument>
       </argument>
       <call method="setName">
         <argument>security:encode-password</argument>
@@ -4721,6 +4728,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\Controller" class="App\Controller\Controller" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\Controller" class="App\Controller\Controller" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\Controller" class="App\Controller\Controller" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\GestionnaireController" class="App\Controller\GestionnaireController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\GestionnaireController" class="App\Controller\GestionnaireController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\GestionnaireController" class="App\Controller\GestionnaireController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -4949,10 +4959,22 @@
         <argument key="representantFamilleRepository" type="service" id="App\Repository\RepresentantFamilleRepository"/>
       </argument>
     </service>
+    <service id=".service_locator._gPEhjd" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="encoder" type="service" id="security.user_password_encoder.generic"/>
+      </argument>
+    </service>
     <service id=".service_locator.DArxdLx" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="representantFamille" type="service" id=".errored..service_locator.DArxdLx.App\Entity\RepresentantFamille"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Txvqv4R" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
     <service id=".service_locator.czKK4py" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -4968,13 +4990,7 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.Txvqv4R" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
-      </argument>
-    </service>
-    <service id=".service_locator.RxioiRj" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.HMWENUR" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\GestionnaireController::addUsers" type="service" id=".service_locator.OB.f0rN"/>
@@ -4983,9 +4999,11 @@
         <argument key="App\Controller\GestionnaireController::showUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController::validAddUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController::validFormEditUsers" type="service" id=".service_locator.OB.f0rN"/>
+        <argument key="App\Controller\RepresentantFamilleController::activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\RepresentantFamilleController::delete" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController::edit" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController::index" type="service" id=".service_locator.sCizxff"/>
+        <argument key="App\Controller\RepresentantFamilleController::new" type="service" id=".service_locator._gPEhjd"/>
         <argument key="App\Controller\RepresentantFamilleController::show" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\SecurityController::activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\SecurityController::login" type="service" id=".service_locator.EbLunuf"/>
@@ -4996,9 +5014,11 @@
         <argument key="App\Controller\GestionnaireController:showUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController:validAddUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController:validFormEditUsers" type="service" id=".service_locator.OB.f0rN"/>
+        <argument key="App\Controller\RepresentantFamilleController:activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\RepresentantFamilleController:delete" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController:edit" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController:index" type="service" id=".service_locator.sCizxff"/>
+        <argument key="App\Controller\RepresentantFamilleController:new" type="service" id=".service_locator._gPEhjd"/>
         <argument key="App\Controller\RepresentantFamilleController:show" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\SecurityController:activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\SecurityController:login" type="service" id=".service_locator.EbLunuf"/>
@@ -5306,6 +5326,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.CDOTD6." method="withContext"/>
     </service>
+    <service id=".service_locator.CDOTD6..App\Controller\Controller" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator_context" id="App\Controller\Controller"/>
+      <argument>App\Controller\Controller</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.CDOTD6." method="withContext"/>
+    </service>
     <service id=".service_locator.CDOTD6..App\Controller\GestionnaireController" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator_context" id="App\Controller\GestionnaireController"/>
       <argument>App\Controller\GestionnaireController</argument>
@@ -5417,12 +5443,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.RxioiRj"/>
+      <argument type="service" id=".service_locator.HMWENUR"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.RxioiRj"/>
+      <argument type="service" id=".service_locator.HMWENUR"/>
     </service>
     <service id=".service_locator.UwRI0uT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
@@ -5798,7 +5824,7 @@
     <service id="Twig\Environment" alias="twig" public="false"/>
     <service id="logger" alias="monolog.logger"/>
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.RxioiRj"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.HMWENUR"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="validator" alias="debug.validator" public="true"/>

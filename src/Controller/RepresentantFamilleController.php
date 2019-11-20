@@ -4,10 +4,14 @@ namespace App\Controller;
 use App\Entity\RepresentantFamille;
 use App\Form\RepresentantFamilleType;
 use App\Repository\RepresentantFamilleRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
@@ -19,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 class RepresentantFamilleController extends AbstractController
 {
     /**
-     * @Route("/", name="representant_famille_index", methods={"GET"})
+     * @Route("/", name="Representant.representant", methods={"GET"})
      */
     public function index(RepresentantFamilleRepository $representantFamilleRepository): Response
     {
@@ -29,12 +33,13 @@ class RepresentantFamilleController extends AbstractController
     }
 
     /**
-     * @Route("/inscription", name="representant_famille_new", methods={"GET","POST"})
+     * @Route("/inscription", name="Representant.ajouter", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
 
         $representantFamille = new RepresentantFamille();
+        $representantFamille->setEstActive(0);
         $form = $this->createForm(RepresentantFamilleType::class, $representantFamille)
             ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez', "mapped"=>false])
             ->add('save', SubmitType::class, ['label' => 'Créer un compte']);
@@ -49,10 +54,15 @@ class RepresentantFamilleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && $passwordsmatch) {
 
+            $hash = $encoder->encodePassword($representantFamille, $representantFamille->getMotdepasse());
+            $representantFamille->setMotdepasse($hash);
             //$representantFamille->setDateFinAdhesion(new \DateTime('2019-01-01'));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($representantFamille);
             $entityManager->flush();
+
+            $this->sendConfirmationEmail($form->get('mail')->getData());
+
             return $this->render('representant_famille/confirmation.html.twig', [
                 'mail' => $form->get('mail')->getData()
             ]);
@@ -65,8 +75,38 @@ class RepresentantFamilleController extends AbstractController
         ]);
     }
 
+    public function sendConfirmationEmail($email) {
+
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host = 'smtp.gmail.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth = true;                                   // Enable SMTP authentication
+            $mail->Username = 'odysseeducirquemail@gmail.com';                     // SMTP username
+            $mail->Password = 'vivelesclowns';                               // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+            $mail->Port = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('odysseeducirquemail@gmail.com', 'Activation Odyssee du cirque');
+            $mail->addAddress($email);     // Add a recipient
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Activation compte';
+            $mail->Body = "<a href='localhost:8000/representant/activer/" . $email . "'>Cliquez ici</a>sur le lien pour activer votre compte localhost:8000/representant/activer/".$email ;
+
+            $mail->send();
+
+        }
+        catch (Exception $e) {}
+    }
+
     /**
-     * @Route("/{id}", name="representant_famille_show", methods={"GET"})
+     * @Route("/{id}", name="Representant.afficher", methods={"GET"})
      */
     public function show(RepresentantFamille $representantFamille): Response
     {
@@ -86,7 +126,7 @@ class RepresentantFamilleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('representant_famille_index');
+            return $this->redirectToRoute('Representant.afficher');
         }
 
         return $this->render('representant_famille/edit.html.twig', [
@@ -96,7 +136,7 @@ class RepresentantFamilleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="representant_famille_delete", methods={"DELETE"})
+     * @Route("/{id}", name="Representant.supprimer", methods={"DELETE"})
      */
     public function delete(Request $request, RepresentantFamille $representantFamille): Response
     {
@@ -107,5 +147,28 @@ class RepresentantFamilleController extends AbstractController
         }
 
         return $this->redirectToRoute('representant_famille_index');
+    }
+
+    /**
+     * @Route("/activer/{mail}", name="Representant.activer")
+     */
+    public function activationUser(ObjectManager $manager, $mail) {
+        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $mail]);
+
+        $representant->setEstActive(1);
+
+        $manager->persist($representant);
+        $manager->flush();
+
+        return $this->render('representant_famille/activation.html.twig', array(
+            'representant' => $representant
+        ));
+    }
+
+    /**
+     * @Route("/connexion", name="Representant.connexion", methods={"GET","POST"})
+     */
+    public function connexion(Request $request) {
+        return $this->render('representant_famille/connexion.html.twig');
     }
 }

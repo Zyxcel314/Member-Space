@@ -1,14 +1,14 @@
 security:
     encoders:
-        App\Entity\User:
+        App\Entity\RepresentantFamille:
             algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }
         users:
             entity:
-                class: App\Entity\User
-                property: email
+                class: App\Entity\RepresentantFamille
+                property: login
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,11 +18,11 @@ security:
 
             provider: users
             form_login:
-                login_path: securityLogin
-                check_path: securityLogin
-                default_target_path: securityCheckActivation
+                login_path: connexion
+                check_path: connexion
+                default_target_path: home
             logout:
-                path: securityLogout
+                path: deconnexion
                 target: home
 
             # activate different ways to authenticate
