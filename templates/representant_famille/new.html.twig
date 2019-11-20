@@ -3,10 +3,35 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
+<h1>Inscription</h1>
+{{ form_start(form) }}
+<div class="row">
+        <div class="col">
+            {{ form_row(form.mail, {'label': 'Adresse mail'}) }}
+            {{ form_row(form.login, {'label': 'Login'}) }}
+            {{ form_row(form.motdepasse, {'label': 'Mot de passe', 'type':'password'}) }}
 
-    {{ include('representant_famille/_form.html.twig') }}
+             {{ form_row(form.confirmermdp) }}
+            <small id="pass" class="form-text text-muted">Veuillez confirmer votre mot de passe</small>
+        </div>
 
+        <div class="col">
+            {{ form_row(form.nom, {'label': 'Nom'}) }}
+            {{ form_row(form.prenom, {'label': 'Prénom'}) }}
+            {{ form_row(form.adresse, {'label': 'Adresse'}) }}
+            {{ form_row(form.noMobile, {'label': 'Fixe'}) }}
+            {{ form_row(form.noFixe, {'label': 'Portable'}) }}
+            {{ form_row(form.dateNaissance, {'label': 'Date de naissance'}) }}
+            {{ form_row(form.dateFinAdhesion, {'label': 'Date de fin d\'adhésion'}) }}
 
-    <a href="{{ path('home') }}">Retour</a>
+            {{ form_row(form._token) }}
+
+        </div>
+    <input type="hidden" name="token" value="{{ csrf_token('representant_famille') }}"/>
+
+</div>
+    {{ form_row(form.save) }}
+    <a class="btn btn-secondary" href="{{ path('home') }}">Retour</a>
+{{ form_end(form, {'render_rest': false}) }}
+
 {% endblock %}

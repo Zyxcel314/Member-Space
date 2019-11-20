@@ -20,7 +20,7 @@ return [
         '/gestionnaire/validEditUsers' => [[['_route' => 'Gestionnaire.validFormEditUsers', '_controller' => 'App\\Controller\\GestionnaireController::validFormEditUsers'], null, ['POST' => 0], null, false, false, null]],
         '/representant' => [[['_route' => 'representant_famille_index', '_controller' => 'App\\Controller\\RepresentantFamilleController::index'], null, ['GET' => 0], null, true, false, null]],
         '/representant/inscription' => [[['_route' => 'representant_famille_new', '_controller' => 'App\\Controller\\RepresentantFamilleController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        '/home' => [[['_route' => 'home', '_controller' => 'App\\Controller\\SecurityController::home'], null, null, null, false, false, null]],
+        '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\SecurityController::home'], null, null, null, false, false, null]],
         '/inscription' => [[['_route' => 'securityRegistration', '_controller' => 'App\\Controller\\SecurityController::registration'], null, null, null, false, false, null]],
         '/login' => [[['_route' => 'securityLogin', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/checkActivation' => [[['_route' => 'securityCheckActivation', '_controller' => 'App\\Controller\\SecurityController::checkActivation'], null, null, null, false, false, null]],
