@@ -7,12 +7,12 @@
         <h3><bold>Vos informations de connexion sont invalides</bold></h3><br><br>
     {% endif %}
 
-    <form action="{{ path('securityLogin') }}" method="post">
+    <form action="{{ path('Representant.identifier') }}" method="post">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Email" required name="_username">
+            <input type="text" class="form-control" placeholder="Login" required name="login">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Mot de passe" required name="_password">
+            <input type="password" class="form-control" placeholder="Mot de passe" required name="motdepasse">
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-success">Se connecter</button>

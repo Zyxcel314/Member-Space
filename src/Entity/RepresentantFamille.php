@@ -309,5 +309,6 @@ class RepresentantFamille implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+        $this->setMotdepasse('');
     }
 }

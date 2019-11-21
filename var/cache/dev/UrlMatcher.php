@@ -22,6 +22,8 @@ return [
         '/gestionnaire/addUsers' => [[['_route' => 'Gestsionnaire.addUsers', '_controller' => 'App\\Controller\\GestionnaireController::addUsers'], null, ['GET' => 0], null, false, false, null]],
         '/gestionnaire/validAddUsers' => [[['_route' => 'Gestionaire.validUsers', '_controller' => 'App\\Controller\\GestionnaireController::validAddUsers'], null, ['POST' => 0], null, false, false, null]],
         '/gestionnaire/validEditUsers' => [[['_route' => 'Gestionnaire.validFormEditUsers', '_controller' => 'App\\Controller\\GestionnaireController::validFormEditUsers'], null, ['POST' => 0], null, false, false, null]],
+        '/representant/identification' => [[['_route' => 'Representant.identification', '_controller' => 'App\\Controller\\RepresentantFamilleController::identification'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/representant/identifier' => [[['_route' => 'Representant.identifier', '_controller' => 'App\\Controller\\RepresentantFamilleController::identifier'], null, ['POST' => 0], null, false, false, null]],
         '/representant' => [[['_route' => 'Representant.representant', '_controller' => 'App\\Controller\\RepresentantFamilleController::index'], null, ['GET' => 0], null, true, false, null]],
         '/representant/inscription' => [[['_route' => 'Representant.ajouter', '_controller' => 'App\\Controller\\RepresentantFamilleController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/inscription' => [[['_route' => 'securityRegistration', '_controller' => 'App\\Controller\\SecurityController::registration'], null, null, null, false, false, null]],
@@ -57,10 +59,9 @@ return [
                         .'|(*:284)'
                     .')'
                     .'|activer/([^/]++)(*:309)'
-                    .'|connexion(*:326)'
                 .')'
-                .'|/emailConfirmation/([^/]++)(*:362)'
-                .'|/activationUser/([^/]++)(*:394)'
+                .'|/emailConfirmation/([^/]++)(*:345)'
+                .'|/activationUser/([^/]++)(*:377)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -77,9 +78,8 @@ return [
         276 => [[['_route' => 'representant_famille_edit', '_controller' => 'App\\Controller\\RepresentantFamilleController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
         284 => [[['_route' => 'Representant.supprimer', '_controller' => 'App\\Controller\\RepresentantFamilleController::delete'], ['id'], ['DELETE' => 0], null, false, true, null]],
         309 => [[['_route' => 'Representant.activer', '_controller' => 'App\\Controller\\RepresentantFamilleController::activationUser'], ['mail'], null, null, false, true, null]],
-        326 => [[['_route' => 'Representant.connexion', '_controller' => 'App\\Controller\\RepresentantFamilleController::connexion'], [], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        362 => [[['_route' => 'securitySendConfirmationEmail', '_controller' => 'App\\Controller\\SecurityController::sendConfirmationEmail'], ['email'], null, null, false, true, null]],
-        394 => [
+        345 => [[['_route' => 'securitySendConfirmationEmail', '_controller' => 'App\\Controller\\SecurityController::sendConfirmationEmail'], ['email'], null, null, false, true, null]],
+        377 => [
             [['_route' => 'securityActivationUser', '_controller' => 'App\\Controller\\SecurityController::activationUser'], ['email'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

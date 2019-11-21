@@ -8,20 +8,58 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/representant")
  */
 class RepresentantFamilleController extends AbstractController
 {
+    /**
+     * @Route("/identification", name="Representant.identification", methods={"GET","POST"})
+     */
+    public function identification(Request $request, AuthenticationUtils $authenticationUtils) {
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // dernier email rentrer par l'utilisateur
+        $lastEmail = $authenticationUtils->getLastUsername();
+
+        return $this->render('representant_famille/connexion.html.twig', array(
+            'last_username' => $lastEmail,
+            'error' => $error
+        ));
+    }
+
+    /**
+     * @Route("/identifier", name="Representant.identifier", methods={"POST"})
+     */
+    public function identifier(Request $request, AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $encoder) {
+        $login = $request->request->get('login');
+        $motdepasse = $request->query->get('motdepasse');
+        dump($login);
+        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['login' => $login]);
+
+        dump($representant->isPasswordValid($representant, $motdepasse));
+        return $this->render('representant_famille/connexion.html.twig', array(
+            'last_username' => $login,
+            'error' => ''
+        ));
+        //return $this->redirectToRoute('Representant.identification');
+    }
+
+
+
     /**
      * @Route("/", name="Representant.representant", methods={"GET"})
      */
@@ -165,10 +203,6 @@ class RepresentantFamilleController extends AbstractController
         ));
     }
 
-    /**
-     * @Route("/connexion", name="Representant.connexion", methods={"GET","POST"})
-     */
-    public function connexion(Request $request) {
-        return $this->render('representant_famille/connexion.html.twig');
-    }
+
+
 }
