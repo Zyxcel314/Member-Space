@@ -31,7 +31,7 @@ return [
     'representant_famille_edit' => [['id'], ['_controller' => 'App\\Controller\\RepresentantFamilleController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/representant']], [], []],
     'Representant.supprimer' => [['id'], ['_controller' => 'App\\Controller\\RepresentantFamilleController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/representant']], [], []],
     'Representant.activer' => [['mail'], ['_controller' => 'App\\Controller\\RepresentantFamilleController::activationUser'], [], [['variable', '/', '[^/]++', 'mail', true], ['text', '/representant/activer']], [], []],
-    'home' => [[], ['_controller' => 'App\\Controller\\SecurityController::home'], [], [['text', '/']], [], []],
+    'home' => [[], ['_controller' => 'App\\Controller\\SecurityController::home'], [], [['text', '/old']], [], []],
     'securityRegistration' => [[], ['_controller' => 'App\\Controller\\SecurityController::registration'], [], [['text', '/inscription']], [], []],
     'securityLogin' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], []],
     'securityCheckActivation' => [[], ['_controller' => 'App\\Controller\\SecurityController::checkActivation'], [], [['text', '/checkActivation']], [], []],
