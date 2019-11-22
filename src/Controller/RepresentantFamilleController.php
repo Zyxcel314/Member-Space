@@ -46,11 +46,12 @@ class RepresentantFamilleController extends AbstractController
      */
     public function identifier(Request $request, AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $encoder) {
         $login = $request->request->get('login');
-        $motdepasse = $request->query->get('motdepasse');
+        $motdepasse = $request->request->get('motdepasse');
         dump($login);
+        dump($motdepasse);
         $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['login' => $login]);
 
-        dump($representant->isPasswordValid($representant, $motdepasse));
+        dump($encoder->isPasswordValid($representant, $motdepasse));
         return $this->render('representant_famille/connexion.html.twig', array(
             'last_username' => $login,
             'error' => ''

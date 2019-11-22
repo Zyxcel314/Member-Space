@@ -274,7 +274,7 @@ class RepresentantFamille implements UserInterface
     public function getPassword()
     {
         // TODO: Implement getPassword() method.
-        return getMotdepasse();
+        return $this->getMotdepasse();
     }
 
     /**
