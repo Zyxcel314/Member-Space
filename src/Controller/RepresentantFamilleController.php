@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/representant")
@@ -26,49 +27,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class RepresentantFamilleController extends AbstractController
 {
     /**
-     * @Route("/identification", name="Representant.identification", methods={"GET","POST"})
-     */
-    public function identification(Request $request, AuthenticationUtils $authenticationUtils) {
-
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        // dernier email rentrer par l'utilisateur
-        $lastEmail = $authenticationUtils->getLastUsername();
-
-        return $this->render('representant_famille/connexion.html.twig', array(
-            'last_username' => $lastEmail,
-            'error' => $error
-        ));
-    }
-
-    /**
-     * @Route("/identifier", name="Representant.identifier", methods={"POST"})
-     */
-    public function identifier(Request $request, AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $encoder) {
-        $login = $request->request->get('login');
-        $motdepasse = $request->request->get('motdepasse');
-        dump($login);
-        dump($motdepasse);
-        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['login' => $login]);
-
-        dump($encoder->isPasswordValid($representant, $motdepasse));
-        return $this->render('representant_famille/connexion.html.twig', array(
-            'last_username' => $login,
-            'error' => ''
-        ));
-        //return $this->redirectToRoute('Representant.identification');
-    }
-
-
-
-    /**
-     * @Route("/", name="Representant.representant", methods={"GET"})
+     * @Route("/", name="Representant.accueil", methods={"GET"})
+     * @IsGranted("ROLE_USER")
      */
     public function index(RepresentantFamilleRepository $representantFamilleRepository): Response
     {
-        return $this->render('representant_famille/index.html.twig', [
-            'representant_familles' => $representantFamilleRepository->findAll(),
-        ]);
+        return $this->render('representant_famille/espace.html.twig');
+    }
+
+    /**
+     * @Route("/informationsFamille", name="Representant.informationsFamille", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsFamille(RepresentantFamilleRepository $representantFamilleRepository): Response
+    {
+        return $this->render('representant_famille/informationsFamille.html.twig');
     }
 
     /**

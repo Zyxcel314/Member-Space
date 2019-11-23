@@ -90,7 +90,7 @@
     <parameter key="kernel.secret">%env(APP_SECRET)%</parameter>
     <parameter key="kernel.http_method_override">true</parameter>
     <parameter key="kernel.trusted_hosts" type="collection"/>
-    <parameter key="kernel.default_locale">en</parameter>
+    <parameter key="kernel.default_locale">fr</parameter>
     <parameter key="templating.helper.code.file_link_format">null</parameter>
     <parameter key="debug.file_link_format">null</parameter>
     <parameter key="session.metadata.storage_key">_sf2_meta</parameter>
@@ -507,6 +507,12 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Security\RepresentantAuthentificatorAuthenticator" class="App\Security\RepresentantAuthentificatorAuthenticator" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="router.default"/>
+      <argument type="service" id="security.csrf.token_manager"/>
+      <argument type="service" id="security.user_password_encoder.generic"/>
+    </service>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -527,7 +533,7 @@
       <tag name="container.hot_path"/>
       <tag name="container.hot_path"/>
       <argument type="service" id="request_stack"/>
-      <argument>en</argument>
+      <argument>fr</argument>
       <argument type="service" id="router.default" on-invalid="ignore"/>
     </service>
     <service id="validate_request_listener" class="Symfony\Component\HttpKernel\EventListener\ValidateRequestListener" public="false">
@@ -802,7 +808,7 @@
       <argument type="service" id="translation.writer"/>
       <argument type="service" id="translation.reader"/>
       <argument type="service" id="translation.extractor"/>
-      <argument>en</argument>
+      <argument>fr</argument>
       <argument>/home/nohan/Bureau/GitKraken/Member-Space/translations</argument>
       <argument>/home/nohan/Bureau/GitKraken/Member-Space/templates</argument>
       <argument type="collection">
@@ -1295,7 +1301,7 @@
       <tag name="kernel.locale_aware"/>
       <argument type="service" id=".service_locator.yQVjGlt"/>
       <argument type="service" id="translator.formatter.default"/>
-      <argument>en</argument>
+      <argument>fr</argument>
       <argument type="collection">
         <argument key="translation.loader.php" type="collection">
           <argument>php</argument>
@@ -1628,7 +1634,7 @@
       </call>
       <call method="setFallbackLocales">
         <argument type="collection">
-          <argument>en</argument>
+          <argument>fr</argument>
         </argument>
       </call>
     </service>
@@ -2565,7 +2571,7 @@
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="parameter_bag" on-invalid="ignore"/>
       <argument type="service" id="monolog.logger.router" on-invalid="ignore"/>
-      <argument>en</argument>
+      <argument>fr</argument>
       <call method="setConfigCacheFactory">
         <argument type="service" id="config_cache_factory"/>
       </call>
@@ -3305,6 +3311,7 @@
     </service>
     <service id="security.authentication.manager" class="Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager" public="false">
       <argument type="iterator">
+        <argument type="service" id="security.authentication.provider.guard.main"/>
         <argument type="service" id="security.authentication.provider.dao.main"/>
         <argument type="service" id="security.authentication.provider.anonymous.main"/>
       </argument>
@@ -3800,6 +3807,7 @@
       <argument>null</argument>
       <argument>null</argument>
       <argument type="collection">
+        <argument>guard</argument>
         <argument>form_login</argument>
         <argument>anonymous</argument>
       </argument>
@@ -3834,7 +3842,25 @@
     </service>
     <service id="security.logout.success_handler.main" class="Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler" public="false">
       <argument type="service" id="security.http_utils"/>
-      <argument>home</argument>
+      <argument>/</argument>
+    </service>
+    <service id="security.authentication.provider.guard.main" class="Symfony\Component\Security\Guard\Provider\GuardAuthenticationProvider" public="false">
+      <argument type="iterator">
+        <argument type="service" id="App\Security\RepresentantAuthentificatorAuthenticator"/>
+      </argument>
+      <argument type="service" id="security.user.provider.concrete.users"/>
+      <argument>main</argument>
+      <argument type="service" id="security.user_checker"/>
+    </service>
+    <service id="security.authentication.listener.guard.main" class="Symfony\Component\Security\Guard\Firewall\GuardAuthenticationListener" public="false">
+      <tag name="security.remember_me_aware" id="main" provider="security.user.provider.concrete.users"/>
+      <argument type="service" id="security.authentication.guard_handler"/>
+      <argument type="service" id="security.authentication.manager"/>
+      <argument>main</argument>
+      <argument type="iterator">
+        <argument type="service" id="App\Security\RepresentantAuthentificatorAuthenticator"/>
+      </argument>
+      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
     </service>
     <service id="security.authentication.provider.dao.main" class="Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider" public="false">
       <argument type="service" id="security.user.provider.concrete.users"/>
@@ -3848,7 +3874,7 @@
       <argument type="collection"/>
       <call method="setOptions">
         <argument type="collection">
-          <argument key="login_path">connexion</argument>
+          <argument key="login_path">app_login</argument>
           <argument key="default_target_path">home</argument>
           <argument key="always_use_default_target_path">false</argument>
           <argument key="target_path_parameter">_target_path</argument>
@@ -3866,7 +3892,7 @@
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <call method="setOptions">
         <argument type="collection">
-          <argument key="login_path">connexion</argument>
+          <argument key="login_path">app_login</argument>
           <argument key="failure_path">null</argument>
           <argument key="failure_forward">false</argument>
           <argument key="failure_path_parameter">_failure_path</argument>
@@ -3883,7 +3909,7 @@
       <argument type="service" id="security.authentication.success_handler.main.form_login"/>
       <argument type="service" id="security.authentication.failure_handler.main.form_login"/>
       <argument type="collection">
-        <argument key="check_path">connexion</argument>
+        <argument key="check_path">app_login</argument>
         <argument key="use_forward">false</argument>
         <argument key="require_previous_session">false</argument>
         <argument key="username_parameter">_username</argument>
@@ -3899,7 +3925,7 @@
     <service id="security.authentication.form_entry_point.main" class="Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint" public="false">
       <argument type="service" id="http_kernel"/>
       <argument type="service" id="security.http_utils"/>
-      <argument>connexion</argument>
+      <argument>app_login</argument>
       <argument>false</argument>
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
@@ -3926,6 +3952,7 @@
       <argument type="iterator">
         <argument type="service" id="security.channel_listener"/>
         <argument type="service" id="security.context_listener.0"/>
+        <argument type="service" id="security.authentication.listener.guard.main"/>
         <argument type="service" id="security.authentication.listener.form.main"/>
         <argument type="service" id="security.authentication.listener.anonymous.main"/>
         <argument type="service" id="security.access_listener"/>
@@ -4953,19 +4980,6 @@
         <argument key="twig" type="service" id="twig"/>
       </argument>
     </service>
-    <service id=".service_locator.EbLunuf" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
-      </argument>
-    </service>
-    <service id=".service_locator.7aT1CmG" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
-        <argument key="encoder" type="service" id="security.user_password_encoder.generic"/>
-      </argument>
-    </service>
     <service id=".service_locator.sCizxff" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4990,14 +5004,13 @@
         <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
-    <service id=".service_locator.czKK4py" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.EbLunuf" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="encoder" type="service" id="security.user_password_encoder.generic"/>
-        <argument key="manager" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="authenticationUtils" type="service" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.Z4skgs1" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.draEnAZ" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\GestionnaireController::addUsers" type="service" id=".service_locator.OB.f0rN"/>
@@ -5009,14 +5022,11 @@
         <argument key="App\Controller\RepresentantFamilleController::activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\RepresentantFamilleController::delete" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController::edit" type="service" id=".service_locator.DArxdLx"/>
-        <argument key="App\Controller\RepresentantFamilleController::identification" type="service" id=".service_locator.EbLunuf"/>
-        <argument key="App\Controller\RepresentantFamilleController::identifier" type="service" id=".service_locator.7aT1CmG"/>
         <argument key="App\Controller\RepresentantFamilleController::index" type="service" id=".service_locator.sCizxff"/>
+        <argument key="App\Controller\RepresentantFamilleController::informationsFamille" type="service" id=".service_locator.sCizxff"/>
         <argument key="App\Controller\RepresentantFamilleController::new" type="service" id=".service_locator._gPEhjd"/>
         <argument key="App\Controller\RepresentantFamilleController::show" type="service" id=".service_locator.DArxdLx"/>
-        <argument key="App\Controller\SecurityController::activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\SecurityController::login" type="service" id=".service_locator.EbLunuf"/>
-        <argument key="App\Controller\SecurityController::registration" type="service" id=".service_locator.czKK4py"/>
         <argument key="App\Controller\GestionnaireController:addUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController:deleteUsers" type="service" id=".service_locator.OB.f0rN"/>
         <argument key="App\Controller\GestionnaireController:editUsers" type="service" id=".service_locator.OB.f0rN"/>
@@ -5026,14 +5036,11 @@
         <argument key="App\Controller\RepresentantFamilleController:activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\RepresentantFamilleController:delete" type="service" id=".service_locator.DArxdLx"/>
         <argument key="App\Controller\RepresentantFamilleController:edit" type="service" id=".service_locator.DArxdLx"/>
-        <argument key="App\Controller\RepresentantFamilleController:identification" type="service" id=".service_locator.EbLunuf"/>
-        <argument key="App\Controller\RepresentantFamilleController:identifier" type="service" id=".service_locator.7aT1CmG"/>
         <argument key="App\Controller\RepresentantFamilleController:index" type="service" id=".service_locator.sCizxff"/>
+        <argument key="App\Controller\RepresentantFamilleController:informationsFamille" type="service" id=".service_locator.sCizxff"/>
         <argument key="App\Controller\RepresentantFamilleController:new" type="service" id=".service_locator._gPEhjd"/>
         <argument key="App\Controller\RepresentantFamilleController:show" type="service" id=".service_locator.DArxdLx"/>
-        <argument key="App\Controller\SecurityController:activationUser" type="service" id=".service_locator.Txvqv4R"/>
         <argument key="App\Controller\SecurityController:login" type="service" id=".service_locator.EbLunuf"/>
-        <argument key="App\Controller\SecurityController:registration" type="service" id=".service_locator.czKK4py"/>
       </argument>
     </service>
     <service id=".service_locator.LtnrEkg" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -5454,12 +5461,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.Z4skgs1"/>
+      <argument type="service" id=".service_locator.draEnAZ"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.Z4skgs1"/>
+      <argument type="service" id=".service_locator.draEnAZ"/>
     </service>
     <service id=".service_locator.UwRI0uT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
@@ -5835,7 +5842,7 @@
     <service id="Twig\Environment" alias="twig" public="false"/>
     <service id="logger" alias="monolog.logger"/>
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.Z4skgs1"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.draEnAZ"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="validator" alias="debug.validator" public="true"/>

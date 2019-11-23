@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RepresentantFamilleRepository")
  */
-class RepresentantFamille implements UserInterface
+class RepresentantFamille implements UserInterface, \Serializable, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -310,5 +311,41 @@ class RepresentantFamille implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
         $this->setMotdepasse('');
+    }
+
+
+    public function isEqualTo(UserInterface $user)
+    {
+        //if ($this->password !== $user->getPassword()) {
+        //    return false;
+        //}
+
+        //if ($this->salt !== $user->getSalt()) {
+        //    return false;
+        //}
+
+        if ($this->login !== $user->getLogin()) {
+            return false;
+        }
+        return true;
+    }
+
+    public function serialize()
+    {
+        //die('serialize');
+        return serialize(array(
+            $this->id,
+            $this->login,
+            $this->motdepasse
+        ));
+    }
+
+    public function unserialize( $serialized )
+    {
+        list (
+            $this->id,
+            $this->login,
+            $this->motdepasse
+            ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

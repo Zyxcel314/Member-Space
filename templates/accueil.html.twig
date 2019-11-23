@@ -2,15 +2,16 @@
 
 {% block body %}
 <h1>Odyssée du cirque</h1>
-<div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Mon compte
-    </a>
+<p>Bienvenue sur la page d'accueil de l'odyssée du cirque</p>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="{{ path('Representant.identification') }}">Se connecter</a>
-        <a class="dropdown-item" href="{{ path('Representant.ajouter') }}">Créer un compte</a>
-        <a class="dropdown-item" href="#">Informations</a>
-    </div>
-</div>
+    {% for message in app.flashes('succes') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('echecs') %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endblock %}

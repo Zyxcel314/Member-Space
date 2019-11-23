@@ -1,8 +1,42 @@
-<nav>
-    <a href="{{ path('representant_famille_new') }}">Inscription</a>
-    {% if not app.user %}
-        <a href="{{ path('securityLogin') }}">Connexion</a>
-    {% else %}
-        <a href="{{ path('securityLogout') }}">Déconnexion</a>
-    {% endif %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('') }}">Accueil</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon compte</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item {% if app.user %}disabled{% endif %}" href="{{ path('app_login') }}">Se connecter</a>
+                    <a class="dropdown-item {% if app.user %}disabled{% endif %}" href="{{ path('Representant.ajouter') }}">Inscription</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('Representant.informationsFamille') }}">Accèder à mon espace</a>
+                    <div class="dropdown-divider"></div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="#">Odyssée du cirque</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                {% if app.user %}
+                    <a class="nav-link" href="{{ path('deconnexion') }}">Déconnexion</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if not app.user %}
+                    <a class="nav-link active" href="{{ path('app_login') }}" tabindex="-1" >Se connecter</a>
+                {% else %}
+                    <a class="nav-link active text-success" href="{{ path('') }}" tabindex="-1" >{{ app.user.username}}</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
 </nav>
