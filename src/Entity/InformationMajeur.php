@@ -27,9 +27,9 @@ class InformationMajeur
     private $communicationResponsableLegal;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", mappedBy="id_informationMajeur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", inversedBy="informationMajeur", cascade={"persist", "remove"})
      */
-    private $membreFamille;
+    private $membre_famille;
 
     public function getId(): ?int
     {
@@ -62,18 +62,12 @@ class InformationMajeur
 
     public function getMembreFamille(): ?MembreFamille
     {
-        return $this->membreFamille;
+        return $this->membre_famille;
     }
 
-    public function setMembreFamille(?MembreFamille $membreFamille): self
+    public function setMembreFamille(?MembreFamille $membre_famille): self
     {
-        $this->membreFamille = $membreFamille;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newIdÃ_informationMajeur = $membreFamille === null ? null : $this;
-        if ($newIdÃ_informationMajeur !== $membreFamille->getIdÃInformationMajeur()) {
-            $membreFamille->setIdÃInformationMajeur($newIdÃ_informationMajeur);
-        }
+        $this->membre_famille = $membre_famille;
 
         return $this;
     }

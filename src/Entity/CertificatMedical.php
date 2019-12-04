@@ -31,6 +31,11 @@ class CertificatMedical
      */
     private $dateValidite;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\FicheSanitaire", inversedBy="certificatMedical", cascade={"persist", "remove"})
+     */
+    private $fiche_sanitaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class CertificatMedical
     public function setDateValidite(\DateTimeInterface $dateValidite): self
     {
         $this->dateValidite = $dateValidite;
+
+        return $this;
+    }
+
+    public function getFicheSanitaire(): ?FicheSanitaire
+    {
+        return $this->fiche_sanitaire;
+    }
+
+    public function setFicheSanitaire(?FicheSanitaire $fiche_sanitaire): self
+    {
+        $this->fiche_sanitaire = $fiche_sanitaire;
 
         return $this;
     }

@@ -54,38 +54,29 @@ class MembreFamille
     private $dateMAJ;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RepresentantFamille", mappedBy="membreFamille")
+     * @ORM\ManyToOne(targetEntity="App\Entity\RepresentantFamille", inversedBy="membreFamilles")
      */
-    private $id_representantFamille;
+    private $representant_famille;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ExportDonnees", inversedBy="membreFamille", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\InformationResponsableLegal", mappedBy="membre_famille")
      */
-    private $id_dernierExport;
+    private $informationResponsableLegals;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ExportDonnees", mappedBy="id_membreFamille", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\InformationsMineur", mappedBy="membre_famille", cascade={"persist", "remove"})
      */
-    private $exportDonnees;
+    private $informationsMineur;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationsMineur", inversedBy="membreFamille", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\InformationMajeur", mappedBy="membre_famille", cascade={"persist", "remove"})
      */
-    private $id_informationMineur;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationMajeur", inversedBy="membreFamille", cascade={"persist", "remove"})
-     */
-    private $idÃ_informationMajeur;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationResponsableLegal", inversedBy="membreFamille", cascade={"persist", "remove"})
-     */
-    private $id_informationResponsableLegal;
+    private $informationMajeur;
 
     public function __construct()
     {
         $this->id_representantFamille = new ArrayCollection();
+        $this->informationResponsableLegals = new ArrayCollection();
     }
 
 
@@ -173,100 +164,82 @@ class MembreFamille
         return $this;
     }
 
-    /**
-     * @return Collection|RepresentantFamille[]
-     */
-    public function getIdRepresentantFamille(): Collection
+    public function getRepresentantFamille(): ?RepresentantFamille
     {
-        return $this->id_representantFamille;
+        return $this->representant_famille;
     }
 
-    public function addIdRepresentantFamille(RepresentantFamille $idRepresentantFamille): self
+    public function setRepresentantFamille(?RepresentantFamille $representant_famille): self
     {
-        if (!$this->id_representantFamille->contains($idRepresentantFamille)) {
-            $this->id_representantFamille[] = $idRepresentantFamille;
-            $idRepresentantFamille->setMembreFamille($this);
+        $this->representant_famille = $representant_famille;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InformationResponsableLegal[]
+     */
+    public function getInformationResponsableLegals(): Collection
+    {
+        return $this->informationResponsableLegals;
+    }
+
+    public function addInformationResponsableLegal(InformationResponsableLegal $informationResponsableLegal): self
+    {
+        if (!$this->informationResponsableLegals->contains($informationResponsableLegal)) {
+            $this->informationResponsableLegals[] = $informationResponsableLegal;
+            $informationResponsableLegal->setMembreFamille($this);
         }
 
         return $this;
     }
 
-    public function removeIdRepresentantFamille(RepresentantFamille $idRepresentantFamille): self
+    public function removeInformationResponsableLegal(InformationResponsableLegal $informationResponsableLegal): self
     {
-        if ($this->id_representantFamille->contains($idRepresentantFamille)) {
-            $this->id_representantFamille->removeElement($idRepresentantFamille);
+        if ($this->informationResponsableLegals->contains($informationResponsableLegal)) {
+            $this->informationResponsableLegals->removeElement($informationResponsableLegal);
             // set the owning side to null (unless already changed)
-            if ($idRepresentantFamille->getMembreFamille() === $this) {
-                $idRepresentantFamille->setMembreFamille(null);
+            if ($informationResponsableLegal->getMembreFamille() === $this) {
+                $informationResponsableLegal->setMembreFamille(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdDernierExport(): ?ExportDonnees
+    public function getInformationsMineur(): ?InformationsMineur
     {
-        return $this->id_dernierExport;
+        return $this->informationsMineur;
     }
 
-    public function setIdDernierExport(?ExportDonnees $id_dernierExport): self
+    public function setInformationsMineur(?InformationsMineur $informationsMineur): self
     {
-        $this->id_dernierExport = $id_dernierExport;
+        $this->informationsMineur = $informationsMineur;
 
-        return $this;
-    }
-
-    public function getExportDonnees(): ?ExportDonnees
-    {
-        return $this->exportDonnees;
-    }
-
-    public function setExportDonnees(ExportDonnees $exportDonnees): self
-    {
-        $this->exportDonnees = $exportDonnees;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $exportDonnees->getIdMembreFamille()) {
-            $exportDonnees->setIdMembreFamille($this);
+        // set (or unset) the owning side of the relation if necessary
+        $newMembre_famille = $informationsMineur === null ? null : $this;
+        if ($newMembre_famille !== $informationsMineur->getMembreFamille()) {
+            $informationsMineur->setMembreFamille($newMembre_famille);
         }
 
         return $this;
     }
 
-    public function getIdInformationMineur(): ?InformationsMineur
+    public function getInformationMajeur(): ?InformationMajeur
     {
-        return $this->id_informationMineur;
+        return $this->informationMajeur;
     }
 
-    public function setIdInformationMineur(?InformationsMineur $id_informationMineur): self
+    public function setInformationMajeur(?InformationMajeur $informationMajeur): self
     {
-        $this->id_informationMineur = $id_informationMineur;
+        $this->informationMajeur = $informationMajeur;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newMembre_famille = $informationMajeur === null ? null : $this;
+        if ($newMembre_famille !== $informationMajeur->getMembreFamille()) {
+            $informationMajeur->setMembreFamille($newMembre_famille);
+        }
 
         return $this;
     }
-
-    public function getIdÃInformationMajeur(): ?InformationMajeur
-    {
-        return $this->idÃ_informationMajeur;
-    }
-
-    public function setIdÃInformationMajeur(?InformationMajeur $idÃ_informationMajeur): self
-    {
-        $this->idÃ_informationMajeur = $idÃ_informationMajeur;
-
-        return $this;
-    }
-
-    public function getIdInformationResponsableLegal(): ?InformationResponsableLegal
-    {
-        return $this->id_informationResponsableLegal;
-    }
-
-    public function setIdInformationResponsableLegal(?InformationResponsableLegal $id_informationResponsableLegal): self
-    {
-        $this->id_informationResponsableLegal = $id_informationResponsableLegal;
-
-        return $this;
-    }
-
 }

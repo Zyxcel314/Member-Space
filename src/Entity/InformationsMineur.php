@@ -39,23 +39,24 @@ class InformationsMineur
     private $autorisationSortieSeul;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", mappedBy="id_informationMineur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", inversedBy="informationsMineur", cascade={"persist", "remove"})
      */
-    private $membreFamille;
+    private $membre_famille;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AutorisationSortie", mappedBy="informationsMineur")
+     * @ORM\OneToMany(targetEntity="App\Entity\AutorisationSortie", mappedBy="informations_mineur")
      */
-    private $id_autorisationSortie;
+    private $autorisationSorties;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\FicheSanitaire", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\FicheSanitaire", mappedBy="informations_mineur")
      */
-    private $id_ficheSanitaire;
+    private $ficheSanitaires;
 
     public function __construct()
     {
-        $this->id_autorisationSortie = new ArrayCollection();
+        $this->autorisationSorties = new ArrayCollection();
+        $this->ficheSanitaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,18 +114,12 @@ class InformationsMineur
 
     public function getMembreFamille(): ?MembreFamille
     {
-        return $this->membreFamille;
+        return $this->membre_famille;
     }
 
-    public function setMembreFamille(?MembreFamille $membreFamille): self
+    public function setMembreFamille(?MembreFamille $membre_famille): self
     {
-        $this->membreFamille = $membreFamille;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newId_informationMineur = $membreFamille === null ? null : $this;
-        if ($newId_informationMineur !== $membreFamille->getIdInformationMineur()) {
-            $membreFamille->setIdInformationMineur($newId_informationMineur);
-        }
+        $this->membre_famille = $membre_famille;
 
         return $this;
     }
@@ -132,42 +127,58 @@ class InformationsMineur
     /**
      * @return Collection|AutorisationSortie[]
      */
-    public function getIdAutorisationSortie(): Collection
+    public function getAutorisationSorties(): Collection
     {
-        return $this->id_autorisationSortie;
+        return $this->autorisationSorties;
     }
 
-    public function addIdAutorisationSortie(AutorisationSortie $idAutorisationSortie): self
+    public function addAutorisationSorty(AutorisationSortie $autorisationSorty): self
     {
-        if (!$this->id_autorisationSortie->contains($idAutorisationSortie)) {
-            $this->id_autorisationSortie[] = $idAutorisationSortie;
-            $idAutorisationSortie->setInformationsMineur($this);
+        if (!$this->autorisationSorties->contains($autorisationSorty)) {
+            $this->autorisationSorties[] = $autorisationSorty;
+            $autorisationSorty->setInformationsMineur($this);
         }
 
         return $this;
     }
 
-    public function removeIdAutorisationSortie(AutorisationSortie $idAutorisationSortie): self
+    public function removeAutorisationSorty(AutorisationSortie $autorisationSorty): self
     {
-        if ($this->id_autorisationSortie->contains($idAutorisationSortie)) {
-            $this->id_autorisationSortie->removeElement($idAutorisationSortie);
+        if ($this->autorisationSorties->contains($autorisationSorty)) {
+            $this->autorisationSorties->removeElement($autorisationSorty);
             // set the owning side to null (unless already changed)
-            if ($idAutorisationSortie->getInformationsMineur() === $this) {
-                $idAutorisationSortie->setInformationsMineur(null);
+            if ($autorisationSorty->getInformationsMineur() === $this) {
+                $autorisationSorty->setInformationsMineur(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdFicheSanitaire(): ?FicheSanitaire
+    /**
+     * @return Collection|FicheSanitaire[]
+     */
+    public function getFicheSanitaires(): Collection
     {
-        return $this->id_ficheSanitaire;
+        return $this->ficheSanitaires;
     }
 
-    public function setIdFicheSanitaire(?FicheSanitaire $id_ficheSanitaire): self
+    public function addFicheSanitaire(FicheSanitaire $ficheSanitaire): self
     {
-        $this->id_ficheSanitaire = $id_ficheSanitaire;
+        if (!$this->ficheSanitaires->contains($ficheSanitaire)) {
+            $this->ficheSanitaires[] = $ficheSanitaire;
+            $ficheSanitaire->addInformationsMineur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheSanitaire(FicheSanitaire $ficheSanitaire): self
+    {
+        if ($this->ficheSanitaires->contains($ficheSanitaire)) {
+            $this->ficheSanitaires->removeElement($ficheSanitaire);
+            $ficheSanitaire->removeInformationsMineur($this);
+        }
 
         return $this;
     }

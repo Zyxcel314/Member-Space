@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +29,14 @@ class Droits
     private $libelle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Gestionnaires", inversedBy="idDroit")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Gestionnaires", inversedBy="droits")
      */
-    private $gestionnaires;
+    private $gestionnaire;
+
+    public function __construct()
+    {
+        $this->gestionnaire = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,14 +67,28 @@ class Droits
         return $this;
     }
 
-    public function getGestionnaires(): ?Gestionnaires
+    /**
+     * @return Collection|Gestionnaires[]
+     */
+    public function getGestionnaire(): Collection
     {
-        return $this->gestionnaires;
+        return $this->gestionnaire;
     }
 
-    public function setGestionnaires(?Gestionnaires $gestionnaires): self
+    public function addGestionnaire(Gestionnaires $gestionnaire): self
     {
-        $this->gestionnaires = $gestionnaires;
+        if (!$this->gestionnaire->contains($gestionnaire)) {
+            $this->gestionnaire[] = $gestionnaire;
+        }
+
+        return $this;
+    }
+
+    public function removeGestionnaire(Gestionnaires $gestionnaire): self
+    {
+        if ($this->gestionnaire->contains($gestionnaire)) {
+            $this->gestionnaire->removeElement($gestionnaire);
+        }
 
         return $this;
     }

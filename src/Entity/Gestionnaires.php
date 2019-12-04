@@ -39,13 +39,14 @@ class Gestionnaires
     private $idGoogleAuth;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Droits", mappedBy="gestionnaires")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Droits", mappedBy="gestionnaire")
      */
-    private $idDroit;
+    private $droits;
 
     public function __construct()
     {
         $this->idDroit = new ArrayCollection();
+        $this->droits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,29 +105,26 @@ class Gestionnaires
     /**
      * @return Collection|Droits[]
      */
-    public function getIdDroit(): Collection
+    public function getDroits(): Collection
     {
-        return $this->idDroit;
+        return $this->droits;
     }
 
-    public function addIdDroit(Droits $idDroit): self
+    public function addDroit(Droits $droit): self
     {
-        if (!$this->idDroit->contains($idDroit)) {
-            $this->idDroit[] = $idDroit;
-            $idDroit->setGestionnaires($this);
+        if (!$this->droits->contains($droit)) {
+            $this->droits[] = $droit;
+            $droit->addGestionnaire($this);
         }
 
         return $this;
     }
 
-    public function removeIdDroit(Droits $idDroit): self
+    public function removeDroit(Droits $droit): self
     {
-        if ($this->idDroit->contains($idDroit)) {
-            $this->idDroit->removeElement($idDroit);
-            // set the owning side to null (unless already changed)
-            if ($idDroit->getGestionnaires() === $this) {
-                $idDroit->setGestionnaires(null);
-            }
+        if ($this->droits->contains($droit)) {
+            $this->droits->removeElement($droit);
+            $droit->removeGestionnaire($this);
         }
 
         return $this;

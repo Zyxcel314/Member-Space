@@ -37,14 +37,9 @@ class AutorisationSortie
     private $lien;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\InformationsMineur", inversedBy="id_autorisationSortie")
+     * @ORM\ManyToOne(targetEntity="App\Entity\InformationsMineur", inversedBy="autorisationSorties")
      */
-    private $informationsMineur;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationsMineur", cascade={"persist", "remove"})
-     */
-    private $id_informationsMineur;
+    private $informations_mineur;
 
     public function getId(): ?int
     {
@@ -101,24 +96,12 @@ class AutorisationSortie
 
     public function getInformationsMineur(): ?InformationsMineur
     {
-        return $this->informationsMineur;
+        return $this->informations_mineur;
     }
 
-    public function setInformationsMineur(?InformationsMineur $informationsMineur): self
+    public function setInformationsMineur(?InformationsMineur $informations_mineur): self
     {
-        $this->informationsMineur = $informationsMineur;
-
-        return $this;
-    }
-
-    public function getIdInformationsMineur(): ?InformationsMineur
-    {
-        return $this->id_informationsMineur;
-    }
-
-    public function setIdInformationsMineur(?InformationsMineur $id_informationsMineur): self
-    {
-        $this->id_informationsMineur = $id_informationsMineur;
+        $this->informations_mineur = $informations_mineur;
 
         return $this;
     }

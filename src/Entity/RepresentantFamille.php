@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -69,19 +71,25 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     private $dateFinAdhesion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\MembreFamille", inversedBy="id_representantFamille")
-     */
-    private $membreFamille;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationsFamille", cascade={"persist", "remove"})
-     */
-    private $id_informationsFamille;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $estActive;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InformationsFamille", mappedBy="representant_famille")
+     */
+    private $informationsFamilles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembreFamille", mappedBy="representant_famille")
+     */
+    private $membreFamilles;
+
+    public function __construct()
+    {
+        $this->informationsFamilles = new ArrayCollection();
+        $this->membreFamilles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,30 +216,6 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
         return $this;
     }
 
-    public function getMembreFamille(): ?MembreFamille
-    {
-        return $this->membreFamille;
-    }
-
-    public function setMembreFamille(?MembreFamille $membreFamille): self
-    {
-        $this->membreFamille = $membreFamille;
-
-        return $this;
-    }
-
-    public function getIdInformationsFamille(): ?InformationsFamille
-    {
-        return $this->id_informationsFamille;
-    }
-
-    public function setIdInformationsFamille(?InformationsFamille $id_informationsFamille): self
-    {
-        $this->id_informationsFamille = $id_informationsFamille;
-
-        return $this;
-    }
-
     public function getEstActive(): ?bool
     {
         return $this->estActive;
@@ -347,5 +331,67 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
             $this->login,
             $this->motdepasse
             ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|InformationsFamille[]
+     */
+    public function getInformationsFamilles(): Collection
+    {
+        return $this->informationsFamilles;
+    }
+
+    public function addInformationsFamille(InformationsFamille $informationsFamille): self
+    {
+        if (!$this->informationsFamilles->contains($informationsFamille)) {
+            $this->informationsFamilles[] = $informationsFamille;
+            $informationsFamille->setRepresentantFamille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInformationsFamille(InformationsFamille $informationsFamille): self
+    {
+        if ($this->informationsFamilles->contains($informationsFamille)) {
+            $this->informationsFamilles->removeElement($informationsFamille);
+            // set the owning side to null (unless already changed)
+            if ($informationsFamille->getRepresentantFamille() === $this) {
+                $informationsFamille->setRepresentantFamille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MembreFamille[]
+     */
+    public function getMembreFamilles(): Collection
+    {
+        return $this->membreFamilles;
+    }
+
+    public function addMembreFamille(MembreFamille $membreFamille): self
+    {
+        if (!$this->membreFamilles->contains($membreFamille)) {
+            $this->membreFamilles[] = $membreFamille;
+            $membreFamille->setRepresentantFamille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembreFamille(MembreFamille $membreFamille): self
+    {
+        if ($this->membreFamilles->contains($membreFamille)) {
+            $this->membreFamilles->removeElement($membreFamille);
+            // set the owning side to null (unless already changed)
+            if ($membreFamille->getRepresentantFamille() === $this) {
+                $membreFamille->setRepresentantFamille(null);
+            }
+        }
+
+        return $this;
     }
 }

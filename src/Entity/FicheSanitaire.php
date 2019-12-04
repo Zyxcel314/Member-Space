@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,14 +54,19 @@ class FicheSanitaire
     private $formulaireQSSport;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationsMineur", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\InformationsMineur", inversedBy="ficheSanitaires")
      */
-    private $id_informationMineur;
+    private $informations_mineur;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\CertificatMedical", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\CertificatMedical", mappedBy="fiche_sanitaire", cascade={"persist", "remove"})
      */
-    private $id_certificatMedical;
+    private $certificatMedical;
+
+    public function __construct()
+    {
+        $this->informations_mineur = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,26 +157,46 @@ class FicheSanitaire
         return $this;
     }
 
-    public function getIdInformationMineur(): ?InformationsMineur
+    /**
+     * @return Collection|InformationsMineur[]
+     */
+    public function getInformationsMineur(): Collection
     {
-        return $this->id_informationMineur;
+        return $this->informations_mineur;
     }
 
-    public function setIdInformationMineur(?InformationsMineur $id_informationMineur): self
+    public function addInformationsMineur(InformationsMineur $informationsMineur): self
     {
-        $this->id_informationMineur = $id_informationMineur;
+        if (!$this->informations_mineur->contains($informationsMineur)) {
+            $this->informations_mineur[] = $informationsMineur;
+        }
 
         return $this;
     }
 
-    public function getIdCertificatMedical(): ?CertificatMedical
+    public function removeInformationsMineur(InformationsMineur $informationsMineur): self
     {
-        return $this->id_certificatMedical;
+        if ($this->informations_mineur->contains($informationsMineur)) {
+            $this->informations_mineur->removeElement($informationsMineur);
+        }
+
+        return $this;
     }
 
-    public function setIdCertificatMedical(?CertificatMedical $id_certificatMedical): self
+    public function getCertificatMedical(): ?CertificatMedical
     {
-        $this->id_certificatMedical = $id_certificatMedical;
+        return $this->certificatMedical;
+    }
+
+    public function setCertificatMedical(?CertificatMedical $certificatMedical): self
+    {
+        $this->certificatMedical = $certificatMedical;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFiche_sanitaire = $certificatMedical === null ? null : $this;
+        if ($newFiche_sanitaire !== $certificatMedical->getFicheSanitaire()) {
+            $certificatMedical->setFicheSanitaire($newFiche_sanitaire);
+        }
 
         return $this;
     }

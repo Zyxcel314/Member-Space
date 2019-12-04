@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,18 +24,18 @@ class InformationResponsableLegal
     private $profession;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\MembreFamille", mappedBy="id_informationResponsableLegal", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\MembreFamille", inversedBy="informationResponsableLegals")
      */
-    private $membreFamille;
+    private $membre_famille;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\InformationEmployeur", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\InformationEmployeur", mappedBy="informations_responsable_famille")
      */
-    private $id_informationEmployeur;
+    private $informationEmployeurs;
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->informationEmployeurs = new ArrayCollection();
     }
 
     public function getProfession(): ?string
@@ -50,30 +52,40 @@ class InformationResponsableLegal
 
     public function getMembreFamille(): ?MembreFamille
     {
-        return $this->membreFamille;
+        return $this->membre_famille;
     }
 
-    public function setMembreFamille(?MembreFamille $membreFamille): self
+    public function setMembreFamille(?MembreFamille $membre_famille): self
     {
-        $this->membreFamille = $membreFamille;
+        $this->membre_famille = $membre_famille;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newId_informationResponsableLegal = $membreFamille === null ? null : $this;
-        if ($newId_informationResponsableLegal !== $membreFamille->getIdInformationResponsableLegal()) {
-            $membreFamille->setIdInformationResponsableLegal($newId_informationResponsableLegal);
+        return $this;
+    }
+
+    /**
+     * @return Collection|InformationEmployeur[]
+     */
+    public function getInformationEmployeurs(): Collection
+    {
+        return $this->informationEmployeurs;
+    }
+
+    public function addInformationEmployeur(InformationEmployeur $informationEmployeur): self
+    {
+        if (!$this->informationEmployeurs->contains($informationEmployeur)) {
+            $this->informationEmployeurs[] = $informationEmployeur;
+            $informationEmployeur->addInformationsResponsableFamille($this);
         }
 
         return $this;
     }
 
-    public function getIdInformationEmployeur(): ?InformationEmployeur
+    public function removeInformationEmployeur(InformationEmployeur $informationEmployeur): self
     {
-        return $this->id_informationEmployeur;
-    }
-
-    public function setIdInformationEmployeur(?InformationEmployeur $id_informationEmployeur): self
-    {
-        $this->id_informationEmployeur = $id_informationEmployeur;
+        if ($this->informationEmployeurs->contains($informationEmployeur)) {
+            $this->informationEmployeurs->removeElement($informationEmployeur);
+            $informationEmployeur->removeInformationsResponsableFamille($this);
+        }
 
         return $this;
     }

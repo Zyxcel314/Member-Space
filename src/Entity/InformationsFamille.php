@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,9 +49,9 @@ class InformationsFamille
     private $regimeProtectionSociale;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\RepresentantFamille", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\RepresentantFamille", inversedBy="informationsFamilles")
      */
-    private $id_representantFamille;
+    private $representant_famille;
 
     public function getId(): ?int
     {
@@ -128,14 +130,14 @@ class InformationsFamille
         return $this;
     }
 
-    public function getIdRepresentantFamille(): ?RepresentantFamille
+    public function getRepresentantFamille(): ?RepresentantFamille
     {
-        return $this->id_representantFamille;
+        return $this->representant_famille;
     }
 
-    public function setIdRepresentantFamille(?RepresentantFamille $id_representantFamille): self
+    public function setRepresentantFamille(?RepresentantFamille $representant_famille): self
     {
-        $this->id_representantFamille = $id_representantFamille;
+        $this->representant_famille = $representant_famille;
 
         return $this;
     }
