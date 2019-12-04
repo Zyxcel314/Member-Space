@@ -1,7 +1,15 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="img/Logo.jpg" class="d-inline-block align-top" alt="" width="80" height="37">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="{{ path('') }}">Accueil</a>
             </li>
             <li class="nav-item dropdown active" >
@@ -14,29 +22,94 @@
                     <div class="dropdown-divider"></div>
                 </div>
             </li>
-
-        </ul>
-    </div>
-    <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto" href="#">Odyssée du cirque</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                {% if app.user %}
-                    <a class="nav-link" href="{{ path('deconnexion') }}">Déconnexion</a>
-                {% endif %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Pédagogie" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Pédagogie
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Pédagogie">
+                    <a class="dropdown-item" href="#">Bla</a>
+                    <a class="dropdown-item" href="#">Bla</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Bla</a>
+                </div>
             </li>
-            <li class="nav-item">
-                {% if not app.user %}
-                    <a class="nav-link active" href="{{ path('app_login') }}" tabindex="-1" >Se connecter</a>
-                {% else %}
-                    <a class="nav-link active text-success" href="{{ path('') }}" tabindex="-1" >{{ app.user.username}}</a>
-                {% endif %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Formations" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Formations
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Formations">
+                    <a class="dropdown-item" href="#">a</a>
+                    <a class="dropdown-item" href="#">b</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">c</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Diffusion" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Diffusion
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Diffusion">
+                    <a class="dropdown-item" href="#">blabla1</a>
+                    <a class="dropdown-item" href="#">blabla2</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">blabla3</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Diffusion" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Diffusion
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Diffusion">
+                    <a class="dropdown-item" href="#">blabla4</a>
+                    <a class="dropdown-item" href="#">blabla5</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">blabla6</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Centre ressources" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Centre ressources
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Centre ressources">
+                    <a class="dropdown-item" href="#">blabla7</a>
+                    <a class="dropdown-item" href="#">blabla8</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">blabla9</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="Partenariat" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Partenariat
+                </a>
+                <div class="dropdown-menu" aria-labelledby="Partenariat">
+                    <a class="dropdown-item" href="#">blabla10</a>
+                    <a class="dropdown-item" href="#">blabla11</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">blabla12</a>
+                </div>
             </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#exampleModal">Réserve Ta Place</button>
+            &nbsp&nbsp
+            <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">Nous Contacter</button>
+            &nbsp&nbsp
+            <button type="button" class="btn btn-outline-light">    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            {% if app.user %}
+                                <a class="nav-link" href="{{ path('deconnexion') }}">Déconnexion</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if not app.user %}
+                                <a class="nav-link active" href="{{ path('app_login') }}" tabindex="-1" >Se connecter</a>
+                            {% else %}
+                                <a class="nav-link active text-success" href="{{ path('') }}" tabindex="-1" >{{ app.user.username}}</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div></button>
+        </form>
     </div>
 </nav>
