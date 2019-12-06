@@ -3,13 +3,14 @@
     <h2>Mon espace</h2>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" href="#">Informations familliales</a>
+            <a class="nav-link active" href="{{ path('Representant.informationsFamille') }}">Informations familliales</a>
+            <br><br>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Membres de ma famille</a>
+            <a class="nav-link active" href="{{ path('Representant.informationsMembreFamille') }}">Membres de ma famille</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Informations personnelles</a>
+            <a class="nav-link active" href="{{ path('Representant.informationsPerso') }}">Informations personnelles</a>
         </li>
     </ul>
 {% endblock %}

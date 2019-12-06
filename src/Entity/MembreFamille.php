@@ -242,4 +242,9 @@ class MembreFamille
 
         return $this;
     }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

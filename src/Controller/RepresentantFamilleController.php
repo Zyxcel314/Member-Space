@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\InformationsFamille;
+use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
 use App\Form\RepresentantFamilleType;
 use App\Repository\RepresentantFamilleRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +23,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Twig\Environment;
 
 /**
  * @Route("/representant")
@@ -39,10 +43,29 @@ class RepresentantFamilleController extends AbstractController
      * @Route("/informationsFamille", name="Representant.informationsFamille", methods={"GET"})
      * @IsGranted("ROLE_USER")
      */
-    public function informationsFamille(RepresentantFamilleRepository $representantFamilleRepository): Response
-    {
-        return $this->render('representant_famille/informationsFamille.html.twig');
+    public function informationsFamille(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {   $infoFamiliales = $doctrine->getRepository(InformationsFamille::class)->findBy([],['id'=>'ASC']);
+        return $this->render('representant_famille/informationsFamille.html.twig', ['infoFamille' => $infoFamiliales]);
     }
+
+    /**
+     * @Route("/informationsPerso", name="Representant.informationsPerso", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsPerso(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {   $rprstFamille = $doctrine->getRepository(RepresentantFamille::class)->findBy(['id'=>$this->getUser()]);
+        return $this->render('representant_famille/infoPerso.html.twig', ['representantFamille' => $rprstFamille]);
+    }
+
+    /**
+     * @Route("/informationsMembreFamille", name="Representant.informationsMembreFamille", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function membreFamille(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {   $membreFamille = $doctrine->getRepository(MembreFamille::class)->findBy([],['id'=>'ASC']);
+        return $this->render('representant_famille/membreFamille.html.twig', ['membreFamille' => $membreFamille]);
+    }
+
 
     /**
      * @Route("/inscription", name="Representant.ajouter", methods={"GET","POST"})

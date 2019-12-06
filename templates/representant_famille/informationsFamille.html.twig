@@ -1,6 +1,27 @@
 {% include 'base.html.twig' %}
  {% block nav %}
      {% include 'representant_famille/espace.html.twig' %}
- {% endblock %}
 
-<h2>Gestion des informations familliales</h2>
+     <div class="row">
+         <div class="col-7">
+             <table class="table table-bordered">
+                 <caption>Informations familiales</caption>
+                 <thead>
+                 <tr><th>date de modification</th><th>numéro allocataire</th><th>nom CAF</th><th>Nombre d'enfants</th><th>Régime de protection sociale</th><th>Représentant famille</th></tr>
+                 </thead>
+                 <tbody>
+                 {% for infos in infoFamille if infos is not empty %}
+                     <tr>
+                         <td>{{infos.dateModification | date('d-m-Y')}}</td>
+                         <td>{{ infos.noAllocataire }}</td>
+                         <td>{{ infos.nomCAF }}</td>
+                         <td>{{ infos.nbEnfants }}</td>
+                         <td>{{ infos.regimeProtectionSociale }}</td>
+                         <td>{{ infos.representant_famille.nom }}</td>
+                     </tr>
+                 {% endfor %}
+                 <tbody>
+             </table>
+         </div>
+     </div>
+ {% endblock %}
