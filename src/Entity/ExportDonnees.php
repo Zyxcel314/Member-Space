@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,9 +19,19 @@ class ExportDonnees
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateDernierExport;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MembreFamille", inversedBy="exportDonnees")
+     */
+    private $membres_familles;
+
+    public function __construct()
+    {
+        $this->membres_familles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -34,6 +46,32 @@ class ExportDonnees
     public function setDateDernierExport(\DateTimeInterface $dateDernierExport): self
     {
         $this->dateDernierExport = $dateDernierExport;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MembreFamille[]
+     */
+    public function getMembresFamilles(): Collection
+    {
+        return $this->membres_familles;
+    }
+
+    public function addMembresFamille(MembreFamille $membresFamille): self
+    {
+        if (!$this->membres_familles->contains($membresFamille)) {
+            $this->membres_familles[] = $membresFamille;
+        }
+
+        return $this;
+    }
+
+    public function removeMembresFamille(MembreFamille $membresFamille): self
+    {
+        if ($this->membres_familles->contains($membresFamille)) {
+            $this->membres_familles->removeElement($membresFamille);
+        }
 
         return $this;
     }
