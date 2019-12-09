@@ -114,6 +114,12 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "markbaker/complex": {
+        "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.0"
+    },
     "monolog/monolog": {
         "version": "1.25.1"
     },
@@ -138,6 +144,9 @@
     "phpmailer/phpmailer": {
         "version": "v6.1.1"
     },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.10.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -149,6 +158,9 @@
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
