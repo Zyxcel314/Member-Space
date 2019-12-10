@@ -73,21 +73,10 @@ class MembreFamille
      */
     private $informationMajeur;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $reglement_activite;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ExportDonnees", mappedBy="membres_familles")
-     */
-    private $exportDonnees;
-
     public function __construct()
     {
         $this->id_representantFamille = new ArrayCollection();
         $this->informationResponsableLegals = new ArrayCollection();
-        $this->exportDonnees = new ArrayCollection();
     }
 
 
@@ -258,45 +247,4 @@ class MembreFamille
     {
         return $this->id;
     }
-
-    public function getReglementActivite(): ?bool
-    {
-        return $this->reglement_activite;
-    }
-
-    public function setReglementActivite(bool $reglement_activite): self
-    {
-        $this->reglement_activite = $reglement_activite;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ExportDonnees[]
-     */
-    public function getExportDonnees(): Collection
-    {
-        return $this->exportDonnees;
-    }
-
-    public function addExportDonnee(ExportDonnees $exportDonnee): self
-    {
-        if (!$this->exportDonnees->contains($exportDonnee)) {
-            $this->exportDonnees[] = $exportDonnee;
-            $exportDonnee->addMembresFamille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExportDonnee(ExportDonnees $exportDonnee): self
-    {
-        if ($this->exportDonnees->contains($exportDonnee)) {
-            $this->exportDonnees->removeElement($exportDonnee);
-            $exportDonnee->removeMembresFamille($this);
-        }
-
-        return $this;
-    }
-
 }
