@@ -1,0 +1,134 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <form action="{{ path("Membre.addMembre") }}">
+                <br>
+                <button type="submit" class="btn btn-primary"> Ajouter un membre de votre famille </button>
+            </form>
+        </div>
+        <br>
+        <div>
+            <table class="table">
+                <caption> Récapitulatifs des membres de votre famille </caption>
+                <thead class="thead-dark">
+                <tr>
+                    <th> ID </th>
+                    <th> Numéro de client </th>
+                    <th> Nom </th>
+                    <th> Prénom </th>
+                    <th> Date de naissance </th>
+                    <th> État civil </th>
+                    <th> Nom et prénom du représentant de famille </th>
+                    <th> ID du responsable légal </th>
+                    <th> ID du mineur  </th>
+                    <th> ID du majeur </th>
+                    <th> État du règlement des activités </th>
+                    <th> Opérations </th>
+                    <th> Date de dernière mise à jour des informations </th>
+                    <th> État du traitement des données </th>
+                </tr>
+                </thead>
+                {% for membreFamille in membresFamille if membresFamille is not empty %}
+                <tbody>
+                <tr>
+                    <td> {{membreFamille.id}} </td>
+                    <td> {{membreFamille.noClient}} </td>
+                    <td> {{membreFamille.nom}} </td>
+                    <td> {{membreFamille.prenom}} </td>
+                    <td> {{membreFamille.dateNaissance() | date('d/m/Y')}} </td>
+                    <td> {{membreFamille.categorie}} </td>
+                    <td>
+                        {{membreFamille.getRepresentantFamille().getNom()}}
+                        {{membreFamille.getRepresentantFamille().getPrenom()}}
+                        <form action="{{ path("Representant.informationsPerso") }}">
+                            <button type="submit" class="btn btn-primary"> Consulter les informations de ce représentant </button>
+                        </form>
+                    </td>
+                    <td>
+                        {#// TODO: Changer les noms des routes vers les contrôleurs associés (fausses routes pour faire beau durant la présentation...).#}
+                        {% if membreFamille.getInformationResponsableLegals() is not empty %}
+                            {% for info_responsableLegal in membreFamille.getInformationResponsableLegals() if membreFamille.getInformationResponsableLegals() is not empty %}
+                                {{info_responsableLegal.getId()}}
+                                {#ResponsableLegal.informationsResponsable#}
+                                <form action="{{ path("Representant.informationsFamille") }}">
+                                    <button type="submit" class="btn btn-primary"> Consulter les informations de ce responsable </button>
+                                </form>
+                            {% endfor %}
+                        {% else %}
+                            {#ResponsableLegal.addResponsableLegal#}
+                            <form action="{{ path("Representant.informationsFamille") }}">
+                                <button type="submit" class="btn btn-primary"> Associer un responsable légal à ce membre </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {#Mineur.informationsMineur#}
+                        {% if membreFamille.getInformationsMineur() is not empty %}
+                            {{ membreFamille.getInformationsMineur().getId() }}
+                            <form action="{{ path("Representant.informationsFamille") }}">
+                                <button type="submit" class="btn btn-primary"> Consulter les informations de ce mineur </button>
+                            </form>
+                        {% else %}
+                            {#Mineur.addInformationsMineur#}
+                            <form action="{{ path("Representant.informationsFamille") }}">
+                                <button type="submit" class="btn btn-primary"> Ajouter les informations à propos de ce mineur </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if membreFamille.getInformationsMineur() is not empty %}
+                            {{ membreFamille.getInformationsMineur().getId() }}
+                            {#Majeur.informationsMajeur#}
+                            <form action="{{ path("Representant.informationsFamille") }}">
+                                <button type="submit" class="btn btn-primary"> Consulter les informations de ce majeur </button>
+                            </form>
+                        {% else %}
+                            {#Majeur.addInformationsMajeur#}
+                            <form action="{{ path("Representant.informationsFamille") }}">
+                                <button type="submit" class="btn btn-primary"> Ajouter les informations à propos de ce majeur </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {#ReglementActivite.reglerActivites#}
+                        {% if membreFamille.getReglementActivite() == false %}
+                        <form action="{{ path("Representant.informationsFamille") }}">
+                            <button type="submit" class="btn btn-primary"> Payer les activités auquelles ce membre a participé </button>
+                        </form>
+                        {% else %}
+                            <span> Les activitées auxquelles ce membre a participé ont été payées ! </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ path("Membre.editMembre") }}">
+                            <input type="hidden" name="membre_id" value="{{ membreFamille.id }}">
+                            <input type="hidden" name="_method" value="PUT">
+                            <button type="submit" class="btn btn-success"> Modifier </button>
+                        </form>
+                        <br>
+                        <form action="{{ path('Membre.deleteMembre') }}" method="POST">
+                            <input type="hidden" name="token" value="{{ csrf_token('membre_famille_delete') }}">
+                            <input type="hidden" name="membre_id" value="{{ membreFamille.id }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger"> Supprimer </button>
+                        </form>
+                    </td>
+                    <td> {{membreFamille.dateMAJ() | date('d/m/Y')}} </td>
+                    <td>
+                        {% if membreFamille.getTraitementDonnees() == false %}
+                            <span> Les données de ce membre n'ont pas été traitées </span>
+                        {% else %}
+                            <span> Les données de ce membre ont été traitées </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                    <p class="table-warning"> Aucun personne de votre famille n'est inscrite ! </p>
+                {% endfor %}
+                <tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

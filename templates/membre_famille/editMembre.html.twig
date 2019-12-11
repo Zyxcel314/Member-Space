@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="container">
+        <br>
+        <div class="row">
+            <form action="{{ path("Membre.showMembres") }}">
+                <button type="submit" class="btn btn-primary"> Revenir au tableau des membres </button>
+            </form>
+        </div>
+        <br>
+        <form method="POST" action="{{ path('Membre.validEditMembre') }}">
+            <legend> Modifier les informations concernant un membre de votre famille </legend>
+            <br>
+            {{ include('membre_famille/_formMembre.html.twig', {button: 'Modifier'}) }}
+        </form>
+    </div>
+{% endblock %}
