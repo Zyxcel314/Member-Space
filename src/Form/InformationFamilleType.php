@@ -18,7 +18,7 @@ class InformationFamilleType extends AbstractType
             ->add('nbEnfants')
             ->add('estMonoparentale')
             ->add('regimeProtectionSociale')
-            ->add('representant_famille', HiddenType::class, ['required'=>false])
+            //->add('representant_famille', HiddenType::class, ['required'=>false])
         ;
     }
 

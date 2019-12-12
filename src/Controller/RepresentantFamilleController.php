@@ -78,6 +78,36 @@ class RepresentantFamilleController extends AbstractController
         return $this->render('representant_famille/addInformationsFamille.html.twig', ['form' => $form->createView()]);
     }
 
+
+    /**
+     * @Route("/informationsFamille/modifier", name="Representant.informationsFamille.modifier", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsFamilleModifier(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {
+        $infoFamiliales = $doctrine->getRepository(InformationsFamille::class)->findBy(['representant_famille'=>$this->getUser()],['id'=>'ASC'])[0];
+        dump($infoFamiliales);
+        $form = $this->createForm(InformationFamilleType::class, $infoFamiliales);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $infoFamiliales = $form->getData();
+            $infoFamiliales->setRepresentantFamille($this->getUser());
+            $infoFamiliales->setDateModification(new \DateTime(date('Y-m-d')));
+            // ... perform some action, such as saving the task to the database
+            // for example, if Task is a Doctrine entity, save it!
+            // $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($infoFamiliales);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('Representant.informationsFamille');
+        }
+        return $this->render('representant_famille/addInformationsFamille.html.twig', ['form' => $form->createView()]);
+    }
+
+
     /**
      * @Route("/informationsPerso", name="Representant.informationsPerso", methods={"GET"})
      * @IsGranted("ROLE_USER")
