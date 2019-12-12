@@ -5,6 +5,7 @@ use App\Entity\InformationsFamille;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
 use App\Form\RepresentantFamilleType;
+use App\Form\InformationFamilleType;
 use App\Repository\RepresentantFamilleRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPMailer\PHPMailer\Exception;
@@ -23,6 +24,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Twig\Environment;
 
 /**
@@ -44,8 +46,36 @@ class RepresentantFamilleController extends AbstractController
      * @IsGranted("ROLE_USER")
      */
     public function informationsFamille(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
-    {   $infoFamiliales = $doctrine->getRepository(InformationsFamille::class)->findBy([],['id'=>'ASC']);
+    {
+        $infoFamiliales = $doctrine->getRepository(InformationsFamille::class)->findBy(['representant_famille'=>$this->getUser()],['id'=>'ASC']);
         return $this->render('representant_famille/informationsFamille.html.twig', ['infoFamille' => $infoFamiliales]);
+    }
+
+    /**
+     * @Route("/informationsFamille/ajouter", name="Representant.informationsFamille.ajouter", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsFamilleAjouter(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {
+        $infoFamiliales = new InformationsFamille();
+        $form = $this->createForm(InformationFamilleType::class, $infoFamiliales);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $infoFamiliales = $form->getData();
+            $infoFamiliales->setRepresentantFamille($this->getUser());
+            $infoFamiliales->setDateModification(new \DateTime(date('Y-m-d')));
+            // ... perform some action, such as saving the task to the database
+            // for example, if Task is a Doctrine entity, save it!
+            // $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($infoFamiliales);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('Representant.informationsFamille');
+        }
+        return $this->render('representant_famille/addInformationsFamille.html.twig', ['form' => $form->createView()]);
     }
 
     /**

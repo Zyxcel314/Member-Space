@@ -2,7 +2,6 @@
 
 {% block body %}
     {% include 'representant_famille/espace.html.twig' %}
-    <div class="container">
         <div class="row">
             <form action="{{ path("Membre.addMembre") }}">
                 <br>
@@ -10,7 +9,6 @@
             </form>
         </div>
         <br>
-        <div>
             <table class="table">
                 <caption> Récapitulatifs des membres de votre famille </caption>
                 <thead class="thead-dark">
@@ -21,14 +19,14 @@
                     <th> Prénom </th>
                     <th> Date de naissance </th>
                     <th> État civil </th>
-                    <th> Nom et prénom du représentant de famille </th>
+                    <th> Représentant </th>
                     <th> ID du responsable légal </th>
                     <th> ID du mineur  </th>
                     <th> ID du majeur </th>
-                    <th> État du règlement des activités </th>
+                    <th> Règlement </th>
                     <th> Opérations </th>
-                    <th> Date de dernière mise à jour des informations </th>
-                    <th> État du traitement des données </th>
+                    <th> Mise à jour</th>
+                    <th> État</th>
                 </tr>
                 </thead>
                 {% for membreFamille in membresFamille if membresFamille is not empty %}
@@ -44,7 +42,7 @@
                         {{membreFamille.getRepresentantFamille().getNom()}}
                         {{membreFamille.getRepresentantFamille().getPrenom()}}
                         <form action="{{ path("Representant.informationsPerso") }}">
-                            <button type="submit" class="btn btn-primary"> Consulter les informations de ce représentant </button>
+                            <button type="submit" class="btn btn-primary"> Informations </button>
                         </form>
                     </td>
                     <td>
@@ -54,7 +52,7 @@
                                 {{info_responsableLegal.getId()}}
                                 {#ResponsableLegal.informationsResponsable#}
                                 <form action="{{ path("Representant.informationsFamille") }}">
-                                    <button type="submit" class="btn btn-primary"> Consulter les informations de ce responsable </button>
+                                    <button type="submit" class="btn btn-primary"> Informations </button>
                                 </form>
                             {% endfor %}
                         {% else %}
@@ -130,6 +128,4 @@
                 {% endfor %}
                 <tbody>
             </table>
-        </div>
-    </div>
 {% endblock %}
