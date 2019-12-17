@@ -67,8 +67,7 @@ class superadminController extends AbstractController
     public function validAddOrdinateurs(Request $request, Environment $twig, RegistryInterface $doctrine,UserPasswordEncoderInterface $encoder)
     {
 
-
-        $donnees['idGestionnaire'] = htmlspecialchars($_POST['idGestionnaire']);
+        
         $donnees['nomGestionnaire'] = htmlspecialchars($_POST['nomGestionnaire']);
 
         $donnees['prenomGestionnaire'] = htmlspecialchars($_POST['prenomGestionnaire']);
