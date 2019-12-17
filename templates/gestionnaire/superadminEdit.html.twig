@@ -1,0 +1,35 @@
+
+{% block body %}
+    {% include 'gestionnaire/espace.html.twig' %}
+    <div class="container">
+        <form method="post" action="{#{ path('superadmin.validEdit') }#}">
+            <legend>Modifier un role</legend>
+
+
+
+            <div class="form-group">
+                <label>salle :</label>
+                <select name="role" class="form-control ">
+
+                    <option value="user">Veuillez sélectionner un role</option>
+                        <option value="Gestionnaire">
+                            Gestionnaire
+                        </option>
+                    <option value="User">
+                        User
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <input type="hidden" name="id" value="{{ donnees.id | default('')}}">
+
+
+
+            <button type="submit" class="btn btn-primary">{{ button|default('Valider') }}</button>
+
+        </form>
+    </div>
+{% endblock %}

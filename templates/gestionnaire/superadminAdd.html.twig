@@ -1,0 +1,41 @@
+{%  block body %}
+{% include 'gestionnaire/espace.html.twig' %}
+
+<div class="container">
+    <form method="post" action="{{ path('superadmin.validAddGestionnaire') }}">
+
+
+        <legend>Créer un Gestionnaire</legend>
+
+
+        <div class="form-group">
+            <label>ID du gestionnaire :</label>
+            <input name="idGestionnaire"  type="text"  size="18"  >
+
+        </div>
+
+        <div class="form-group">
+            <label>Nom :</label>
+            <input name="nomGestionnaire"  type="text"  size="18" >
+
+        </div>
+        <div class="form-group">
+            <label>prenom :</label>
+            <input name="prenomGestionnaire"  type="text"  size="18" >
+
+
+        </div>
+
+        <div class="form-group">
+            <label>mot de passe :</label>
+            <input name="mdpGestionnaire"  type="text"  size="18" >
+        </div>
+
+
+
+
+
+        <button name= "Ajouter" type="submit" class="btn btn-primary">{{ button|default('Valider') }}</button>
+    </form>
+</div>
+{% endblock %}
