@@ -28,9 +28,6 @@ class MembreFamilleController extends AbstractController
     private function validerDonnees($donnees)
     {
         $erreurs = array();
-        if ( !is_numeric($donnees['noClient']) ) {
-            $erreurs['noClient'] = 'Veuillez saisir une valeur numérique.';
-        }
         if ( is_null($donnees['categorie']) ) {
             $erreurs['categorie'] = 'Veuillez indiquer si le nouveau membre est mineur ou majeur.';
         }
@@ -61,9 +58,18 @@ class MembreFamilleController extends AbstractController
      */
     public function showMembresFamille(Environment $twig, RegistryInterface $doctrine)
     {
-        $idUser = $this->getUser()->getId();
-        $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
-        return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
+        if ( $this->isGranted('ROLE_ADMIN') )
+        {
+            $membres = $doctrine->getRepository(MembreFamille::class)->findBy([], ['id' => 'ASC']);
+            return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
+        }
+        else if ( $this->isGranted('ROLE_USER') )
+        {
+            $idUser = $this->getUser()->getId();
+            $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
+            return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
+        }
+        return $this->redirectToRoute('Membre.accueil');
     }
 
     /**
@@ -83,7 +89,6 @@ class MembreFamilleController extends AbstractController
         if (!$this->isCsrfTokenValid('form_membre_famille', $request->get('token'))) {
             throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
         }
-        $donnees['noClient'] = htmlspecialchars($_POST['noClient']);
         $donnees['categorie'] = $request->get('categorie',0)[0];
         $donnees['nom'] = htmlspecialchars($_POST['nom']);
         $donnees['prenom'] = htmlspecialchars($_POST['prenom']);
@@ -101,7 +106,7 @@ class MembreFamilleController extends AbstractController
             $dateMAJ = new \DateTime();
             $membreFamille = new MembreFamille();
             $membreFamille
-                ->setNoClient($donnees['noClient'])
+                ->setNoClient(0)
                 ->setCategorie($donnees['categorie'])
                 ->setNom($donnees['nom'])
                 ->setPrenom($donnees['prenom'])
@@ -150,7 +155,6 @@ class MembreFamilleController extends AbstractController
         if (!$this->isCsrfTokenValid('form_membre_famille', $request->get('token'))) {
             throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
         }
-        $donnees['noClient'] = htmlspecialchars($_POST['noClient']);
         $donnees['categorie'] = $request->get('categorie',0)[0];
         $donnees['nom'] = htmlspecialchars($_POST['nom']);
         $donnees['prenom'] = htmlspecialchars($_POST['prenom']);
@@ -168,8 +172,9 @@ class MembreFamilleController extends AbstractController
             $dateMAJ = new \DateTime();
             $id = $request->get('membre_id');
             $membreFamille = $doctrine->getRepository(MembreFamille::class)->find($id);
+            var_dump($id);
+
             $membreFamille
-                ->setNoClient($donnees['noClient'])
                 ->setCategorie($donnees['categorie'])
                 ->setNom($donnees['nom'])
                 ->setPrenom($donnees['prenom'])

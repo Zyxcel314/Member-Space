@@ -230,15 +230,24 @@ class RepresentantFamilleController extends AbstractController
     /**
      * @Route("/{id}", name="Representant.supprimer", methods={"DELETE"})
      */
-    public function delete(Request $request, RepresentantFamille $representantFamille): Response
+    public function delete(RegistryInterface $doctrine, Request $request, RepresentantFamille $representantFamille): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$representantFamille->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($representantFamille);
-            $entityManager->flush();
+        $membreFamille = $doctrine->getRepository(MembreFamille::class)->findBy(array('representant_famille' => $representantFamille));
+        if ( $membreFamille != null )
+        {
+            foreach ($membreFamille as $i)
+            {
+                $doctrine->getRepository(MembreFamille::class)->findOneBy(array('representant_famille' => $representantFamille))->setRepresentantFamille(null);
+            }
         }
+        if ($this->isCsrfTokenValid('delete'.$representantFamille->getId(), $request->request->get('_token'))) {
 
-        return $this->redirectToRoute('representant_famille_index');
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($representantFamille);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('Representant.accueil');
     }
 
     /**

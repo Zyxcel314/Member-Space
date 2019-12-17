@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Entity\RepresentantFamille;
+use App\Entity\Gestionnaires;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
-class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator
+class GestionnaireAuthentificator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
@@ -39,20 +39,20 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        return 'app_gestionnaire_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'login' => $request->request->get('login'),
-            'password' => $request->request->get('password'),
+            'nom' => $request->request->get('nom'),
+            'motDePasse' => $request->request->get('motDePasse'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['login']
+            $credentials['nom']
         );
 
         return $credentials;
@@ -65,44 +65,34 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(RepresentantFamille::class)->findOneBy(['login' => $credentials['login']]);
+        $gestionnaire = $this->entityManager->getRepository(Gestionnaires::class)->findOneBy(['nom' => $credentials['nom']]);
 
-        if (!$user) {
+        if ( !$gestionnaire ) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Le nom d\'utilisateur est introuvable');
+            throw new CustomUserMessageAuthenticationException('Le nom de gestionnaire est introuvable');
         }
 
-        return $user;
+        return $gestionnaire;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['motDePasse']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $user =  $user = $token->getUser();
-        dump($user->getEstActive());
-        if(!$user->getEstActive()){
-            $session = $request->getSession();
-            $session->invalidate();
-            $session->clear();
-            $token->setAuthenticated(false);
-            $session->getFlashBag()->add('warning', 'Impossible de se connecter tant que votre compte n\'est pas vérifié');
-
-            return new RedirectResponse($this->urlGenerator->generate(''));
-        }
+        $gestionnaire =  $gestionnaire = $token->getUser();
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('Representant.informationsFamille'));
+        return new RedirectResponse($this->urlGenerator->generate('Gestionnaire.accueil'));
     }
 
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('app_gestionnaire_login');
     }
 }

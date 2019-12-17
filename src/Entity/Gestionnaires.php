@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GestionnairesRepository")
  */
-class Gestionnaires
+class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -128,5 +130,90 @@ class Gestionnaires
         }
 
         return $this;
+    }
+
+    /**
+     * @return array (Role|string)[]
+     */
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+        return ['ROLE_ADMIN'];
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string|null The encoded password if any
+     */
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+        return $this->getMotdepasse();
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     */
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+        return $this->getNom();
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+        $this->setMotdepasse('');
+    }
+
+
+    public function isEqualTo(UserInterface $user)
+    {
+        //if ($this->password !== $user->getPassword()) {
+        //    return false;
+        //}
+
+        //if ($this->salt !== $user->getSalt()) {
+        //    return false;
+        //}
+
+        if ($this->nom !== $user->getNom()) {
+            return false;
+        }
+        return true;
+    }
+
+    public function serialize()
+    {
+        //die('serialize');
+        return serialize(array(
+            $this->id,
+            $this->nom,
+            $this->motdepasse
+        ));
+    }
+
+    public function unserialize( $serialized )
+    {
+        list (
+            $this->id,
+            $this->nom,
+            $this->motdepasse
+            ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

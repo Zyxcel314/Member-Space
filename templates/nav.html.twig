@@ -17,7 +17,11 @@
                     <a class="dropdown-item {% if app.user %}disabled{% endif %}" href="{{ path('app_login') }}">Se connecter</a>
                     <a class="dropdown-item {% if app.user %}disabled{% endif %}" href="{{ path('Representant.ajouter') }}">Inscription</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('Representant.informationsFamille') }}">Accèder à mon espace</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="dropdown-item" href="{{ path('Gestionnaire.accueil') }}"> Accéder à mon espace </a>
+                    {% elseif is_granted('ROLE_USER') %}
+                        <a class="dropdown-item" href="{{ path('Representant.informationsFamille') }}"> Accéder à mon espace </a>
+                    {% endif %}
                     <div class="dropdown-divider"></div>
                 </div>
             </li>
