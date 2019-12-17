@@ -246,9 +246,6 @@ class RepresentantFamilleController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$representantFamille->getId(), $request->request->get('_token'))) {
 
         }
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($representantFamille);
-        $entityManager->flush();
 
         return $this->redirectToRoute('Representant.accueil');
     }

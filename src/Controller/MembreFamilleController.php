@@ -58,18 +58,9 @@ class MembreFamilleController extends AbstractController
      */
     public function showMembresFamille(Environment $twig, RegistryInterface $doctrine)
     {
-        if ( $this->isGranted('ROLE_ADMIN') )
-        {
-            $membres = $doctrine->getRepository(MembreFamille::class)->findBy([], ['id' => 'ASC']);
-            return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
-        }
-        else if ( $this->isGranted('ROLE_USER') )
-        {
-            $idUser = $this->getUser()->getId();
-            $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
-            return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
-        }
-        return $this->redirectToRoute('Membre.accueil');
+        $idUser = $this->getUser()->getId();
+        $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
+        return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
     }
 
     /**
@@ -155,6 +146,7 @@ class MembreFamilleController extends AbstractController
         if (!$this->isCsrfTokenValid('form_membre_famille', $request->get('token'))) {
             throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
         }
+        $donnees['id'] = $request->get('membre_id');
         $donnees['categorie'] = $request->get('categorie',0)[0];
         $donnees['nom'] = htmlspecialchars($_POST['nom']);
         $donnees['prenom'] = htmlspecialchars($_POST['prenom']);
@@ -170,9 +162,7 @@ class MembreFamilleController extends AbstractController
             }
             $dateNaissance = \DateTime::createFromFormat('Y-m-d', $donnees['dateNaissance']);
             $dateMAJ = new \DateTime();
-            $id = $request->get('membre_id');
-            $membreFamille = $doctrine->getRepository(MembreFamille::class)->find($id);
-            var_dump($id);
+            $membreFamille = $doctrine->getRepository(MembreFamille::class)->find($donnees['id']);
 
             $membreFamille
                 ->setCategorie($donnees['categorie'])
