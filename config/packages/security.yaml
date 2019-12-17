@@ -28,18 +28,37 @@ security:
 
 
         gestionnaire:
+            pattern : ^/gestionnaire
             anonymous: true
             provider: gestionnaires
             form_login:
                 login_path: app_gestionnaire_login
                 check_path: app_gestionnaire_login
-                default_target_path: home
+                default_target_path: /gestionnaire/login
+                always_use_default_target_path: true
             logout:
                 path: deconnexion
                 target: /
             guard:
                 authenticators:
                     - App\Security\GestionnaireAuthentificator
+
+
+
+
+        main:
+            anonymous: true
+            provider: users
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: vfdgdgfgfsgfsfsgs
+            logout:
+                path: deconnexion
+                target: /
+            guard:
+                authenticators:
+                    - App\Security\RepresentantAuthentificatorAuthenticator
 
     role_hierarchy:
       ROLE_ADMIN:       ROLE_USER

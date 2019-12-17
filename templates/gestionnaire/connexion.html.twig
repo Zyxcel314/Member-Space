@@ -3,7 +3,7 @@
 {% block title %}Identification{% endblock %}
 
 {% block body %}
-<form method="post" class="w-50 p-3 shadow p-3 mb-5 bg-white" >
+<form   method="post" class="w-50 p-3 shadow p-3 mb-5 bg-white" >
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
