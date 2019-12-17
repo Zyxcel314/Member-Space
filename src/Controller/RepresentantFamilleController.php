@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\InformationsFamille;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
+use App\Form\RepresentantFamilleEditType;
 use App\Form\RepresentantFamilleType;
 use App\Form\InformationFamilleType;
 use App\Repository\RepresentantFamilleRepository;
@@ -62,6 +63,7 @@ class RepresentantFamilleController extends AbstractController
         $form = $this->createForm(InformationFamilleType::class, $infoFamiliales);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('primary','Vos informations ont été ajoutées');
             $entityManager = $this->getDoctrine()->getManager();
 
             $infoFamiliales = $form->getData();
@@ -96,6 +98,7 @@ class RepresentantFamilleController extends AbstractController
 
             $entityManager->persist($infoFamiliales);
             $entityManager->flush();
+            $this->addFlash('primary','Les informations concernant votre famille ont été ajoutées');
 
             return $this->redirectToRoute('Representant.informationsFamille');
         }
@@ -110,6 +113,25 @@ class RepresentantFamilleController extends AbstractController
     public function informationsPerso(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
     {   $rprstFamille = $doctrine->getRepository(RepresentantFamille::class)->findBy(['id'=>$this->getUser()]);
         return $this->render('representant_famille/infoPerso.html.twig', ['representantFamille' => $rprstFamille]);
+    }
+
+    /**
+     * @Route("/informationsPerso/edit", name="Representant.informationsPerso.edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsPersoEdit(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {
+        $rprstFamille = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser());
+        $form = $this->createForm(RepresentantFamilleEditType::class, $rprstFamille);
+        $entityManager = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success','Vos informations personnelles ont été modifiées');
+            $entityManager->persist($rprstFamille);
+            $entityManager->flush();
+            return $this->redirectToRoute('Representant.informationsPerso');
+        }
+        return $this->render('representant_famille/infoPersoEdit.html.twig', ['form'=>$form->createView()]);
     }
 
     /**
