@@ -1,0 +1,39 @@
+{#{% extends "base.html.twig" %}#}
+
+{% block body %}
+    {% include 'gestionnaire/espace.html.twig' %}
+    <table class="table">
+        <caption> Liste des gestionnaires </caption>
+        <thead class="thead-dark">
+        <tr>
+            <th> ID </th>
+            <th> Nom </th>
+            <th> Prénom </th>
+            <th> ID de l'authentification Google </th>
+            <th> Droits </th>
+        </tr>
+        </thead>
+        {% for gestionnaire in gestionnaires if gestionnaires is not empty %}
+        <tbody>
+        <tr>
+            <td> {{ gestionnaire.id }} </td>
+            <td> {{ gestionnaire.nom }} </td>
+            <td> {{ gestionnaire.prenom }} </td>
+            <td> {{ gestionnaire.getIdGoogleAuth() }} </td>
+            <td>
+                {% if gestionnaire.getDroits() is not empty %}
+                    {% for droit in gestionnaire.getDroits() %}
+                        {{ droit.getId() }}
+                    {% endfor %}
+                    <form action="{{ path("Droit.showDroits") }}">
+                        <button type="submit" class="btn btn-primary"> Consulter les droits de ce gestionnaire </button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+            <p class="table-warning"> Aucun gestionnaire n'est inscrit ! </p>
+        {% endfor %}
+        <tbody>
+    </table>
+{% endblock %}

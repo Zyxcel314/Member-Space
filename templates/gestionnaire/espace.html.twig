@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2> Mon espace </h2>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.showListeGestionnaires') }}"> Liste des gestionnaires </a>
+            <br><br>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.showListeFamilles') }}"> Liste des représentants de famille </a>
+            <br><br>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('ExportDonnees.exportUpdates') }}"> Récupérer les informations des membres </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.showDroits') }}"> Consulter mes droits </a>
+        </li>
+    </ul>
+{% endblock %}

@@ -2,6 +2,8 @@ security:
     encoders:
         App\Entity\RepresentantFamille:
             algorithm: bcrypt
+        App\Entity\Gestionnaires:
+            algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }
@@ -9,26 +11,43 @@ security:
             entity:
                 class: App\Entity\RepresentantFamille
                 property: login
+        gestionnaires:
+            entity:
+                class: App\Entity\Gestionnaires
+                property: login
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
 
-            provider: users
+        #Pour se connecter en tant que gestionnaire : retirer le firewall main
+        #Pour se connecter en tant que user : retirer le firewall gestionnaire
+        #J'ai pas su gérer le multiple firewalls selon le login
+
+
+
+        gestionnaire:
+            anonymous: true
+            provider: gestionnaires
             form_login:
-                login_path: app_login
-                check_path: app_login
+                login_path: app_gestionnaire_login
+                check_path: app_gestionnaire_login
                 default_target_path: home
             logout:
                 path: deconnexion
                 target: /
             guard:
                 authenticators:
-                    - App\Security\RepresentantAuthentificatorAuthenticator
+                    - App\Security\GestionnaireAuthentificator
 
-            # activate different ways to authenticate
+    role_hierarchy:
+      ROLE_ADMIN:       ROLE_USER
+      ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+
+
+        # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html
@@ -37,5 +56,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/gestionnaire, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

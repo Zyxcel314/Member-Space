@@ -1,12 +1,4 @@
 <div class="form-group">
-    <label> Numéro de client : </label>
-    <input name="noClient"  type="text"  size="18" value="{{donnees.noClient | default('')}}" class="form-control {% if erreurs.noClient is defined %} is-invalid {% endif %}" >
-    {% if erreurs.noClient is defined %}
-        <div class="bg-danger"> {{ erreurs.noClient }} </div>
-    {% endif %}
-</div>
-<br>
-<div class="form-group">
     <label> Catégorie : </label>
     <div>
         <input type="radio" id="categorie_1" name="categorie[]" value="Mineur" onclick="changeGender(this.id);" class="form-control">

@@ -9,20 +9,20 @@
     {% endif %}
 
     {% if app.user %}
-        <div class="mb-3">
-            Vous êtes déja connecté en tant que {{ app.user.username }}, <a href="{{ path('deconnexion') }}">Déconnexion</a>
-        </div>
+    <div class="mb-3">
+        Vous êtes déja connecté en tant que {{ app.user.username }}, <a href="{{ path('deconnexion') }}">Déconnexion</a>
+    </div>
     {% else %}
 
     <h1 class="h3 mb-3 font-weight-normal">Identification</h1>
-        <div class="form-group">
-            <label for="inputLogin" >Login</label>
-            <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" placeholder="Entrez votre login" required autofocus>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Mot de passe</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Entrez votre mot de passe" required>
-        </div>
+    <div class="form-group">
+        <label for="inputLogin" >Login</label>
+        <input type="text" value="{{ last_username }}" name="nom" id="inputNom" class="form-control" placeholder="Entrez votre nom" required autofocus>
+    </div>
+    <div class="form-group">
+        <label for="inputMotDePasse">Mot de passe</label>
+        <input type="password" name="motDePasse" id="inputMotDePasse" class="form-control" placeholder="Entrez votre mot de passe" required>
+    </div>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
@@ -42,10 +42,5 @@
         S'identifier
     </button>
 </form>
-
-<form action="{{ path('app_gestionnaire_login') }}" method="post">
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary"> Se connecter en tant que gestionnaire </button>
-    </div>
-{% endif %}
-{% endblock %}
+    {% endif %}
+    {% endblock %}

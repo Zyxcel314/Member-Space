@@ -1,0 +1,26 @@
+{#{% extends "base.html.twig" %}#}
+
+{% block body %}
+    {% include 'gestionnaire/espace.html.twig' %}
+        <table class="table">
+            <caption> Liste de vos droits </caption>
+            <thead class="thead-dark">
+            <tr>
+                <th> ID </th>
+                <th> Code </th>
+                <th> Libéllé </th>
+            </tr>
+            </thead>
+            {% for droit in droits if droits is not empty %}
+            <tbody>
+            <tr>
+                <td> {{ droit.id }} </td>
+                <td> {{ droit.code }} </td>
+                <td> {{ droit.libelle }} </td>
+            </tr>
+            {% else %}
+                <p class="table-warning"> Aucun gestionnaire n'est inscrit ! </p>
+            {% endfor %}
+            <tbody>
+        </table>
+{% endblock %}
