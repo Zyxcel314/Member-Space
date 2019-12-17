@@ -21,21 +21,14 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        #Pour se connecter en tant que gestionnaire : retirer le firewall main
-        #Pour se connecter en tant que user : retirer le firewall gestionnaire
-        #J'ai pas su gérer le multiple firewalls selon le login
-
-
-
         gestionnaire:
-            pattern : ^/gestionnaire
+            pattern: ^/gestionnaire
             anonymous: true
             provider: gestionnaires
             form_login:
                 login_path: app_gestionnaire_login
                 check_path: app_gestionnaire_login
-                default_target_path: /gestionnaire/login
-                always_use_default_target_path: true
+                default_target_path: Gestionnaire.accueil
             logout:
                 path: deconnexion
                 target: /
@@ -43,16 +36,13 @@ security:
                 authenticators:
                     - App\Security\GestionnaireAuthentificator
 
-
-
-
         main:
             anonymous: true
             provider: users
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: vfdgdgfgfsgfsfsgs
+                default_target_path: home
             logout:
                 path: deconnexion
                 target: /
@@ -63,8 +53,6 @@ security:
     role_hierarchy:
       ROLE_ADMIN:       ROLE_USER
       ROLE_SUPER_ADMIN: ROLE_ADMIN
-
-
 
         # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

@@ -1,11 +1,31 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <br>
+    <label> Représentant : </label>
+    <select name="representant_id" class="form-control {% if erreurs.representant_id is defined %} is-invalid {% endif %}">
+        {% if donnees.representant_id.id is not defined or donnees.representant_id.id is empty %}
+            <option value=""> Veuillez choisir un représentant </option>
+        {% endif %}
+        {% for representant in representants %}
+            <option value="{{ representant.id }}"
+                    {% if donnees.representant_id is defined and representant_id == donnees.representant %} selected {% endif %}>
+                {{ representant.nom }}
+            </option>
+        {% endfor %}
+    </select>
+    {% if erreurs.representant_id is defined %}
+        <div class="bg-danger">
+            {{ erreurs.representant_id }}
+        </div>
+    {% endif %}
+{% endif %}
 <div class="form-group">
     <label> Catégorie : </label>
     <div>
-        <input type="radio" id="categorie_1" name="categorie[]" value="Mineur" onclick="changeGender(this.id);" class="form-control">
+        <input type="radio" id="categorie_1" name="categorie[]" value="Mineur" class="form-control">
         <label for="categorie_1"> Mineur </label>
     </div>
     <div>
-        <input type="radio" id="categorie_2" name="categorie[]" value="Majeur" onclick="changeGender(this.id);" class="form-control">
+        <input type="radio" id="categorie_2" name="categorie[]" value="Majeur" class="form-control">
         <label for="categorie_2"> Majeur </label>
     </div>
     {% if erreurs.categorie is defined %}

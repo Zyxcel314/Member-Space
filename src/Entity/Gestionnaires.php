@@ -55,6 +55,11 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
     {
         return $this->id;
     }
+    public function setId(int $id): ?int
+    {
+        $this->id = $id;
+        return null;
+    }
 
     public function getNom(): ?string
     {
@@ -137,9 +142,13 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
-        return ['ROLE_ADMIN'];
+        if ($this->getNom() == 'superadmin'){
+            return ['ROLE_SUPER_ADMIN'];
+    }else{
+            return ['ROLE_ADMIN'];
+        }
     }
+
 
     /**
      * Returns the password used to authenticate the user.

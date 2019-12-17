@@ -15,7 +15,6 @@
         <tr>
             <th> ID </th>
             <th> Pseudonyme </th>
-            <th> Mot de passe crypté </th>
             <th> Adresse mail  </th>
             <th> Nom </th>
             <th> Prénom </th>
@@ -35,12 +34,11 @@
         <tr>
             <td> {{ representant.id }} </td>
             <td> {{ representant.login }} </td>
-            <td> {{ representant.motdepasse }} </td>
             <td> {{ representant.mail }}</td>
             <td> {{ representant.nom }} </td>
             <td> {{ representant.prenom }} </td>
             <td> {{ representant.adresse }} </td>
-            <td> {{ representant.noMobile }}</td>
+            <td> {{ representant.noMobile }} </td>
             <td> {{ representant.noFixe }} </td>
             <td> {{ representant.dateNaissance | date('d/m/Y') }} </td>
             <td> {{ representant.dateFinAdhesion | date('d/m/Y') }} </td>
@@ -62,9 +60,10 @@
             <td>
                 {% if representant.getMembreFamilles() is not empty %}
                     {% for infos_representant in representant.getMembreFamilles() %}
-                        {{ infos_representant.getId() }}
+                        {{ infos_representant.getNom() }}
+                        {{ infos_representant.getPrenom() }}
                     {% endfor %}
-                    <form action="{{ path("Membre.showMembres") }}">
+                    <form action="{{ path("Gestionnaire.showMembres") }}">
                         <button type="submit" class="btn btn-primary"> Informations des membres </button>
                     </form>
                 {% else %}
@@ -72,14 +71,14 @@
                 {% endif %}
             </td>
             <td>
-                <form action="{{ path("representant_famille_edit", {id: representant.id} ) }}">
+                <form action="{{ path("Gestionnaire.editRepresentant", {id: representant.id} ) }}">
                     <input type="hidden" name="representant_id" value="{{ representant.id }}">
                     <input type="hidden" name="_method" value="POST">
                     <button type="submit" class="btn btn-success"> Modifier </button>
                 </form>
                 <br>
-                <form action="{{ path('Representant.supprimer', {id: representant.id} ) }}" method="POST">
-                    <input type="hidden" name="token" value="{{ csrf_token('delete' ~ representant.id) }}">
+                <form action="{{ path('Gestionnaire.deleteRepresentant', {id: representant.id} ) }}" method="POST">
+                    <input type="hidden" name="token" value="{{ csrf_token('representant_delete') }}">
                     <input type="hidden" name="representant_id" value="{{ representant.id }}">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn btn-danger"> Supprimer </button>

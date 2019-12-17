@@ -1,0 +1,95 @@
+<div class="form-group">
+    <label> Login : </label>
+    <input name="login"  type="text"  size="18" value="{{donnees.login | default('')}}" class="form-control {% if erreurs.login is defined %} is-invalid {% endif %}" >
+    {% if erreurs.login is defined %}
+        <div class="bg-danger"> {{ erreurs.login }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Nom : </label>
+    <input name="nom"  type="text"  size="18" value="{{donnees.nom | default('')}}" class="form-control {% if erreurs.nom is defined %} is-invalid {% endif %}" >
+    {% if erreurs.nom is defined %}
+        <div class="bg-danger"> {{ erreurs.nom }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Prénom : </label>
+    <input name="prenom"  type="text"  size="18" value="{{donnees.prenom | default('')}}" class="form-control {% if erreurs.prenom is defined %} is-invalid {% endif %}" >
+    {% if erreurs.prenom is defined %}
+        <div class="bg-danger"> {{ erreurs.prenom }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Adresse : </label>
+    <input name="adresse"  type="text"  size="18" value="{{donnees.adresse | default('')}}" class="form-control {% if erreurs.adresse is defined %} is-invalid {% endif %}" >
+    {% if erreurs.adresse is defined %}
+        <div class="bg-danger"> {{ erreurs.adresse }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Numéro de mobile : </label>
+    <input name="noMobile"  type="text"  size="18"  value="{{donnees.noMobile | default('') }}" class="form-control {% if erreurs.noMobile is defined %} is-invalid {% endif %}">
+    {% if erreurs.noMobile is defined %}
+        <div class="bg-danger"> {{ erreurs.noMobile }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Numéro de fixe : </label>
+    <input name="noFixe"  type="text"  size="18"  value="{{donnees.noFixe | default('') }}" class="form-control {% if erreurs.noFixe is defined %} is-invalid {% endif %}">
+    {% if erreurs.noFixe is defined %}
+        <div class="bg-danger"> {{ erreurs.noFixe }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Adresse mail : </label>
+    <input name="mail"  type="text"  size="18"  value="{{donnees.mail | default('') }}" class="form-control {% if erreurs.mail is defined %} is-invalid {% endif %}">
+    {% if erreurs.mail is defined %}
+        <div class="bg-danger"> {{ erreurs.mail }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Date de naissance : </label>
+    <input name="dateNaissance"  type="date"  size="18"  value="{{donnees.dateNaissance | default('') | date('d-m-Y') }}" class="form-control {% if erreurs.dateNaissance is defined %} is-invalid {% endif %}">
+    {% if erreurs.dateNaissance is defined %}
+        <div class="bg-danger"> {{ erreurs.dateNaissance }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Date de fin d'adhésion : </label>
+    <input name="dateFinAdhesion"  type="date"  size="18"  value="{{donnees.dateFinAdhesion | default('') | date('d-m-Y') }}" class="form-control {% if erreurs.dateFinAdhesion is defined %} is-invalid {% endif %}">
+    {% if erreurs.dateFinAdhesion is defined %}
+        <div class="bg-danger"> {{ erreurs.dateFinAdhesion }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Le compte a-t-il été activé ? </label>
+    <div>
+        <input type="radio" id="estActive_1" name="estActive[]" value="Oui" class="form-control">
+        <label for="estActive_1"> Oui </label>
+    </div>
+    <div>
+        <input type="radio" id="estActive_2" name="estActive[]" value="Non" class="form-control">
+        <label for="estActive_2"> Non </label>
+    </div>
+    {% if erreurs.estActive is defined %}
+        <div class="bg-danger"> {{ erreurs.estActive }} </div>
+    {% endif %}
+</div>
+
+{% if button is defined and button == 'Modifier' %}
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="representant_id" value="{{ donnees.id | default('') }}">
+{%  endif %}
+
+<input type="hidden" name="token" value="{{ csrf_token('form_representant') }}">
+
+<button type="submit" class="btn btn-primary">{{ button|default('Valider') }}</button>
