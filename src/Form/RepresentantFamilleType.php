@@ -27,10 +27,13 @@ class RepresentantFamilleType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true
             ])
+            /*
             ->add('dateFinAdhesion',DateType::class, [
                 'widget' => 'single_text',
-                'html5' => true
+                'html5' => true,
+                'required' => false
             ])
+            */
         ;
     }
 

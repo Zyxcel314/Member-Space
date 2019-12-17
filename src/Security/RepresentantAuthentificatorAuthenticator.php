@@ -86,8 +86,12 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
         dump($user->getEstActive());
         if(!$user->getEstActive()){
             $session = $request->getSession();
-            $session->getFlashBag()->add('echecs', 'Impossible de se connecter tant que votre compte n\'est pas vérifié');
-            return new RedirectResponse($this->urlGenerator->generate('deconnexion'));
+            $session->invalidate();
+            $session->clear();
+            $token->setAuthenticated(false);
+            $session->getFlashBag()->add('warning', 'Impossible de se connecter tant que votre compte n\'est pas vérifié');
+
+            return new RedirectResponse($this->urlGenerator->generate(''));
         }
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);

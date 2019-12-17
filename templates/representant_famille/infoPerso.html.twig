@@ -19,7 +19,7 @@
                     <td>{{ info.noFixe }}</td>
                     <td>{{ info.mail }}</td>
                     <td>{{ info.dateNaissance | date('d-m-Y') }}</td>
-                    <td>{{ info.dateFinAdhesion | date('d-m-Y') }}</td>
+                    <td>{{ info.dateFinAdhesion | default("Indéfinie") }}</td>
 
                 </tr>
             {% endfor %}

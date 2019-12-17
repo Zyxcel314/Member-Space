@@ -66,7 +66,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     private $dateNaissance;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $dateFinAdhesion;
 
@@ -84,6 +84,11 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
      * @ORM\OneToMany(targetEntity="App\Entity\MembreFamille", mappedBy="representant_famille")
      */
     private $membreFamilles;
+
+    /**
+     * @ORM\Column(type="string", length=16)
+     */
+    private $mailTokenVerification;
 
     public function __construct()
     {
@@ -398,5 +403,17 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     public function __toString()
     {
         return (string) $this->login;
+    }
+
+    public function getMailTokenVerification(): ?string
+    {
+        return $this->mailTokenVerification;
+    }
+
+    public function setMailTokenVerification(string $mailTokenVerification): self
+    {
+        $this->mailTokenVerification = $mailTokenVerification;
+
+        return $this;
     }
 }
