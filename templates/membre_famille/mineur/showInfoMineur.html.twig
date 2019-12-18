@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RepresentantFamille{% endblock %}
+
+{% block body %}
+    <br><br><br>
+<table class="table">
+    <caption> Récapitulatifs des mineurs de la famille </caption>
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Autorisation de transport </th>
+        <th> Droit à l'image </th>
+        <th> Autorisation de transport médical </th>
+        <th> Autorisation de sortie seul </th>
+        <th> Membre de famille </th>
+        <th> Autorisation de sorties </th>
+        <th> Fiche sanitaire </th>
+    </tr>
+    </thead>
+
+    {% for min in mineur if min is not empty %}
+    <tbody>
+    <tr>
+        <td> {{ min.id }} </td>
+        <td> {{min.autorisationTransport}} </td>
+        <td> {{min.droitImage}} </td>
+        <td> {{min.autorisationTransportMedical}} </td>
+        <td> {{min.autorisationSortieSeul}} </td>
+        <td> {#{min.membre_famille}#} </td>
+        <td>{#{ min.autorisationSorties }#}</td>
+        <td>
+            <form action="{#{ path("Membre.editMineur") }#}">
+                <button type="submit" class="btn btn-primary"> Modifier les informations de ce mineur </button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    <a href="{{ path('Membre.showMembres') }}">Retour</a>
+
+{% endblock %}
