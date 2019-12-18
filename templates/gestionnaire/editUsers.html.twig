@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="container">
+        <form method="post" action="{{ path('Gestionnaire.validFormEditUsers') }}">
+            <legend>Modifier un ordi</legend>
+
+            <div class="form-group">
+                <label>email: </label>
+                <input name="email"  type="text"  size="18" value="{{donnees.email|default('')}}" class="form-control {% if erreurs.username is defined %}is-invalid{% endif %} " >
+                {% if erreurs.typeMachine is defined %}
+                    <div class="invalid-feedback">{{erreurs.email}}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Nom d'utilisateur :</label>
+                <input name="username"  type="text"  size="18"  value="{{donnees.username|default('')}}" class="form-control {% if erreurs.username is defined %}is-invalid{% endif %}">
+                {% if erreurs.username is defined %}
+                    <div class="invalid-feedback">{{erreurs.username}}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label>mot de passe :</label>
+                <input name="password"  type="text"  size="18" value="{{donnees.password|default('')}}" class="form-control {% if erreurs.password is defined %}is-invalid{% endif %}">
+                {% if erreurs.password is defined %}
+                    <div class="invalid-feedback">{{erreurs.password}}</div>
+                {% endif %}
+
+            </div>
+
+            <input type="hidden" name="id" value="{{ donnees.id | default('')}}">
+
+
+            <input type="hidden" name="token" value="{{ csrf_token('form_produit') }}">
+
+            <button type="submit" class="btn btn-primary">{{ button|default('Valider') }}</button>
+
+        </form>
+    </div>
+{% endblock %}

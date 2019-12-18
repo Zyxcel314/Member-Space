@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\InformationsFamille;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
+use App\Form\RepresentantFamilleEditType;
 use App\Form\RepresentantFamilleType;
 use App\Form\InformationFamilleType;
 use App\Repository\RepresentantFamilleRepository;
@@ -50,6 +51,7 @@ class RepresentantFamilleController extends AbstractController
      */
     public function informationsFamille(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
     {
+        dump($this->genenererTokenMail());
         $infoFamiliales = $doctrine->getRepository(InformationsFamille::class)->findBy(['representant_famille'=>$this->getUser()],['id'=>'ASC']);
         return $this->render('representant_famille/informationsFamille.html.twig', ['infoFamille' => $infoFamiliales]);
     }
@@ -64,15 +66,13 @@ class RepresentantFamilleController extends AbstractController
         $form = $this->createForm(InformationFamilleType::class, $infoFamiliales);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('primary','Vos informations ont été ajoutées');
             $entityManager = $this->getDoctrine()->getManager();
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
+
             $infoFamiliales = $form->getData();
             $infoFamiliales->setRepresentantFamille($this->getUser());
             $infoFamiliales->setDateModification(new \DateTime(date('Y-m-d')));
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($infoFamiliales);
             $entityManager->flush();
 
@@ -95,15 +95,13 @@ class RepresentantFamilleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
             $infoFamiliales = $form->getData();
             $infoFamiliales->setRepresentantFamille($this->getUser());
             $infoFamiliales->setDateModification(new \DateTime(date('Y-m-d')));
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($infoFamiliales);
             $entityManager->flush();
+            $this->addFlash('primary','Les informations concernant votre famille ont été ajoutées');
 
             return $this->redirectToRoute('Representant.informationsFamille');
         }
@@ -118,6 +116,25 @@ class RepresentantFamilleController extends AbstractController
     public function informationsPerso(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
     {   $rprstFamille = $doctrine->getRepository(RepresentantFamille::class)->findBy(['id'=>$this->getUser()]);
         return $this->render('representant_famille/infoPerso.html.twig', ['representantFamille' => $rprstFamille]);
+    }
+
+    /**
+     * @Route("/informationsPerso/edit", name="Representant.informationsPerso.edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function informationsPersoEdit(RepresentantFamilleRepository $representantFamilleRepository, Request $request, Environment $twig, RegistryInterface $doctrine): Response
+    {
+        $rprstFamille = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser());
+        $form = $this->createForm(RepresentantFamilleEditType::class, $rprstFamille);
+        $entityManager = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success','Vos informations personnelles ont été modifiées');
+            $entityManager->persist($rprstFamille);
+            $entityManager->flush();
+            return $this->redirectToRoute('Representant.informationsPerso');
+        }
+        return $this->render('representant_famille/infoPersoEdit.html.twig', ['form'=>$form->createView()]);
     }
 
     /**
@@ -137,7 +154,9 @@ class RepresentantFamilleController extends AbstractController
     {
 
         $representantFamille = new RepresentantFamille();
+        $token = $this->genenererTokenMail();
         $representantFamille->setEstActive(0);
+        $representantFamille->setMailTokenVerification($token);
         $form = $this->createForm(RepresentantFamilleType::class, $representantFamille)
             ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez', "mapped"=>false])
             ->add('save', SubmitType::class, ['label' => 'Créer un compte']);
@@ -159,7 +178,7 @@ class RepresentantFamilleController extends AbstractController
             $entityManager->persist($representantFamille);
             $entityManager->flush();
 
-            $this->sendConfirmationEmail($form->get('mail')->getData());
+            $this->sendConfirmationEmail($form->get('mail')->getData(),$token);
 
             return $this->render('representant_famille/confirmation.html.twig', [
                 'mail' => $form->get('mail')->getData()
@@ -173,7 +192,7 @@ class RepresentantFamilleController extends AbstractController
         ]);
     }
 
-    public function sendConfirmationEmail($email) {
+    public function sendConfirmationEmail($email,$token) {
 
         // Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
@@ -195,7 +214,7 @@ class RepresentantFamilleController extends AbstractController
             // Content
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'Activation compte';
-            $mail->Body = "<a href='localhost:8000/representant/activer/" . $email . "'>Cliquez ici</a>sur le lien pour activer votre compte localhost:8000/representant/activer/".$email ;
+            $mail->Body = "<br><a href='localhost:8000/representant/activer/" . $token . "'>Cliquez ici</a>sur le lien pour activer votre compte http://localhost:8000/representant/activer/".$token ;
 
             $mail->send();
 
@@ -261,10 +280,10 @@ class RepresentantFamilleController extends AbstractController
     }
 
     /**
-     * @Route("/activer/{mail}", name="Representant.activer")
+     * @Route("/activer/{token}", name="Representant.activer")
      */
-    public function activationUser(ObjectManager $manager, $mail) {
-        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $mail]);
+    public function activationUser(ObjectManager $manager, $token) {
+        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mailTokenVerification' => $token]);
 
         $representant->setEstActive(1);
 
@@ -290,6 +309,12 @@ class RepresentantFamilleController extends AbstractController
         ));
     }
 
-
+    public function genenererTokenMail(){
+        $token = "0123456789ABCDEF0123456789ABCDEF";
+        $token = str_shuffle($token);
+        $token = substr($token,strlen($token)/2);
+        //$token = substr($token,-18);
+        return $token;
+    }
 
 }

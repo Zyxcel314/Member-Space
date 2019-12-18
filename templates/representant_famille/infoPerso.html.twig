@@ -7,33 +7,27 @@
         <table class="table table-bordered">
             <caption>Informations personnelles</caption>
             <thead>
-            <tr>
-                <th> Nom </th>
-                <th> Prénom</th>
-                <th> Adresse </th>
-                <th> Numéro de téléphone </th>
-                <th> Fixe </th>
-                <th> Adresse mail</th>
-                <th> Date de naissance</th>
-                <th> Date de fin d'adhésion</th>
-            </tr>
+            <tr><th>nom</th><th>prénom</th><th>adresse</th><th>numéro de téléphone</th><th>fixe</th><th>adresse mail</th><th>date de naissance</th><th>date de fin d'adhésion</th></tr>
             </thead>
             <tbody>
             {% for info in representantFamille if info is not empty %}
                 <tr>
-                    <td>{{ info.nom }}</td>
+                    <td>{{info.nom}}</td>
                     <td>{{ info.prenom }}</td>
                     <td>{{ info.adresse }}</td>
                     <td>{{ info.noMobile }}</td>
                     <td>{{ info.noFixe }}</td>
                     <td>{{ info.mail }}</td>
                     <td>{{ info.dateNaissance | date('d-m-Y') }}</td>
-                    <td>{{ info.dateFinAdhesion | date('d-m-Y') }}</td>
+                    <td>{{ info.dateFinAdhesion | default("Indéfinie") }}</td>
+
                 </tr>
             {% endfor %}
+
             <tbody>
         </table>
-        <a href="" class="btn btn-secondary"> Modifier </a>
+        <a href="{{ path('Representant.informationsPerso.edit') }}" class="btn btn-secondary">Modifier</a>
     </div>
 </div>
+
 {% endblock %}

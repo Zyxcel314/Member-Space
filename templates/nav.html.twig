@@ -111,3 +111,10 @@
 
     </div>
 </nav>
+{% for type, flashMessages in app.session.flashbag.all() %}
+    {% for flashMessage in flashMessages %}
+        <div class="alert alert-{{ type }}">
+            {{ flashMessage|trans }}
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,43 @@
+
+{% extends "/base.html.twig" %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <a href="{{ path('Gestsionnaire.addUsers') }}" class="btn btn-primary m-1 p-1"> Ajouter un utilisateur</a>
+        </div>
+        <div>
+            <table class="table">
+                <caption>Liste des Utilisateurs</caption>
+                <thead class="thead-dark">
+                <tr><th>ID utilisateur</th><th>Email</th><th>Nom d'utilisateur</th><th>Mot de passe</th><th>opération</th>
+                </tr>
+                </thead>
+                {% for user in users if users is not empty %}
+                <tbody>
+                <tr>
+
+                    <td>{{user.id}}</td>
+                    <td>{{user.email}}</td><td>{{user.username}} </td><td>
+                        {{user.password}}</td>
+                    <td>
+                        <a href="{{  path('Gestionnaire.editUsers', {id: user.id}) }}" class="btn btn-primary">modifier</a>
+                        <form action="{{ url('Gestionnaire.deleteUsers' ,{id: user.id}) }}" method="GET" onclick="confirm('Êtes vous sur de vouloir supprimer cet ordi? \n \n La demarche est définitive et ne peut être inversée.')">
+
+
+                            <button type="submit" class="btn btn-warning">Supprimer</button>
+                        </form>
+                    </td>
+
+
+
+
+
+                </tr>
+                {% else %}
+                    <tr class="table-warning"><td>Aucun utilisateurs à afficher ici , n'oubliez pas de load les fixtures</td></tr>
+                {% endfor %}
+                <tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
