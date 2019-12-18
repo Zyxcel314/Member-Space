@@ -15,6 +15,7 @@ class AppFixtures extends Fixture
     {
         $this->loadRepresentantsFamilles($manager);
         $this->loadMembresFamilles($manager);
+        $this->loadDroits($manager);
     }
 
     public function loadRepresentantsFamilles(ObjectManager $manager)
@@ -94,5 +95,33 @@ class AppFixtures extends Fixture
             $manager->persist($new_membre);
             $manager->flush();
         }
+    }
+
+    public function loadDroits()
+    {
+       /*créer / modifier / désactiver des comptes
+    voir / exporter les dossiers adhérent
+    créer / modifier les dossiers adhérents
+        $droits = [
+            ['id' => 1, '' => , '' => ],
+            ['id' => 2, '' => , '' =>],
+            ['id' => 3, '' => , '' =>]
+        ];
+
+        foreach ($rf as $r) {
+            $new_rf = new RepresentantFamille();
+            $new_rf->setLogin($r['login']);
+            $new_rf->setMotdepasse($r['motdepasse']);
+            $new_rf->setNom($r['nom']);
+            $new_rf->setPrenom($r['prenom']);
+            $new_rf->setAdresse($r['adresse']);
+            $new_rf->setNoMobile($r['nomobile']);
+            $new_rf->setNoFixe($r['nofixe']);
+            $new_rf->setMail($r['mail']);
+            $new_rf->setDateNaissance(new \DateTime($r['datenaissance']));
+            $new_rf->setDateFinAdhesion(new \DateTime($r['datefinadhesion']));
+            $new_rf->setEstActive(1);
+            $manager->persist($new_rf);
+            $manager->flush();*/
     }
 }

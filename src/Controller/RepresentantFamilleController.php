@@ -8,6 +8,8 @@ use App\Form\RepresentantFamilleType;
 use App\Form\InformationFamilleType;
 use App\Repository\RepresentantFamilleRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -235,17 +238,24 @@ class RepresentantFamilleController extends AbstractController
      */
     public function delete(RegistryInterface $doctrine, Request $request, RepresentantFamille $representantFamille): Response
     {
-        $membreFamille = $doctrine->getRepository(MembreFamille::class)->findBy(array('representant_famille' => $representantFamille));
-        if ( $membreFamille != null )
-        {
-            foreach ($membreFamille as $i)
-            {
-                $doctrine->getRepository(MembreFamille::class)->findOneBy(array('representant_famille' => $representantFamille))->setRepresentantFamille(null);
-            }
-        }
+        $representantFamille = $doctrine->getRepository(RepresentantFamilleType::class)->find($representantFamille);
         if ($this->isCsrfTokenValid('delete'.$representantFamille->getId(), $request->request->get('_token'))) {
-
+            throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
         }
+        $membreFamille = $doctrine->getRepository(MembreFamille::class)->findBy(array('representant_famille' => $representantFamille));
+
+        try {
+            $doctrine->getEntityManager()->remove($representantFamille);
+            $doctrine->getEntityManager()->remove($membreFamille);
+        } catch (ORMException $e) {
+        }
+        try {
+            $doctrine->getEntityManager()->flush();
+        } catch (OptimisticLockException $e) {
+        } catch (ORMException $e) {
+        }
+        $this->addFlash('succes', 'Représentant supprimé !');
+
 
         return $this->redirectToRoute('Representant.accueil');
     }
@@ -258,6 +268,20 @@ class RepresentantFamilleController extends AbstractController
 
         $representant->setEstActive(1);
 
+        $dateMAJ = new \DateTime();
+
+        $membre = new MembreFamille();
+        $membre
+            ->setNoClient(0)
+            ->setCategorie('Majeur')
+            ->setNom($representant->getNom())
+            ->setPrenom($representant->getPrenom())
+            ->setDateNaissance($representant->getDateeNaissance())
+            ->setTraitementDonnees(0)
+            ->setDateMAJ($dateMAJ)
+            ->setRepresentantFamille($representant);
+
+        $manager->persist($membre);
         $manager->persist($representant);
         $manager->flush();
 
