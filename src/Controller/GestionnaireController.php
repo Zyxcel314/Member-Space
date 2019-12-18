@@ -151,7 +151,8 @@ class GestionnaireController extends AbstractController
                 ->setMail($donnees['mail'])
                 ->setDateNaissance($dateNaissance)
                 ->setDateFinAdhesion($dateFinAdhesion)
-                ->setEstActive($donnees['estActive']);
+                ->setEstActive($donnees['estActive'])
+                ->setMailTokenVerification('token_mail');
 
             $membre = new MembreFamille();
             $dateMAJ = new \DateTime();
