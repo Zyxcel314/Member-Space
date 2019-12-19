@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Droits;
 use App\Entity\Gestionnaires;
+use App\Entity\InformationMajeur;
 use App\Entity\InformationResponsableLegal;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
@@ -107,6 +108,89 @@ class GestionnaireController extends AbstractController
 
 
     /**
+     * @Route("/ajouterRepresentant", name="Gestionnaire.addRepresentant", methods={"GET"})
+     */
+    public function addRepresentant(Request $request ,RegistryInterface $doctrine)
+    {
+        return $this->render('gestionnaire/addRepresentant.html.twig');
+    }
+    /**
+     * @Route("/ValiderModificationsRepresentant", name="Gestionnaire.validAddRepresentant", methods={"POST"})
+     */
+    public function validerAddRepresentant(Request $request, RegistryInterface $doctrine)
+    {
+        if (!$this->isCsrfTokenValid('form_representant', $request->get('token'))) {
+            throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
+        }
+        $donnees['login'] = htmlspecialchars($_POST['login']);
+        $donnees['nom'] = htmlspecialchars($_POST['nom']);
+        $donnees['prenom'] = htmlspecialchars($_POST['prenom']);
+        $donnees['adresse'] = htmlspecialchars($_POST['adresse']);
+        $donnees['noMobile'] = htmlspecialchars($_POST['noMobile']);
+        $donnees['noFixe'] = htmlspecialchars($_POST['noFixe']);
+        $donnees['mail'] = htmlspecialchars($_POST['mail']);
+        $donnees['dateNaissance'] = htmlspecialchars($_POST['dateNaissance']);
+        $donnees['dateFinAdhesion'] = htmlspecialchars($_POST['dateFinAdhesion']);
+        $donnees['estActive'] = $request->get('estActive',0)[0];
+
+        $erreurs = $this->validerDonneesRepresentant($donnees);
+
+        if ( empty($erreurs) )
+        {
+            $dateNaissance = \DateTime::createFromFormat('Y-m-d', $donnees['dateNaissance']);
+            $dateFinAdhesion = \DateTime::createFromFormat('Y-m-d', $donnees['dateFinAdhesion']);
+            $representantFamille = new RepresentantFamille();
+
+            $representantFamille
+                ->setLogin($donnees['login'])
+                ->setNom($donnees['nom'])
+                ->setMotdepasse('motdepasse')
+                ->setPrenom($donnees['prenom'])
+                ->setAdresse($donnees['adresse'])
+                ->setNoMobile($donnees['noMobile'])
+                ->setNoFixe($donnees['noFixe'])
+                ->setMail($donnees['mail'])
+                ->setDateNaissance($dateNaissance)
+                ->setDateFinAdhesion($dateFinAdhesion)
+                ->setEstActive($donnees['estActive'])
+                ->setMailTokenVerification('token_mail');
+
+            $membre = new MembreFamille();
+            $dateMAJ = new \DateTime();
+            $membre
+                ->setNom($donnees['nom'])
+                ->setPrenom($donnees['prenom'])
+                ->setCategorie('Majeur')
+                ->setNoClient(0)
+                ->setDateMAJ($dateMAJ)
+                ->setDateNaissance($dateNaissance)
+                ->setTraitementDonnees(0)
+                ->setRepresentantFamille($representantFamille)
+                ->setReglementActivite(0);
+            $info_majeur = new InformationMajeur();
+            $info_majeur->setMail($donnees['mail']);
+            $info_majeur->setCommunicationResponsableLegal(0);
+            $membre->setInformationMajeur($info_majeur);
+            try {
+                $doctrine->getEntityManager()->persist($representantFamille);
+                $doctrine->getEntityManager()->persist($membre);
+            } catch (ORMException $e) {
+            }
+            try {
+                $doctrine->getEntityManager()->flush();
+            } catch (OptimisticLockException $e) {
+            } catch (ORMException $e) {
+            }
+            $this->addFlash('succes', 'Représentant ajouté !');
+
+            return $this->redirectToRoute('Gestionnaire.showListeFamilles');
+        }
+
+        return $this->render('gestionnaire/addRepresentant.html.twig',
+            ['donnees' => $donnees, 'erreurs' => $erreurs]);
+    }
+
+    /**
      * @Route("/modifierRepresentant", name="Gestionnaire.editRepresentant", methods={"GET"})
      */
     public function editRepresentant(Request $request ,RegistryInterface $doctrine)
@@ -141,7 +225,6 @@ class GestionnaireController extends AbstractController
         {
             $dateNaissance = \DateTime::createFromFormat('Y-m-d', $donnees['dateNaissance']);
             $dateFinAdhesion = \DateTime::createFromFormat('Y-m-d', $donnees['dateFinAdhesion']);
-            var_dump($dateNaissance);
             $representantFamille = $doctrine->getRepository(RepresentantFamille::class)->find($donnees['id']);
 
             $representantFamille
@@ -155,8 +238,15 @@ class GestionnaireController extends AbstractController
                 ->setDateNaissance($dateNaissance)
                 ->setDateFinAdhesion($dateFinAdhesion)
                 ->setEstActive($donnees['estActive']);
+
+            $membre = $doctrine->getRepository(MembreFamille::class)->findOneBy(array('representant_famile' => $representantFamille));
+            $membre
+                ->setNom($donnees['nom'])
+                ->setPrenom($donnees['prenom'])
+                ->setDateNaissance($dateNaissance);
             try {
                 $doctrine->getEntityManager()->persist($representantFamille);
+                $doctrine->getEntityManager()->persist($membre);
             } catch (ORMException $e) {
             }
             try {
@@ -184,12 +274,9 @@ class GestionnaireController extends AbstractController
         $id = $request->request->get('representant_id');
         $representantFamille = $doctrine->getRepository(RepresentantFamille::class)->find($id);
         $membreFamille = $doctrine->getRepository(MembreFamille::class)->findOneBy(array('representant_famille' => $representantFamille));
-        if ( $membreFamille != null )
-        {
-            $membreFamille->setRepresentantFamille(null);
-        }
         try {
             $doctrine->getEntityManager()->remove($representantFamille);
+            $doctrine->getEntityManager()->remove($membreFamille);
         } catch (ORMException $e) {
         }
         try {

@@ -49,7 +49,7 @@ class MembreFamille
     private $traitementDonnees;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateMAJ;
 

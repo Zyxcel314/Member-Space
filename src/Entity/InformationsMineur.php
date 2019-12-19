@@ -132,7 +132,7 @@ class InformationsMineur
         return $this->autorisationSorties;
     }
 
-    public function addAutorisationSorty(AutorisationSortie $autorisationSorty): self
+    public function addAutorisationSorties(AutorisationSortie $autorisationSorty): self
     {
         if (!$this->autorisationSorties->contains($autorisationSorty)) {
             $this->autorisationSorties[] = $autorisationSorty;
@@ -142,7 +142,7 @@ class InformationsMineur
         return $this;
     }
 
-    public function removeAutorisationSorty(AutorisationSortie $autorisationSorty): self
+    public function removeAutorisationSorties(AutorisationSortie $autorisationSorty): self
     {
         if ($this->autorisationSorties->contains($autorisationSorty)) {
             $this->autorisationSorties->removeElement($autorisationSorty);
@@ -178,6 +178,29 @@ class InformationsMineur
         if ($this->ficheSanitaires->contains($ficheSanitaire)) {
             $this->ficheSanitaires->removeElement($ficheSanitaire);
             $ficheSanitaire->removeInformationsMineur($this);
+        }
+
+        return $this;
+    }
+
+    public function addAutorisationSorty(AutorisationSortie $autorisationSorty): self
+    {
+        if (!$this->autorisationSorties->contains($autorisationSorty)) {
+            $this->autorisationSorties[] = $autorisationSorty;
+            $autorisationSorty->setInformationsMineur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAutorisationSorty(AutorisationSortie $autorisationSorty): self
+    {
+        if ($this->autorisationSorties->contains($autorisationSorty)) {
+            $this->autorisationSorties->removeElement($autorisationSorty);
+            // set the owning side to null (unless already changed)
+            if ($autorisationSorty->getInformationsMineur() === $this) {
+                $autorisationSorty->setInformationsMineur(null);
+            }
         }
 
         return $this;
