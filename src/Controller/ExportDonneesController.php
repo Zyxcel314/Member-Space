@@ -40,7 +40,12 @@ class ExportDonneesController extends AbstractController
             $sheet->setCellValue('E'.($i + 2), $m->getRepresentantFamille()->getNoMobile());
             $sheet->setCellValue('F'.($i + 2), $m->getRepresentantFamille()->getNoFixe());
             if ($m->getCategorie() == 'Majeur') {
-                $email = $m->getInformationMajeur()->getMail();
+                if ($m->getInformationMajeur() != null) {
+                    $email = $m->getInformationMajeur()->getMail();
+                }
+                else {
+                    $email = "non renseignée";
+                }
             }
             else {
                 $email = 'pas d\'email personnelle';
