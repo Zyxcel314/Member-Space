@@ -12,6 +12,7 @@ use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Twig\Environment;
 use Symfony\Bridge\Doctrine\RegistryInterface;   // ORM Doctrine
 use Symfony\Component\HttpFoundation\Request;    // objet REQUEST
@@ -60,7 +61,10 @@ class MembreFamilleController extends AbstractController
     {
         $idUser = $this->getUser()->getId();
         $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
-        return new Response($twig->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres]));
+        $date = new \DateTime(date('Y-m-d'));
+        date_sub($date, date_interval_create_from_date_string('18 years'));
+        dump($date);
+        return $this->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres, 'dateMajorite'=>$date]);
     }
 
     /**
