@@ -64,7 +64,6 @@
                     <td>
                         {#Mineur.informationsMineur#}
                         {% if membreFamille.getInformationsMineur() is not empty %}
-                            {{ membreFamille.getInformationsMineur().getId() }}
                             <form action="{{ path("Gestionnaire.editMembre") }}">
                                 <button type="submit" class="btn btn-primary"> Informations de ce mineur </button>
                             </form>
@@ -79,7 +78,6 @@
                     {% else %}
                     <td>
                         {% if membreFamille.getInformationsMineur() is not empty %}
-                            {{ membreFamille.getInformationsMineur().getId() }}
                             {#Majeur.informationsMajeur#}
                             <form action="{{ path("Gestionnaire.editMembre") }}">
                                 <button type="submit" class="btn btn-primary"> Informations de ce majeur </button>
@@ -146,8 +144,14 @@
                     <br>
                     <p> {{membreFamille.nom}} </p>
                     <p> {{membreFamille.prenom}} </p>
+                        {% if membreFamille.dateNaissance|date('Y-m-d') < dateMajorite|date('Y-m-d') %}
+                            <p>Majeur</p>
+                        {% else %}
+                            <p>Mineur</p>
+                        {% endif %}
+
                     <p> Né(e) le : {{membreFamille.dateNaissance() | date('d/m/Y')}} </p>
-                    <p> {{membreFamille.categorie}} </p>
+
                         {#// TODO: Changer les noms des routes vers les contrôleurs associés (fausses routes pour faire beau durant la présentation...).#}
                         {% if membreFamille.getInformationResponsableLegals() is not empty %}
                             {% for info_responsableLegal in membreFamille.getInformationResponsableLegals() if membreFamille.getInformationResponsableLegals() is not empty %}
@@ -166,9 +170,8 @@
                         <br>
                     {% if membreFamille.dateNaissance|date('Y-m-d') > dateMajorite|date('Y-m-d') %}
                         {#Mineur.informationsMineur#}
-                        {% if membreFamille.informationsMineur is not empty %}
-                            {{ membreFamille.getInformationsMineur().getId() }}
-                            <form action="{{ path("Representant.informationsFamille", {n: membreFamille.id}) }}">
+                        {% if membreFamille.getInformationsMineur() is not empty %}
+                            <form action="{{ path("Membre.showMineur", {n: membreFamille.informationsMineur.id}) }}">
                                 <button type="submit" class="btn btn-primary"> Informations du mineur </button>
                             </form>
                         {% else %}
@@ -179,15 +182,14 @@
                         {% endif %}
                         <br>
                     {% else %}
-                        {% if membreFamille.getInformationsMineur() is not empty %}
-                            {{ membreFamille.getInformationsMineur().getId() }}
+                        {% if membreFamille.getInformationMajeur() is not empty %}
                             {#Majeur.informationsMajeur#}
-                            <form action="{{ path("Representant.informationsFamille") }}">
+                            <form action="{{ path("Membre.showMajeur", {n: membreFamille.informationMajeur.id}) }}">
                                 <button type="submit" class="btn btn-primary"> Informations du majeur </button>
                             </form>
                         {% else %}
                             {#Majeur.addInformationsMajeur#}
-                            <form action="{{ path("Representant.informationsFamille") }}">
+                            <form action="{{ path("Membre.addInfoMajeur", {n: membreFamille.getId()}) }}">
                                 <button type="submit" class="btn btn-primary"> Ajouter les informations de ce majeur </button>
                             </form>
                         {% endif %}

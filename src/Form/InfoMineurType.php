@@ -47,12 +47,8 @@ class InfoMineurType extends AbstractType
                     'Oui' => true,
                     'Non' => false,
                 ],])
-            //->add('membreFamille')
-            /*->add('autorisationSorties', ChoiceType::class, [
-                'choices'  => [
-                    'Oui' => true,
-                    'Non' => false,
-                ],])*/
+            ->add('membreFamille', HiddenType::class)
+
             /*->add('autorisationSorties', ChoiceType::class, [
                 'choices'  => [
                     'Oui' => true,

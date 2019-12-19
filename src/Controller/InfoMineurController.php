@@ -36,20 +36,20 @@ class InfoMineurController extends AbstractController
      */
     public function showInfoMineur(Environment $twig, RegistryInterface $doctrine, Request $request, $n)
     {
-        $mineur = $doctrine->getRepository(InformationsMineur::class)->find($n);
+        $mineur = $doctrine->getRepository(InformationsMineur::class)->findAll();
         return new Response($twig->render('membre_famille/mineur/showInfoMineur.html.twig', ['mineur' => $mineur]));
     }
-
 
     /**
      * @Route("/ajouterInfoMineur/{n}", name="Membre.addInfoMineur")
      */
-    public function addInfoMineur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory)
+    public function addInfoMineur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory, $n)
     {
         $form=$formFactory->createBuilder(InfoMineurType::class)->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $mineurs=$form->getData();
+            $mineurs->setMembreFamille($doctrine->getRepository(MembreFamille::class)->find($n));
             $doctrine->getEntityManager()->persist($mineurs);
             $doctrine->getEntityManager()->flush();
             return $this->redirectToRoute('Membre.showMembres');
@@ -60,11 +60,11 @@ class InfoMineurController extends AbstractController
     }
 
     /**
-     * @Route("/editerInfoMineur", name="Membre.editInfoMineur")
+     * @Route("/editerInfoMineur/{n}", name="Membre.editInfoMineur")
      */
-    public function editInfoMineur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory)
+    public function editInfoMineur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory, $n)
     {
-        $coordonnees=$doctrine->getRepository(InformationsMineur::class)->find($request->query->get('id'));
+        $coordonnees=$doctrine->getRepository(InformationsMineur::class)->find($n);
         $form=$formFactory->createBuilder(InfoMineurType::class,$coordonnees)->getForm();
         $form->handleRequest($request);
 
@@ -73,7 +73,9 @@ class InfoMineurController extends AbstractController
             return $this->redirectToRoute('Membre.showMineur');
 
             $this->addFlash('success', 'Informations mineurs mises à jour');
+
+            return $this->redirectToRoute('Membre.showMineur');
         }
-        return new Response($twig->render('membre_famille/mineur/editInfoMineur.html.twig',['form'=>$form->createView()]));
+        return $this->render('membre_famille/mineur/editInfoMineur.html.twig',['form'=>$form->createView()]);
     }
 }

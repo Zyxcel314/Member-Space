@@ -205,4 +205,6 @@ class InformationsMineur
 
         return $this;
     }
+
+
 }
