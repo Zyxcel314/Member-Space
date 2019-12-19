@@ -18,6 +18,7 @@ class ExportDonneesController extends AbstractController
     {
         // get all updates
         $updates = $this->getUpdates();
+        dump($updates);
         // generate excel doc
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -38,9 +39,11 @@ class ExportDonneesController extends AbstractController
             $sheet->setCellValue('D'.($i + 2), $m->getRepresentantFamille()->getAdresse());
             $sheet->setCellValue('E'.($i + 2), $m->getRepresentantFamille()->getNoMobile());
             $sheet->setCellValue('F'.($i + 2), $m->getRepresentantFamille()->getNoFixe());
-            $email = 'pas d\'email personnelle';
-            if ($m->getCategorie() == 'Adulte') {
+            if ($m->getCategorie() == 'Majeur') {
                 $email = $m->getInformationMajeur()->getMail();
+            }
+            else {
+                $email = 'pas d\'email personnelle';
             }
             $sheet->setCellValue('G'.($i + 2), $email);
         }
@@ -50,7 +53,7 @@ class ExportDonneesController extends AbstractController
         $writer->save($date. '.xlsx');
         // update export table
         $this->updateExport($updates);
-        return null;
+        return $this->redirectToRoute('Gestionnaire.showListeFamilles');
     }
 
     public function getUpdates()
@@ -66,14 +69,15 @@ class ExportDonneesController extends AbstractController
             [],
             ['dateDernierExport' => 'DESC']
         );
-        dump($exports);
-        $lastExportDate = ($exports == null) ? null : $exports[0];
+        $lastExportDate = ($exports == null) ? null : $exports[0]->getDateDernierExport();
+        dump($lastExportDate);
         // loop membre
         for ($i = 0; $i < sizeof($membres); $i ++) {
             $m = $membres[$i];
             // last MAJ membre
             $lastMAJDate = $m->getDateMAJ();
             // check if update
+            dump($lastMAJDate);
             if ($lastExportDate == null || $lastMAJDate > $lastExportDate) {
                 array_push($updates, $m);
             }

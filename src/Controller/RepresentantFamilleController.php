@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\InformationMajeur;
 use App\Entity\InformationsFamille;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
@@ -295,10 +296,16 @@ class RepresentantFamilleController extends AbstractController
             ->setCategorie('Majeur')
             ->setNom($representant->getNom())
             ->setPrenom($representant->getPrenom())
-            ->setDateNaissance($representant->getDateeNaissance())
+            ->setDateNaissance($representant->getDateNaissance())
             ->setTraitementDonnees(0)
             ->setDateMAJ($dateMAJ)
-            ->setRepresentantFamille($representant);
+            ->setRepresentantFamille($representant)
+            ->setReglementActivite(0);
+
+        $info_majeur = new InformationMajeur();
+        $info_majeur->setMail($representant->getMail());
+        $info_majeur->setCommunicationResponsableLegal(0);
+        $membre->setInformationMajeur($info_majeur);
 
         $manager->persist($membre);
         $manager->persist($representant);

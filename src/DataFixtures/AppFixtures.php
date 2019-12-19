@@ -15,7 +15,7 @@ class AppFixtures extends Fixture
     {
         $this->loadRepresentantsFamilles($manager);
         $this->loadMembresFamilles($manager);
-        $this->loadDroits($manager);
+        // $this->loadDroits($manager);
     }
 
     public function loadRepresentantsFamilles(ObjectManager $manager)
@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
             $new_rf->setDateNaissance(new \DateTime($r['datenaissance']));
             $new_rf->setDateFinAdhesion(new \DateTime($r['datefinadhesion']));
             $new_rf->setEstActive(1);
+            $new_rf->setMailTokenVerification('1234');
             $manager->persist($new_rf);
             $manager->flush();
         }
@@ -50,16 +51,16 @@ class AppFixtures extends Fixture
     public function loadMembresFamilles(ObjectManager $manager)
     {
         $if = [
-          ['id' => 1, 'noClient' => 'A', 'categorie' => 'Adulte', 'nom' => 'Mattone', 'prenom' => 'Thomas'
+          ['id' => 1, 'noClient' => 'A', 'categorie' => 'Majeur', 'nom' => 'Mattone', 'prenom' => 'Thomas'
             , 'datenaissance' => '2000-01-06', 'reglement_activite' => 1, 'traitementdonnees' => 1
             , 'id_representantfamille' => 1, 'dateMAJ' => '2019-01-01'],
-          ['id' => 2, 'noClient' => 'B', 'categorie' => 'Adulte', 'nom' => 'Sienna', 'prenom' => 'Zoe'
+          ['id' => 2, 'noClient' => 'B', 'categorie' => 'Majeur', 'nom' => 'Sienna', 'prenom' => 'Zoe'
             , 'datenaissance' => '2002-07-02', 'reglement_activite' => 1, 'traitementdonnees' => 1
             , 'id_representantfamille' => 2, 'dateMAJ' => '2019-01-01'],
-          ['id' => 3, 'noClient' => 'B1', 'categorie' => 'Enfant', 'nom' => 'Sienna', 'prenom' => 'Louise'
+          ['id' => 3, 'noClient' => 'B1', 'categorie' => 'Mineur', 'nom' => 'Sienna', 'prenom' => 'Louise'
             , 'datenaissance' => '2007-06-06', 'reglement_activite' => 1, 'traitementdonnees' => 1
             , 'id_representantfamille' => 2, 'dateMAJ' => '2019-01-01'],
-          ['id' => 4, 'noClient' => 'B2', 'categorie' => 'Enfant', 'nom' => 'Sienna', 'prenom' => 'Simon'
+          ['id' => 4, 'noClient' => 'B2', 'categorie' => 'Mineur', 'nom' => 'Sienna', 'prenom' => 'Simon'
             , 'datenaissance' => '2001-11-11', 'reglement_activite' => 1, 'traitementdonnees' => 1
             , 'id_representantfamille' => 2, 'dateMAJ' => '2019-01-01']
         ];
@@ -77,14 +78,14 @@ class AppFixtures extends Fixture
             $rep = $manager->getRepository(RepresentantFamille::class)->find($i['id_representantfamille']);
             $new_membre->setRepresentantFamille($rep);
             // check adult or child
-            if ($new_membre->getCategorie() == 'Adulte') {
+            if ($new_membre->getCategorie() == 'Majeur') {
                 $inf_maj = new InformationMajeur();
                 $mail = $new_membre->getPrenom() . '@' . $new_membre->getNom();
                 $inf_maj->setMail($mail);
                 $inf_maj->setCommunicationResponsableLegal(1);
                 $new_membre->setInformationMajeur($inf_maj);
             }
-            elseif ($new_membre->getCategorie() == 'Enfant') {
+            elseif ($new_membre->getCategorie() == 'Mineur') {
                 $inf_min = new InformationsMineur();
                 $inf_min->setAutorisationTransport(1);
                 $inf_min->setDroitImage(1);

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Droits;
 use App\Entity\Gestionnaires;
+use App\Entity\InformationMajeur;
 use App\Entity\InformationResponsableLegal;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
@@ -166,6 +167,10 @@ class GestionnaireController extends AbstractController
                 ->setTraitementDonnees(0)
                 ->setRepresentantFamille($representantFamille)
                 ->setReglementActivite(0);
+            $info_majeur = new InformationMajeur();
+            $info_majeur->setMail($donnees['mail']);
+            $info_majeur->setCommunicationResponsableLegal(0);
+            $membre->setInformationMajeur($info_majeur);
             try {
                 $doctrine->getEntityManager()->persist($representantFamille);
                 $doctrine->getEntityManager()->persist($membre);
