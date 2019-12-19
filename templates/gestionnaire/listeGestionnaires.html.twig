@@ -1,7 +1,9 @@
 {#{% extends "base.html.twig" %}#}
 
 {% block body %}
+
     {% include 'gestionnaire/espace.html.twig' %}
+
     <table class="table">
         <caption> Liste des gestionnaires </caption>
         <thead class="thead-dark">
@@ -23,15 +25,19 @@
         {% endif %}
 
         {% for gestionnaire in gestionnaires if gestionnaires is not empty %}
+
         <tbody>
         <tr>
+
             <td> {{ gestionnaire.id }} </td>
             <td> {{ gestionnaire.nom }} </td>
             <td> {{ gestionnaire.prenom }} </td>
             <td> {{ gestionnaire.getIdGoogleAuth() }} </td>
             <td>{% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% if gestionnaire.nom != "superadmin" %}
                     <a type="submit" class="btn btn-primary" href="{{ path("superadmin.editGestionnaire", {'id': gestionnaire.id }) }}"> Editer un gestionnaire </a>
 
+                {% endif %}
                 {% endif %}</td>
 
             <td>
@@ -47,6 +53,7 @@
         </tr>
         {% else %}
             <p class="table-warning"> Aucun gestionnaire n'est inscrit ! </p>
+
         {% endfor %}
         <tbody>
     </table>

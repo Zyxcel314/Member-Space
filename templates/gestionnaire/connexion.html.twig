@@ -5,7 +5,7 @@
 {% block body %}
 <form   method="post" class="w-50 p-3 shadow p-3 mb-5 bg-white" >
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-primary">Vous êtes sur le formulaire de connection gestionnaire.</div>
     {% endif %}
 
     {% if app.user %}

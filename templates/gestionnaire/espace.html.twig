@@ -7,6 +7,7 @@
             <a class="nav-link active" href="{{ path('Gestionnaire.showListeGestionnaires') }}"> Liste des gestionnaires </a>
             <br><br>
         </li>
+        {% if not is_granted('ROLE_SUPER_ADMIN') %}
         <li class="nav-item">
             <a class="nav-link active" href="{{ path('Gestionnaire.showListeFamilles') }}"> Liste des représentants de famille </a>
             <br><br>
@@ -17,5 +18,6 @@
         <li class="nav-item">
             <a class="nav-link active" href="{{ path('Gestionnaire.showDroits') }}"> Consulter mes droits </a>
         </li>
+        {% endif %}
     </ul>
 {% endblock %}

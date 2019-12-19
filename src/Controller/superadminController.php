@@ -47,8 +47,8 @@ class superadminController extends AbstractController
     {
 
 
-        $gestionnaire = $doctrine->getRepository(Gestionnaires::class)->find($id);
-        return $this->render('gestionnaire/superadminEdit.html.twig', ['donnees'=>$gestionnaire]);
+        $gestionnaire = $doctrine->getRepository(Gestionnaires::class)->findBy([],['id'=>'ASC']);
+        return $this->render('gestionnaire/superadminEdit.html.twig');
 
     }
 

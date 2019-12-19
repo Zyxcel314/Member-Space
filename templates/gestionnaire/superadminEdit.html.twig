@@ -2,21 +2,21 @@
 {% block body %}
     {% include 'gestionnaire/espace.html.twig' %}
     <div class="container">
-        <form method="post" action="{#{ path('superadmin.validEdit') }#}">
+        <form method="get" action="{{ path('Gestionnaire.showListeGestionnaires') }}">
             <legend>Modifier un role</legend>
 
 
 
             <div class="form-group">
-                <label>salle :</label>
+                <label>Role :</label>
                 <select name="role" class="form-control ">
 
                     <option value="user">Veuillez sélectionner un role</option>
                         <option value="Gestionnaire">
-                            Gestionnaire
+                            Complets
                         </option>
                     <option value="User">
-                        User
+                            Limités
                     </option>
 
                 </select>
