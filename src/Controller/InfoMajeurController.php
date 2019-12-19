@@ -13,6 +13,7 @@ use App\Entity\InformationResponsableLegal;
 use App\Entity\InformationsMineur;
 use App\Entity\MembreFamille;
 use App\Entity\RepresentantFamille;
+use App\Form\InfoMajeurType;
 use App\Form\InfoMineurType;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -39,5 +40,42 @@ class InfoMajeurController extends AbstractController
     {
         $majeur = $doctrine->getRepository(InformationMajeur::class)->findAll();
         return new Response($twig->render('membre_famille/majeur/showInfoMajeur.html.twig', ['majeur' => $majeur]));
+    }
+
+    /**
+     * @Route("/ajouterInfoMajeur/{n}", name="Membre.addInfoMajeur")
+     */
+    public function addInfoMajeur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory, $n)
+    {
+        $form=$formFactory->createBuilder(InfoMajeurType::class)->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $majeurs=$form->getData();
+            $majeurs->setMembreFamille($doctrine->getRepository(MembreFamille::class)->find($n));
+            $doctrine->getEntityManager()->persist($majeurs);
+            $doctrine->getEntityManager()->flush();
+            return $this->redirectToRoute('Membre.showMembres');
+
+            $this->addFlash('success', 'Informations ajoutées');
+        }
+        return new Response($twig->render('membre_famille/majeur/addInfoMajeur.html.twig',['form'=>$form->createView()]));
+    }
+
+    /**
+     * @Route("/editerInfoMajeur/{n}", name="Membre.editInfoMajeur")
+     */
+    public function editInfoMajeur(Request $request, Environment $twig, RegistryInterface $doctrine, FormFactoryInterface $formFactory, $n)
+    {
+        $coordonnees=$doctrine->getRepository(InformationMajeur::class)->find($n);
+        $form=$formFactory->createBuilder(InfoMajeurType::class,$coordonnees)->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctrine->getEntityManager()->flush();
+            return $this->redirectToRoute('Membre.showMajeur');
+
+            $this->addFlash('success', 'Informations mineurs mises à jour');
+        }
+        return new Response($twig->render('membre_famille/majeur/editInfoMajeur.html.twig',['form'=>$form->createView()]));
     }
 }

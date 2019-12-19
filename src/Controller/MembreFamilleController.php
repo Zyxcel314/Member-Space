@@ -63,7 +63,6 @@ class MembreFamilleController extends AbstractController
         $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $idUser], ['id' => 'ASC']);
         $date = new \DateTime(date('Y-m-d'));
         date_sub($date, date_interval_create_from_date_string('18 years'));
-        dump($date);
         return $this->render('membre_famille/showMembres.html.twig', ['membresFamille' => $membres, 'dateMajorite'=>$date]);
     }
 

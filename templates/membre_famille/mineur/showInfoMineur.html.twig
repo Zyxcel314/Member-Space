@@ -15,7 +15,7 @@
         <th> Autorisation de sortie seul </th>
         <th> Autorisation de sorties </th>
         <th> Fiche sanitaire </th>
-        <th>Opération</th>
+        {#<th>Opération</th>#}
     </tr>
     </thead>
 
@@ -33,11 +33,11 @@
                 <button type="submit" class="btn btn-primary"> Voir la fiche sanitaire </button>
             </form>
         </td>
-        <td>
-            <form action="{{ path("Membre.editInfoMineur") }}">
+        {#<td>
+            <form action="{{ path("Membre.editInfoMineur", {n: min.id}) }}">
                 <button type="submit" class="btn btn-primary"> Modifier les informations de ce mineur </button>
             </form>
-        </td>
+        </td>#}
     </tr>
     {% endfor %}
     </tbody>
