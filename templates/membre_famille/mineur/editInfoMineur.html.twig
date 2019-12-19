@@ -1,0 +1,15 @@
+{% include 'base.html.twig' %}
+ {% block nav %}
+     {% include 'representant_famille/espace.html.twig' %}
+     <h>Modifier les informations du mineur</h><br><br>
+     {{ form_start(form) }}
+     {{ form_widget(form) }}
+     {{ form_row(form.autorisationTransport) }}
+     {{ form_row(form.droitImage) }}
+     {{ form_row(form.autorisationTransportMedical) }}
+     {{ form_row(form.autorisationSortieSeul) }}
+     {#{ form_row(form.membreFamille) }#}
+     {#{ form_row(form.autorisationSorties) }#}
+     {{ form_row(form.submit, { 'label': 'Valider' }) }}
+     {{ form_end(form) }}
+ {% endblock %}

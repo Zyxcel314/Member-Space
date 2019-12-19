@@ -166,14 +166,14 @@
                         <br>
                     {% if membreFamille.dateNaissance|date('Y-m-d') > dateMajorite|date('Y-m-d') %}
                         {#Mineur.informationsMineur#}
-                        {% if membreFamille.getInformationsMineur() is not empty %}
+                        {% if membreFamille.informationsMineur is not empty %}
                             {{ membreFamille.getInformationsMineur().getId() }}
-                            <form action="{{ path("Representant.informationsFamille") }}">
+                            <form action="{{ path("Representant.informationsFamille", {n: membreFamille.id}) }}">
                                 <button type="submit" class="btn btn-primary"> Informations du mineur </button>
                             </form>
                         {% else %}
                             {#Mineur.addInformationsMineur#}
-                            <form action="{{ path("Membre.addInfoMineur") }}">
+                            <form action="{{ path("Membre.addInfoMineur", {n: membreFamille.getId()}) }}">
                                 <button type="submit" class="btn btn-primary"> Ajouter les informations de ce mineur </button>
                             </form>
                         {% endif %}
