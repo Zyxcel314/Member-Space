@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\RepresentantFamille;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,24 +19,18 @@ class RepresentantFamilleType extends AbstractType
     {
         $builder
             ->add('login')
-            ->add('motdepasse')
+            ->add('motDePasse', PasswordType::class,['label' => 'Votre mot de passe', "mapped"=>false])
+            ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez votre mot de passe', "mapped"=>false])
             ->add('nom')
             ->add('prenom')
             ->add('adresse')
-            ->add('noMobile')
-            ->add('noFixe')
+            ->add('noFixe',  TelType::class)
+            ->add('noMobile', TelType::class)
             ->add('mail')
             ->add('dateNaissance', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true
             ])
-            /*
-            ->add('dateFinAdhesion',DateType::class, [
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => false
-            ])
-            */
         ;
     }
 

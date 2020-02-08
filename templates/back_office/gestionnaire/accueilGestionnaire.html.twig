@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2 class="mx-5 my-3"> Mon espace </h2>
+    <ul class="nav nav-tabs pl-5">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.DroitsPerso.show') }}"> Mes droits </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.InfosPerso.show') }}"> Mes informations </a>
+        </li>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('SuperAdmin.ListeGestionnaires.show') }}"> Liste des gestionnaires </a>
+            <input type="hidden" name="redirection">
+        </li>
+        {% endif %}
+        {% if not is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('Gestionnaire.ListeGestionnaires.show') }}"> Liste des gestionnaires </a>
+                <input type="hidden" name="redirection">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('Gestionnaire.ListeFamilles.show') }}"> Liste des représentants </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('ExportDonnees.exportUpdates') }}"> Export des informations des membres </a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}

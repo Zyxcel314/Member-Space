@@ -46,13 +46,13 @@ class GestionnaireAuthentificator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'nom' => $request->request->get('nom'),
+            'mail' => $request->request->get('mail'),
             'motDePasse' => $request->request->get('motDePasse'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['nom']
+            $credentials['mail']
         );
 
         return $credentials;
@@ -65,11 +65,11 @@ class GestionnaireAuthentificator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $gestionnaire = $this->entityManager->getRepository(Gestionnaires::class)->findOneBy(['nom' => $credentials['nom']]);
+        $gestionnaire = $this->entityManager->getRepository(Gestionnaires::class)->findOneBy(['mail' => $credentials['mail']]);
 
         if ( !$gestionnaire ) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Le nom de gestionnaire est introuvable');
+            throw new CustomUserMessageAuthenticationException('L\'adresse e-mail renseignée est introuvable');
         }
 
         return $gestionnaire;

@@ -26,7 +26,7 @@ class AdminController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('gestionnaire/connexion.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('back_office/gestionnaire/connexion.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**

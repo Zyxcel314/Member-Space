@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %} Absence des droits - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace gestionnaire </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        <div class="m-3 w-100">
+            <h3 class="text-danger"> Cher {{ connected_gestionnaire.nom }}, vous n'avez pas les droits pour {{ droitNecessaire }} ! </h3>
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.accueil") }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à votre espace </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

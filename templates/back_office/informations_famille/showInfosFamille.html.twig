@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% block title %} Informations familiales - Odyssée du cirque{% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        {% if infosFamille is empty %}
+            <div class="m-3 w-100">
+                <h3 class="text-danger"> Les informations concernant cette famille n'ont pas été renseignées ! </h3>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.ListeFamilles.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des représentants </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Representant.show", {id: representant.id}) }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner aux informations du représentant </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosFamille.add", {id: representant.id}) }}">
+                    <button type="submit" class="btn btn-warning"> Ajouter les informations familiales </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="m-3 w-100">
+                <h3> Informations familiales du représentant </h3>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.ListeFamilles.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des représentants </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Representant.show", {id: representant.id}) }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner aux informations du représentant </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosFamille.edit", {id: representant.id, idInfosFamille: infosFamille.id}) }}">
+                    <button type="submit" class="btn btn-success"> Modifier les informations familiales </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosFamille.delete", {id: representant.id, idInfosFamille: infosFamille.id}) }}">
+                    <button type="submit" class="btn btn-danger"> Supprimer les informations familiales </button>
+                </form>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th> Numéro allocataire </th>
+                        <td>{{ infosFamille.noAllocataire }}</td>
+                    </tr>
+                    <tr>
+                        <th> Nom CAF </th>
+                        <td>{{ infosFamille.nomCAF }}</td>
+                    </tr>
+                    <tr>
+                        <th> Nombre d'enfants </th>
+                        <td>{{ infosFamille.nbEnfants }}</td>
+                    </tr>
+                    <tr>
+                        <th> Situation familiale </th>
+                        <td>
+                            {% if infosFamille.estMonoparentale == 0 %}
+                                <p class="m-0 p-0"> N'est pas monoparentale </p>
+                            {% elseif infosFamille.estMonoparentale == 1  %}
+                                <p class="m-0 p-0"> Monoparentale </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> Régime de protection sociale </th>
+                        <td>{{ infosFamille.regimeProtectionSociale }}</td>
+                    </tr>
+                    <tr>
+                        <th> Date de modification </th>
+                        <td>{{ infosFamille.dateModification | date('d/m/Y')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

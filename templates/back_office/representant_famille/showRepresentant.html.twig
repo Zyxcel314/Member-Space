@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+{% block title %} Informations familiales - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        <div class="m-3 w-100">
+            <h3 class="w-100"> Informations personnelles du représentant {{ representant.nom }} {{ representant.prenom }} </h3>
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.ListeFamilles.show") }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à la liste des représentants </button>
+            </form>
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Representant.edit", {id: representant.id} ) }}">
+                <button type="submit" class="btn btn-success"> Modifier les informations personelles </button>
+            </form>
+            <form class="mr-3 d-inline" action="{{ path('Gestionnaire.Representant.delete', {id: representant.id} ) }}">
+                <input type="hidden" name="token" value="{{ csrf_token('representant_delete') }}">
+                <button type="submit" class="btn btn-danger"> Supprimer le représentant </button>
+            </form>
+        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th> ID </th>
+                    <td> {{ representant.id }} </td>
+                </tr>
+                <tr>
+                    <th> Pseudonyme </th>
+                    <td> {{ representant.login }} </td>
+                </tr>
+                <tr>
+                    <th> Adresse mail </th>
+                    <td> {{ representant.mail }} </td>
+                </tr>
+                <tr>
+                    <th> Nom </th>
+                    <td> {{ representant.nom }} </td>
+                </tr>
+                <tr>
+                    <th> Prénom </th>
+                    <td> {{ representant.prenom }} </td>
+                </tr>
+                <tr>
+                    <th> Adresse </th>
+                    <td> {{ representant.adresse }} </td>
+                </tr>
+                <tr>
+                    <th> Numéro de mobile </th>
+                    <td> {{ representant.noMobile }} </td>
+                </tr>
+                <tr>
+                    <th> Numéro de fixe </th>
+                    <td> {{ representant.noFixe }} </td>
+                </tr>
+                <tr>
+                    <th> Date de naissance </th>
+                    <td> {{ representant.dateNaissance | date('d/m/Y') }} </td>
+                </tr>
+                <tr>
+                    <th> Date de fin d'adhésion </th>
+                    <td> {{ representant.dateFinAdhesion | date('d/m/Y') }} </td>
+                </tr>
+                <tr>
+                    <th> État du compte </th>
+                    <td>
+                        {% if representant.estActive == 1 %}
+                            <span> Le compte est activé </span>
+                        {% elseif representant.estActive == 0 %}
+                            <span> Le compte n'est pas activé </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th> Informations familiales </th>
+                    <td>
+                        {% if representant.getInformationsFamilles() is not empty %}
+                            <form action="{{ path("Gestionnaire.InfosFamille.show", {id: representant.id} ) }}">
+                                <button type="submit" class="btn btn-primary"> Informations complémentaires </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path("Gestionnaire.InfosFamille.add", {id: representant.id} ) }}">
+                                <button type="submit" class="btn btn-warning"> Ajouter les informations nécesaires </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th> Membres </th>
+                    <td>
+                        {% if representant.getMembreFamilles() is not empty %}
+                            {% for infos_representant in representant.getMembreFamilles() %}
+                                {{ infos_representant.getNom() }}
+                                {{ infos_representant.getPrenom() }}
+                            {% endfor %}
+                            <form action="{{ path("Gestionnaire.Membres.show", {id: representant.id}) }}">
+                                <button type="submit" class="btn btn-primary"> Informations des membres </button>
+                            </form>
+                        {% else %}
+                            <span> Ce représentant n'a pas de membre associé </span>
+                            <form action="{{ path("Gestionnaire.Membre.add", {id: representant.id}) }}">
+                                <button type="submit" class="btn btn-primary"> Ajouter un membre </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+            {#
+            {% for info in representantArray if representantArray is not empty %}
+                <tbody>
+                    <tr>
+                        <td> {{ info.id }} </td>
+                        <td> {{ info.login }} </td>
+                        <td> {{ info.mail }}</td>
+                        <td> {{ info.nom }} </td>
+                        <td> {{ info.prenom }} </td>
+                        <td> {{ info.adresse }} </td>
+                        <td> {{ info.noMobile }} </td>
+                        <td> {{ info.noFixe }} </td>
+                        <td> {{ info.dateNaissance | date('d/m/Y') }} </td>
+                        <td> {{ info.dateFinAdhesion | date('d/m/Y') }} </td>
+                        <td>
+                            {% if info.estActive == 1 %}
+                                <span> Le compte est activé </span>
+                            {% elseif info.estActive == 0 %}
+                                <span> Le compte n'est pas activé </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if info.getInformationsFamilles() is not empty %}
+                                <form action="{{ path("Gestionnaire.InfosFamille.show", {id: representant.id} ) }}">
+                                    <button type="submit" class="btn btn-primary"> Informations complémentaires </button>
+                                </form>
+                            {% else %}
+                                <form action="{{ path("Gestionnaire.InfosFamille.add", {id: representant.id} ) }}">
+                                    <button type="submit" class="btn btn-warning"> Ajouter les informations nécesaires </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if info.getMembreFamilles() is not empty %}
+                                {% for infos_representant in representant.getMembreFamilles() %}
+                                    {{ infos_representant.getNom() }}
+                                    {{ infos_representant.getPrenom() }}
+                                {% endfor %}
+                                <form action="{{ path("Gestionnaire.Membres.show", {id: representant.id}) }}">
+                                    <button type="submit" class="btn btn-primary"> Informations des membres </button>
+                                </form>
+                            {% else %}
+                                <span> Ce représentant n'a pas de membre associé </span>
+                                <form action="{{ path("Gestionnaire.Membre.add", {id: representant.id}) }}">
+                                    <button type="submit" class="btn btn-primary"> Ajouter un membre </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                <tbody>
+            {% endfor %}#}
+        </table>
+    </div>
+{% endblock %}

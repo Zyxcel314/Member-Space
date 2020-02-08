@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %} Modifier des informations du mineur - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Modifier les informations du mineur {{ membre.nom }} {{ membre.prenom }} </h3>
+        <div class="my-3">
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosMineur.show", {id: representant.id, idMembre: membre.id}) }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à la liste des informations </button>
+            </form>
+        </div>
+        {{ form_start(form) }}
+        {{ include('form/_formInfosMineur.html.twig', {'button_label': 'Modifier'}) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+{% block title %} Informations du majeur - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        {% if infosMajeur is empty %}
+            <div class="m-3 w-100">
+                <h3 class="text-danger"> Les informations complémentaires concernant {{ membre.nom }} {{ membre.prenom }} n'ont pas été renseignées ! </h3>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Membres.show", {id: representant.id}) }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des membres </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosMajeur.add", {id: representant.id, idMembre: membre.id}) }}">
+                    <button type="submit" class="btn btn-warning"> Ajouter les informations </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="m-3 w-100">
+                <h3> Informations complémentaires concernant le membre {{ membre.nom }} {{ membre.prenom }} </h3>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Membres.show", {id: representant.id}) }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des membres </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosMajeur.edit", {id: representant.id, idMembre: membre.id}) }}">
+                    <button type="submit" class="btn btn-success"> Modifier les informations </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosMajeur.delete", {id: representant.id, idMembre: membre.id}) }}">
+                    <button type="submit" class="btn btn-danger"> Supprimer les informations </button>
+                </form>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th> ID </th>
+                        <td>{{ infosMajeur.id }}</td>
+                    </tr>
+                    <tr>
+                        <th> Adresse mail </th>
+                        <td>{{ infosMajeur.mail }}</td>
+                    </tr>
+                    <tr>
+                        <th> Communication responsable légal </th>
+                        <td>
+                            {% if infosMajeur.communicationResponsableLegal == 0 %}
+                                <p class="m-0 p-0"> Non autorisée </p>
+                            {% elseif infosMajeur.communicationResponsableLegal == 1  %}
+                                <p class="m-0 p-0"> Autorisée </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

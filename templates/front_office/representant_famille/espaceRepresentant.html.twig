@@ -1,0 +1,36 @@
+{% block body %}
+    <ul class="nav nav-tabs pl-5">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Representant.accueil') }}"> Mon espace </a>
+            <input type="hidden" name="token" value="{{ csrf_token('Representant.accueil') }}">
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Representant.InfosPerso.show') }}"> Mes informations personnelles </a>
+            <input type="hidden" name="token" value="{{ csrf_token('Representant.InfosPerso.show') }}">
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('InfosFamille.show') }}"> Mes informations familiales </a>
+            <input type="hidden" name="token" value="{{ csrf_token('InfosFamille.show') }}">
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Membre.show') }}"> Membres de ma famille </a>
+            <input type="hidden" name="token" value="{{ csrf_token('Membre.show') }}">
+        </li>
+        {% if infosMajeur is defined %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('InfosMajeur.show', {id: membre.id}) }}"> Informations du majeur </a>
+                <input type="hidden" name="token" value="{{ csrf_token('Membre.show') }}">
+            </li>
+        {% elseif infosMineur is defined %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('InfosMineur.show', {id: membre.id}) }}"> Informations du mineur </a>
+                <input type="hidden" name="token" value="{{ csrf_token('InfosMineur.show') }}">
+            </li>
+        {% elseif responsable is defined %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('InfosResponsable.show', {id: membre.id}) }}"> Informations du responsable </a>
+                <input type="hidden" name="token" value="{{ csrf_token('InfosMineur.show') }}">
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}

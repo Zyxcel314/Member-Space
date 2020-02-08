@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %} Ajouter des informations familiales - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Vos informations familiales </h2>
+        {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
+    </div>
+    <div class="mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Ajouter des informations à votre famille </h3>
+        <div class="my-3">
+            <form class="mr-3 d-inline" action="{{ path("InfosFamille.show") }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à vos informations personnelles </button>
+            </form>
+        </div>
+        {{ form_start(form) }}
+        {{ include('form/_formInfosFamille.html.twig', {'button_label': 'Ajouter'}) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{{ form_row(form.nom, {'label': 'Nom : '}) }}
+{{ form_row(form.prenom, {'label': 'Prénom : '}) }}
+{{ form_row(form.dateNaissance, {'label': 'Date de naissance : '}) }}
+{{ form_row(form._token) }}
+<button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
+<input type="hidden" name="token" value="{{ csrf_token('membre_famille') }}"/>
+
+
+{#
+{% if is_granted('ROLE_ADMIN') %}
+    <br>
+    <label> Représentant : </label>
+    <select name="representant_id" class="form-control {% if erreurs.representant_id is defined %} is-invalid {% endif %}">
+        {% if donnees.representant_id.id is not defined or donnees.representant_id.id is empty %}
+            <option value=""> Veuillez choisir un représentant </option>
+        {% endif %}
+        {% for representant in representants %}
+            <option value="{{ representant.id }}"
+                    {% if donnees.representant_id is defined and representant_id == donnees.representant %} selected {% endif %}>
+                {{ representant.nom }}
+            </option>
+        {% endfor %}
+    </select>
+    {% if erreurs.representant_id is defined %}
+        <div class="bg-danger">
+            {{ erreurs.representant_id }}
+        </div>
+    {% endif %}
+{% endif %}
+<div class="form-group">
+    <label> Catégorie : </label>
+    <div>
+        <input type="radio" id="categorie_1" name="categorie[]" value="Mineur" class="form-control">
+        <label for="categorie_1"> Mineur </label>
+    </div>
+    <div>
+        <input type="radio" id="categorie_2" name="categorie[]" value="Majeur" class="form-control">
+        <label for="categorie_2"> Majeur </label>
+    </div>
+    {% if erreurs.categorie is defined %}
+        <div class="bg-danger"> {{ erreurs.categorie }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Nom : </label>
+    <input name="nom"  type="text"  size="18" value="{{donnees.nom | default('')}}" class="form-control {% if erreurs.nom is defined %} is-invalid {% endif %}" >
+    {% if erreurs.nom is defined %}
+        <div class="bg-danger"> {{ erreurs.nom }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Prénom : </label>
+    <input name="prenom"  type="text"  size="18" value="{{donnees.prenom | default('')}}" class="form-control {% if erreurs.prenom is defined %} is-invalid {% endif %}" >
+    {% if erreurs.prenom is defined %}
+        <div class="bg-danger"> {{ erreurs.prenom }} </div>
+    {% endif %}
+</div>
+<br>
+<div class="form-group">
+    <label> Date de naissance : </label>
+    <input name="dateNaissance"  type="date"  size="18"  value="{{donnees.dateNaissance | default('') | date('d-m-Y') }}" class="form-control {% if erreurs.dateNaissance is defined %} is-invalid {% endif %}">
+    {% if erreurs.dateNaissance is defined %}
+        <div class="bg-danger"> {{ erreurs.dateNaissance }} </div>
+    {% endif %}
+</div>
+<br>
+
+{% if button is defined and button == 'Modifier' %}
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="membre_id" value="{{ donnees.id | default('') }}">
+{%  endif %}
+
+<input type="hidden" name="token" value="{{ csrf_token('form_membre_famille') }}">
+
+<button type="submit" class="btn btn-primary">{{ button|default('Valider') }}</button>#}

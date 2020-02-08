@@ -29,13 +29,13 @@ class Droits
     private $libelle;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Gestionnaires", inversedBy="droits")
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispositions", mappedBy="droits")
      */
-    private $gestionnaire;
+    private $dispositions;
 
     public function __construct()
     {
-        $this->gestionnaire = new ArrayCollection();
+        $this->dispositions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,26 +68,31 @@ class Droits
     }
 
     /**
-     * @return Collection|Gestionnaires[]
+     * @return Collection|Dispositions[]
      */
-    public function getGestionnaire(): Collection
+    public function getDispositions(): Collection
     {
-        return $this->gestionnaire;
+        return $this->dispositions;
     }
 
-    public function addGestionnaire(Gestionnaires $gestionnaire): self
+    public function addDisposition(Dispositions $disposition): self
     {
-        if (!$this->gestionnaire->contains($gestionnaire)) {
-            $this->gestionnaire[] = $gestionnaire;
+        if (!$this->dispositions->contains($disposition)) {
+            $this->dispositions[] = $disposition;
+            $disposition->setDroits($this);
         }
 
         return $this;
     }
 
-    public function removeGestionnaire(Gestionnaires $gestionnaire): self
+    public function removeDisposition(Dispositions $disposition): self
     {
-        if ($this->gestionnaire->contains($gestionnaire)) {
-            $this->gestionnaire->removeElement($gestionnaire);
+        if ($this->dispositions->contains($disposition)) {
+            $this->dispositions->removeElement($disposition);
+            // set the owning side to null (unless already changed)
+            if ($disposition->getDroits() === $this) {
+                $disposition->setDroits(null);
+            }
         }
 
         return $this;

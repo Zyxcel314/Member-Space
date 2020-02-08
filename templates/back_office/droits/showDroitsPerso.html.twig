@@ -1,0 +1,78 @@
+{% extends "base.html.twig" %}
+{% block title %} Droits du gestionnaire - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    {# Vue du super admin pour voir ses propres droits #}
+    {% if dispositions.getDroits().getCode() == 'DROITS_SUPER_ADMIN' %}
+        <div>
+            <h2 class="mx-5 my-3"> Mes droits </h2>
+            {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+        </div>
+        <div class="row my-3 mx-5 shadow-lg bg-white">
+            <div class="m-3 w-100">
+                <h3> Vos droits en tant que super administrateur </h3>
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.ListeGestionnaires.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+                </form>
+            </div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> Libellé </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p class="m-0 p-0"> Ajouter un gestionnaire </p>
+                            <p class="m-0 p-0"> Modifier un gestionnaire </p>
+                            <p class="m-0 p-0"> Supprimer un gestionnaire </p>
+                        <td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    {# Vue du gestionnaire pour voir ses propres droits #}
+    {% else %}
+        <div>
+            <h2 class="mx-5 my-3"> Mon espace </h2>
+            {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+        </div>
+        <div class="row my-3 mx-5 shadow-lg bg-white">
+            {% if dispositions.getDroits() is empty %}
+                <div class="m-3 w-100">
+                    <h3 class="text-danger"> Vos droits n'ont pas été renseignés ! </h3>
+                    <form class="mr-3 d-inline" action="{{ path("Gestionnaire.ListeGestionnaires.show") }}">
+                        <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="m-3 w-100">
+                    <h3> Mes droits </h3>
+                    <form class="mr-3 d-inline" action="{{ path("Gestionnaire.ListeGestionnaires.show") }}">
+                        <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+                    </form>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th> ID </th>
+                        <th> Code </th>
+                        <th> Libellé </th>
+                    </tr>
+                    </thead>
+                    {% for infos in dispositionsArray if dispositionsArray is not empty %}
+                        <tbody>
+                        <tr>
+                            <td> {{ infos.getDroits().id }} </td>
+                            <td> {{ infos.getDroits().code }} </td>
+                            <td> {{ infos.getDroits().libelle }} </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

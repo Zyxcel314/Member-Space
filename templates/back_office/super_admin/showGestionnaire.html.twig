@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block title %} Informations du gestionnaire - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace gestionnaire </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        <div class="m-3 w-100">
+            <h3> Informations du gestionnaire {{ selected_gestionnaire.nom }} {{ selected_gestionnaire.prenom }} </h3>
+            <form class="mr-3 d-inline" action="{{ path("SuperAdmin.ListeGestionnaires.show") }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+            </form>
+        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th> ID </th>
+                    <td> {{ selected_gestionnaire.id }} </td>
+                </tr>
+                <tr>
+                    <th> Nom </th>
+                    <td> {{ selected_gestionnaire.nom }} </td>
+                </tr>
+                <tr>
+                    <th> Prénom </th>
+                    <td> {{ selected_gestionnaire.prenom }} </td>
+                </tr>
+                <tr>
+                    <th> Mot de passe </th>
+                    <td> {{ selected_gestionnaire.motdepasse }} </td>
+                </tr>
+                <tr>
+                    <th> ID de l'authentification Google </th>
+                    <td> {{ selected_gestionnaire.idGoogleAuth }} </td>
+                </tr>
+                <tr>
+                    <th> Droits </th>
+                    <td>
+                        {% if selected_gestionnaire.getDispositions() is not empty %}
+                            {% for dispositions in selected_gestionnaire.getDispositions() %}
+                                {% for droits in dispositions.getDroits() %}
+                                    {{ droits.getLibelle() }}
+                                {% endfor %}
+                            {% endfor %}
+                            <form class="my-1" action="{{ path("SuperAdmin.Droits.show", {id: selected_gestionnaire.id}) }}">
+                                <button type="submit" class="btn btn-primary"> Consulter ses droits </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

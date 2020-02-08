@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %} Ajouter un représentant - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Liste des représentants </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Ajouter un représentant </h3>
+        {{ include('form/_formRepresentant.html.twig', {'button_label': 'Ajouter'}) }}
+    </div>
+{% endblock %}

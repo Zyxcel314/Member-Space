@@ -1,0 +1,79 @@
+{% extends "base.html.twig" %}
+{% block title %} Informations du mineur - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Votre espace </h2>
+        {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        {% if infosMineur is empty %}
+            <div class="m-3 w-100">
+                <h3 class="text-danger"> Les informations complémentaires concernant {{ membre.nom }} {{ membre.prenom }} n'ont pas été renseignées ! </h3>
+                <form class="mr-3 d-inline" action="{{ path("Membre.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des membres </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("InfosMineur.add", {id: membre.id}) }}">
+                    <button type="submit" class="btn btn-warning"> Ajouter les informations </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="m-3 w-100">
+                <h3> Informations concernant le membre {{ membre.nom }} {{ membre.prenom() }} </h3>
+                <form class="mr-3 d-inline" action="{{ path("Membre.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des membres </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("InfosMineur.edit", {id: membre.id}) }}">
+                    <button type="submit" class="btn btn-success"> Modifier les informations </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("InfosMineur.delete", {id: membre.id}) }}">
+                    <button type="submit" class="btn btn-danger"> Supprimer les informations </button>
+                </form>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th> Autorisation de transport </th>
+                        <td>
+                            {% if infosMineur.autorisationTransport == 0 %}
+                                <p class="m-0 p-0"> Non autorisée </p>
+                            {% elseif infosMineur.autorisationTransport == 1  %}
+                                <p class="m-0 p-0"> Autorisée </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> Autorisation de droit d'image </th>
+                        <td>
+                            {% if infosMineur.droitImage == 0 %}
+                                <p class="m-0 p-0"> Non autorisée </p>
+                            {% elseif infosMineur.droitImage == 1  %}
+                                <p class="m-0 p-0"> Autorisée </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> Autorisation médicale </th>
+                        <td>
+                            {% if infosMineur.autorisationTransportMedical == 0 %}
+                                <p class="m-0 p-0"> Non autorisée </p>
+                            {% elseif infosMineur.autorisationTransportMedical == 1  %}
+                                <p class="m-0 p-0"> Autorisée </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> Autorisation de sortie seul(e) </th>
+                        <td>
+                            {% if infosMineur.autorisationSortieSeul == 0 %}
+                                <p class="m-0 p-0"> Non autorisée </p>
+                            {% elseif infosMineur.autorisationSortieSeul == 1  %}
+                                <p class="m-0 p-0"> Autorisée </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

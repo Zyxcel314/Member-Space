@@ -1,0 +1,7 @@
+{{ form_row(form.noAllocataire, {'label': 'Numéro d\'allocataire : '}) }}
+{{ form_row(form.nomCAF, {'label': 'Nom C.A.F. : '}) }}
+{{ form_row(form.nbEnfants, {'label': 'Nombre d\'enfants à votre charge : '}) }}
+{{ form_row(form.estMonoparentale, {'label': 'La famille est-elle monoparentale ? '}) }}
+{{ form_row(form.regimeProtectionSociale, {'label': 'Régime de protection sociale : '}) }}
+<button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
+<input type="hidden" name="token" value="{{ csrf_token('infos_famille') }}"/>

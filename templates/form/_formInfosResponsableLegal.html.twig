@@ -1,0 +1,3 @@
+{{ form_row(form.profession, {'label': 'Profession : '}) }}
+<button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
+<input type="hidden" name="token" value="{{ csrf_token('infos_responsable_legal') }}"/>

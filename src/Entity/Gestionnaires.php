@@ -23,6 +23,11 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
     /**
      * @ORM\Column(type="string", length=50)
      */
+    private $mail;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
     private $nom;
 
     /**
@@ -41,24 +46,32 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
     private $idGoogleAuth;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Droits", mappedBy="gestionnaire")
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispositions", mappedBy="gestionnaire")
      */
-    private $droits;
+    private $dispositions;
 
     public function __construct()
     {
         $this->idDroit = new ArrayCollection();
         $this->droits = new ArrayCollection();
+        $this->dispositions = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-    public function setId(int $id): ?int
+
+    public function getMail(): ?string
     {
-        $this->id = $id;
-        return null;
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): self
+    {
+        $this->mail = $mail;
+
+        return $this;
     }
 
     public function getNom(): ?string
@@ -110,43 +123,16 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * @return Collection|Droits[]
-     */
-    public function getDroits(): Collection
-    {
-        return $this->droits;
-    }
-
-    public function addDroit(Droits $droit): self
-    {
-        if (!$this->droits->contains($droit)) {
-            $this->droits[] = $droit;
-            $droit->addGestionnaire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDroit(Droits $droit): self
-    {
-        if ($this->droits->contains($droit)) {
-            $this->droits->removeElement($droit);
-            $droit->removeGestionnaire($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return array (Role|string)[]
      */
     public function getRoles()
     {
-        if ($this->getNom() == 'superadmin'){
+        // ON TOUCHE PLUS : CA MARCHE !
+        // VERTSANDEN ?!
+        if ( $this->getDispositions()->get(0)->getId() == 1 ){
             return ['ROLE_SUPER_ADMIN'];
-    }else{
-            return ['ROLE_ADMIN'];
         }
+        return ['ROLE_ADMIN'];
     }
 
 
@@ -224,5 +210,36 @@ class Gestionnaires implements UserInterface, \Serializable, EquatableInterface
             $this->nom,
             $this->motdepasse
             ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|Dispositions[]
+     */
+    public function getDispositions(): Collection
+    {
+        return $this->dispositions;
+    }
+
+    public function addDisposition(Dispositions $disposition): self
+    {
+        if (!$this->dispositions->contains($disposition)) {
+            $this->dispositions[] = $disposition;
+            $disposition->setGestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisposition(Dispositions $disposition): self
+    {
+        if ($this->dispositions->contains($disposition)) {
+            $this->dispositions->removeElement($disposition);
+            // set the owning side to null (unless already changed)
+            if ($disposition->getGestionnaire() === $this) {
+                $disposition->setGestionnaire(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -1,0 +1,88 @@
+{% extends "base.html.twig" %}
+{% block title %} Gestionnaires - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace gestionnaire </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        {% if gestionnaires is empty %}
+            <div class="m-3 w-100">
+                <h3 class="text-danger"> Aucun gestionnaires n'est inscrit ! </h3>
+                {% if redirection_accueil is defined %}
+                    <form class="mr-3 d-inline" action="{{ path("Gestionnaire.accueil") }}">
+                        <button type="submit" class="btn btn-secondary"> Retourner à votre espace </button>
+                    </form>
+                {% endif %}
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.Gestionnaire.add") }}">
+                    <button type="submit" class="btn btn-primary"> Ajouter un gestionnaire </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="m-3 w-100">
+                <h3> Récapitulatif des gestionnaires </h3>
+                {% if redirection_accueil is defined %}
+                    <form class="mr-3 d-inline" action="{{ path("Gestionnaire.accueil") }}">
+                        <button type="submit" class="btn btn-secondary"> Retourner à votre espace </button>
+                    </form>
+                {% endif %}
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.Gestionnaire.add") }}">
+                    <button type="submit" class="btn btn-primary"> Ajouter un gestionnaire </button>
+                </form>
+            </div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> ID </th>
+                        <th> Nom </th>
+                        <th> Prénom </th>
+                        <th> Mail </th>
+                        <th> ID de l'authentification Google </th>
+                        <th> Droits </th>
+                        <th> Opérations </th>
+                    </tr>
+                </thead>
+                {% for infos in gestionnaires if gestionnaires is not empty %}
+                    <tbody>
+                        <tr>
+                            <td> {{ infos.id }} </td>
+                            <td> {{ infos.nom }} </td>
+                            <td> {{ infos.prenom }} </td>
+                            <td> {{ infos.mail }} </td>
+                            <td> {{ infos.getIdGoogleAuth() }} </td>
+                            <td>
+                                {% if infos.getDispositions() is not empty %}
+                                    {% for disposition in infos.getDispositions() %}
+                                        <p class="m-0 p-0"> {{ disposition.getDroits().getLibelle() }} </p>
+                                    {% endfor %}
+                                    <form class="my-1" action="{{ path("SuperAdmin.Droits.show", {id: infos.id}) }}">
+                                        <button type="submit" class="btn btn-primary"> Consulter les droits de ce gestionnaire </button>
+                                    </form>
+                                {% else %}
+                                    <form class="my-1" action="{{ path("SuperAdmin.Droits.add", {id: infos.id}) }}">
+                                        <button type="submit" class="btn btn-warning"> Ajouter les droits </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form class="my-1" action="{{ path("SuperAdmin.Gestionnaire.edit", {id: infos.id}) }}">
+                                    <button type="submit" class="btn btn-success"> Modifier </button>
+                                </form>
+                                {% set estAffiche = 'false' %}
+                                {% for dispositions in infos.getDispositions() %}
+                                    {% if dispositions.getDroits().getId() != 1 and estAffiche == 'false' %}
+                                        <form class="my-1" action="{{ path("SuperAdmin.Gestionnaire.delete", {id: infos.id}) }}">
+                                            <button type="submit" class="btn btn-danger"> Supprimer </button>
+                                        </form>
+                                        {% set estAffiche = 'true' %}
+                                    {% endif %}
+                                {% endfor %}
+                            <td>
+                        </tr>
+                    <tbody>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

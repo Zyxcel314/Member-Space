@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block title %} Droits du gestionnaire - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace gestionnaire </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+        {% if dispositions.getDroits() is empty %}
+            <div class="m-3 w-100">
+                <h3 class="text-danger"> Droits du gestionnaire {{ dispositions.getGestionnaire().nom }} {{ dispositions.getGestionnaire().prenom }} n'ont pas été renseignés ! </h3>
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.ListeGestionnaires.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.Droits.add", {id: dispositions.getGestionnaire().id }) }}">
+                    <button type="submit" class="btn btn-warning"> Ajouter des droits </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="m-3 w-100">
+                <h3> Droits du gestionnaire {{ dispositions.getGestionnaire().nom }} {{ dispositions.getGestionnaire().prenom }} </h3>
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.ListeGestionnaires.show") }}">
+                    <button type="submit" class="btn btn-secondary"> Retourner à la liste des gestionnaires </button>
+                </form>
+                <form class="mr-3 d-inline" action="{{ path("SuperAdmin.Droits.edit", {id: dispositions.getGestionnaire().id, idDispositions: dispositions.id }) }}">
+                    <button type="submit" class="btn btn-success"> Modifier des droits </button>
+                </form>
+            </div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th> ID </th>
+                        <th> Code </th>
+                        <th> Libellé </th>
+                    </tr>
+                </thead>
+                {% for infos in dispositionsArray if dispositionsArray is not empty %}
+                    <tbody>
+                        <tr>
+                            <td> {{ infos.getDroits().id }} </td>
+                            <td> {{ infos.getDroits().code }} </td>
+                            <td> {{ infos.getDroits().libelle }} </td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

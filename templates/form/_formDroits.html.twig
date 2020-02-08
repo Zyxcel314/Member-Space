@@ -1,0 +1,137 @@
+{#
+{{ form_row(form.droits, {'label': 'Droits accordés : '}) }}
+
+{% for droit in form.droits %}
+    <li>{{ form_row(droit.libelle) }}</li>
+{% endfor %}
+
+<button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
+<input type="hidden" name="token" value="{{ csrf_token('droits') }}"/>
+#}
+
+
+
+
+    <form>
+    <div class="form-group">
+        <label> Consulter un compte adhérent </label>
+        <input name="selected_droits[]" value="RP_VOIR" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'RP_VOIR' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Créer un compte adhérent </label>
+        <input name="selected_droits[]" value="RP_AJOUT" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'RP_AJOUT' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Modifier un compte adhérent </label>
+        <input name="selected_droits[]" value="RP_MODIF" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'RP_MODIF' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Supprimer un compte adhérent </label>
+        <input name="selected_droits[]" value="RP_SUPPR" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'RP_SUPPR' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Consulter les dossiers des adhérents </label>
+        <input name="selected_droits[]" value="INFOS_VOIR" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'INFOS_VOIR' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Créer les dossiers des adhérents </label>
+        <input name="selected_droits[]" value="INFOS_AJOUT" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'INFOS_AJOUT' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Modifier les dossiers des adhérents </label>
+        <input name="selected_droits[]" value="INFOS_MODIF" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'INFOS_MODIF' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Supprimer les dossiers des adhérents </label>
+        <input name="selected_droits[]" value="INFOS_SUPPR" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'INFOS_SUPPR' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label> Exporter les infos des adhérents </label>
+        <input name="selected_droits[]" value="INFOS_EXPORT" type="checkbox"
+                {% if dispositions_gestionnaire is defined %}
+                    {% for droits in dispositions_gestionnaire %}
+                        {% if droits.getDroits().getCode() == 'INFOS_EXPORT' %}
+                            checked
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        >
+    </div>
+
+    <input type="hidden" name="token" value="{{ csrf_token('form_droits') }}">
+    <input type="hidden" name="envoiForm" value="defined">
+
+    <button type="submit" class="btn btn-primary">{{ button | default('Valider') }}</button>
+</form>

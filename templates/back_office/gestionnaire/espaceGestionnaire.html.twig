@@ -1,0 +1,61 @@
+{% block body %}
+    <ul class="nav nav-tabs pl-5">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('Gestionnaire.accueil') }}"> Mon espace </a>
+        </li>
+        {% if not is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('Gestionnaire.ListeGestionnaires.show') }}"> Liste des gestionnaires </a>
+            </li>
+        {% elseif is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('SuperAdmin.ListeGestionnaires.show')}}"> Liste des gestionnaires </a>
+            </li>
+        {% endif %}
+
+        {% if selected_gestionnaire is defined and is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('SuperAdmin.Gestionnaire.show', {id: selected_gestionnaire.id}) }}"> Informations du gestionnaire </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('SuperAdmin.Droits.show', {id: selected_gestionnaire.id}) }}"> Droits du gestionnaire </a>
+            </li>
+        {% endif %}
+
+        {% if not is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('Gestionnaire.ListeFamilles.show') }}"> Liste des représentants </a>
+            </li>
+        {% endif %}
+
+        {% if familles is defined or representant is defined or representant_famille is defined %}
+            {% if representant is defined %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('Gestionnaire.Representant.show', {id: representant.id}) }}"> Informations du représentant </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('Gestionnaire.InfosFamille.show', {id: representant.id}) }}"> Informations familiales </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('Gestionnaire.Membres.show', {id: representant.id}) }}"> Membres du représentant </a>
+                </li>
+
+                {% if membresFamille is defined or membreFamille is defined or membre is defined %}
+                    {% if infosMajeur is defined %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ path('Gestionnaire.InfosMajeur.show', {id: representant.id, idMembre: membre.id}) }}"> Informations du mineur </a>
+                        </li>
+                    {% elseif infosMineur is defined %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ path('Gestionnaire.InfosMineur.show', {id: representant.id, idMembre: membre.id}) }}"> Informations du mineur </a>
+                        </li>
+                    {% elseif responsable is defined %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ path('Gestionnaire.InfosResponsable.show', {id: representant.id, idMembre: membre.id}) }}"> Informations du responsable </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </ul>
+{% endblock %}

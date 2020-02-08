@@ -98,7 +98,7 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('Representant.informationsFamille'));
+        return new RedirectResponse($this->urlGenerator->generate('Representant.accueil'));
     }
 
     protected function getLoginUrl()

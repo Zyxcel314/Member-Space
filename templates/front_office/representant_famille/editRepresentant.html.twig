@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %} Modifier les informations personnelles - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Votre compte </h2>
+        {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
+    </div>
+    <div class="row mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Modifier vos informations personnelles </h3>
+        {{ include('form/_formRepresentant.html.twig', {'button_label': 'Modifier'}) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %} Modifier un membre - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Modifier un membre </h3>
+        <div class="my-3">
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.Membres.show", {id: representant.id}) }}">
+                <button type="submit" class="btn btn-secondary"> Retourner à la liste des membres </button>
+            </form>
+        </div>
+        {{ form_start(form) }}
+        {{ form_row(form.reglement_activite, {'label': 'Les activités auxquelles ce membre à participé ont-elles été payées ? '}) }}
+        {{ form_row(form.traitementDonnees, {'label': 'Les données de ce membre ont-elles été traitées ? '}) }}
+        {{ form_row(form.exportDonnees, {'label': 'Les données de ce membre ont-elles été exportées ?'}) }}
+        {{ include('form/_formMembre.html.twig', {'button_label': 'Modifier'}) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
