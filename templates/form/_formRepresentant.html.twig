@@ -10,6 +10,14 @@
      <h4> Informations personnelles </h4>
      {{ form_row(form.nom, {'label': 'Nom : '}) }}
      {{ form_row(form.prenom, {'label': 'Prénom : '}) }}
+     <div class="form-row">
+         <div class="col-md mb-3">
+             {{ form_row(form.codePostal, {'label': 'Code postal : '}) }}
+         </div>
+         <div class="col-md mb-3">
+             {{ form_row(form.ville, {'label': 'Ville : '}) }}
+         </div>
+     </div>
      {{ form_row(form.adresse, {'label': 'Adresse : '}) }}
      {{ form_row(form.noFixe, {'label': 'Numéro de fixe : '}) }}
      {{ form_row(form.noMobile, {'label': 'Numéro de mobile : '}) }}

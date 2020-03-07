@@ -73,7 +73,7 @@ class RepresentantFamilleController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('succes', 'Informations personnelles modifiées !');
 
-            return $this->redirectToRoute('Representant.infosPerso.show');
+            return $this->redirectToRoute('Representant.InfosPerso.show');
         }
 
         return $this->render('front_office/representant_famille/editRepresentant.html.twig', [

@@ -90,6 +90,16 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
      */
     private $mailTokenVerification;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
     public function __construct()
     {
         $this->informationsFamilles = new ArrayCollection();
@@ -413,6 +423,30 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     public function setMailTokenVerification(string $mailTokenVerification): self
     {
         $this->mailTokenVerification = $mailTokenVerification;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?int
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(int $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }

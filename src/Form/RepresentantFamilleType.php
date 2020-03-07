@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\RepresentantFamille;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,8 @@ class RepresentantFamilleType extends AbstractType
             ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez votre mot de passe', "mapped"=>false])
             ->add('nom')
             ->add('prenom')
+            ->add('ville')
+            ->add('codePostal',NumberType::class)
             ->add('adresse')
             ->add('noFixe',  TelType::class)
             ->add('noMobile', TelType::class)
