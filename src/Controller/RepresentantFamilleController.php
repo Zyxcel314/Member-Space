@@ -71,7 +71,7 @@ class RepresentantFamilleController extends AbstractController
         if ( $form->isSubmitted() && $form->isValid() )
         {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('succes', 'Informations personnelles modifiées !');
+            $this->addFlash('succes', 'Informations personnelles modifiées ! ');
 
             return $this->redirectToRoute('Representant.InfosPerso.show');
         }
