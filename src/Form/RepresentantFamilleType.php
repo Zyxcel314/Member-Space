@@ -19,7 +19,7 @@ class RepresentantFamilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login')
+            ->add('mail')
             ->add('motDePasse', PasswordType::class,['label' => 'Votre mot de passe', "mapped"=>false])
             ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez votre mot de passe', "mapped"=>false])
             ->add('nom')
@@ -29,7 +29,6 @@ class RepresentantFamilleType extends AbstractType
             ->add('adresse')
             ->add('noFixe',  TelType::class)
             ->add('noMobile', TelType::class)
-            ->add('mail')
             ->add('dateNaissance', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true

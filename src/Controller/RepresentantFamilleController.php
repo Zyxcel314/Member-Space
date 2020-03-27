@@ -98,9 +98,7 @@ class RepresentantFamilleController extends AbstractController
             ->add('save', SubmitType::class, ['label' => 'Créer un compte']);
         $form->handleRequest($request);
         dump($form->get('motDePasse')->getData());
-        dump($form->get('confirmermdp')->getData());
         $passwordsmatch = strcmp($form->get("motDePasse")->getData(),$form->get("confirmermdp")->getData())==0;
-        dump($passwordsmatch);
         if(!$passwordsmatch){
             $form->get('confirmermdp')->addError(new FormError('Les deux mots de passes ne correspondent pas'));
         }
@@ -114,8 +112,10 @@ class RepresentantFamilleController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid() && $passwordsmatch && $majeur)
         {
-            $hash = $encoder->encodePassword($representantFamille, $representantFamille->getMotdepasse());
+            $hash = $encoder->encodePassword($representantFamille, $form->get('motDePasse')->getData());
             $representantFamille->setMotdepasse($hash);
+            dump($encoder->isPasswordValid($representantFamille,"nohannohan"));
+
             $representantFamille->setDateFinAdhesion(new \DateTime());
             $entityManager = $this->getDoctrine()->getManager();
             $membre = new MembreFamille();
@@ -152,7 +152,6 @@ class RepresentantFamilleController extends AbstractController
         // Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
 
-        try {
             //Server settings
             $mail->isSMTP();                                            // Send using SMTP
             $mail->Host = 'smtp.gmail.com';                    // Set the SMTP server to send through
@@ -173,8 +172,6 @@ class RepresentantFamilleController extends AbstractController
 
             $mail->send();
 
-        }
-        catch (Exception $e) {}
     }
 
     /**
@@ -304,6 +301,7 @@ class RepresentantFamilleController extends AbstractController
                 $representantFamille->setMailTokenVerification($token);
                 $hash = $encoder->encodePassword($representantFamille, $representantFamille->getMotdepasse());
                 $representantFamille->setMotdepasse($hash);
+
                 $dateActuelle = new \DateTime();
                 $membre = new MembreFamille();
                 $entityManager = $this->getDoctrine()->getManager();

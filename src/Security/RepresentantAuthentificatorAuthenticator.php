@@ -46,7 +46,7 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'login' => $request->request->get('login'),
+            'login' => $request->request->get('mail'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
@@ -54,7 +54,6 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
             Security::LAST_USERNAME,
             $credentials['login']
         );
-
         return $credentials;
     }
 
@@ -65,7 +64,7 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(RepresentantFamille::class)->findOneBy(['login' => $credentials['login']]);
+        $user = $this->entityManager->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $credentials['login']]);
 
         if (!$user) {
             // fail authentication with a custom error
@@ -77,6 +76,7 @@ class RepresentantAuthentificatorAuthenticator extends AbstractFormLoginAuthenti
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        //dd($user." ".$credentials['password']);
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 

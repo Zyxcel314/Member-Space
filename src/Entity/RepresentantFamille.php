@@ -21,11 +21,6 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $login;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $motdepasse;
@@ -109,18 +104,6 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
-
-        return $this;
     }
 
     public function getMotdepasse(): ?string
@@ -297,7 +280,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     public function getUsername()
     {
         // TODO: Implement getUsername() method.
-        return $this->getLogin();
+        return $this->getMail();
     }
 
     /**
@@ -323,7 +306,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
         //    return false;
         //}
 
-        if ($this->login !== $user->getLogin()) {
+        if ($this->mail !== $user->getUsername()) {
             return false;
         }
         return true;
@@ -334,7 +317,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
         //die('serialize');
         return serialize(array(
             $this->id,
-            $this->login,
+            $this->mail,
             $this->motdepasse
         ));
     }
@@ -343,7 +326,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     {
         list (
             $this->id,
-            $this->login,
+            $this->mail,
             $this->motdepasse
             ) = unserialize($serialized, ['allowed_classes' => false]);
     }
@@ -412,7 +395,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
 
     public function __toString()
     {
-        return (string) $this->login;
+        return (string) $this->mail;
     }
 
     public function getMailTokenVerification(): ?string
