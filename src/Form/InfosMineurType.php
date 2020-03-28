@@ -16,10 +16,12 @@ use Symfony\Component\Form\AbstractType;
 use App\Entity\InformationsFamille;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 
 class InfosMineurType extends AbstractType
@@ -47,11 +49,9 @@ class InfosMineurType extends AbstractType
                     'Oui' => true,
                     'Non' => false,
                 ],])
-            /*->add('autorisationSorties', ChoiceType::class, [
-                'choices'  => [
-                    'Oui' => true,
-                    'Non' => false,
-                ],])*/
+            ->add('ficheSanitaires', FileType::class,[
+                'data_class' => null,
+            ])
         ;
     }
 

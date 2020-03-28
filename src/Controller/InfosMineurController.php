@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\String\UnicodeString;
+
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
@@ -39,7 +43,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
-
+use Symfony\Component\String\Slugger\AsciiSlugger;
 /**
  * @IsGranted("ROLE_USER")
  */
@@ -70,6 +74,26 @@ class InfosMineurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $fichier = $form->get('ficheSanitaires')->getData();
+            $slugger = new AsciiSlugger();
+
+            if ($fichier) {
+                $originalFilename = pathinfo($fichier->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$fichier->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $fichier->move(
+                        $this->getParameter('ficheSanitaires_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+
+                $infosMineur->addFicheSanitaire($newFilename);
+            }
+
             $infosMineur
                 ->setMembreFamille($membreFamille);
             $entityManager = $this->getDoctrine()->getManager();

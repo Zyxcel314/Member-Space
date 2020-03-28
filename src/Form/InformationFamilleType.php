@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\InformationsFamille;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,11 +14,11 @@ class InformationFamilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('noAllocataire')
-            ->add('nomCAF')
-            ->add('nbEnfants')
+            ->add('noAllocataire', TextType::class, ['required' => false])
+            ->add('nomCAF', TextType::class, ['required' => false])
+            ->add('nbEnfants', TextType::class, ['required' => false])
             ->add('estMonoparentale')
-            ->add('regimeProtectionSociale')
+            ->add('regimeProtectionSociale', TextType::class, ['required' => false])
             //->add('representant_famille', HiddenType::class, ['required'=>false])
         ;
     }

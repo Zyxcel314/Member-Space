@@ -5,6 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
+use phpDocumentor\Reflection\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InformationsMineurRepository")
@@ -49,7 +53,7 @@ class InformationsMineur
     private $autorisationSorties;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\FicheSanitaire", mappedBy="informations_mineur")
+     * @ORM\Column(type="string")
      */
     private $ficheSanitaires;
 
@@ -155,20 +159,16 @@ class InformationsMineur
         return $this;
     }
 
-    /**
-     * @return Collection|FicheSanitaire[]
-     */
-    public function getFicheSanitaires(): Collection
+
+    public function getFicheSanitaires(): string
     {
         return $this->ficheSanitaires;
     }
 
-    public function addFicheSanitaire(FicheSanitaire $ficheSanitaire): self
+    public function addFicheSanitaire(string $ficheSanitaire): self
     {
-        if (!$this->ficheSanitaires->contains($ficheSanitaire)) {
-            $this->ficheSanitaires[] = $ficheSanitaire;
-            $ficheSanitaire->addInformationsMineur($this);
-        }
+            $this->ficheSanitaires = $ficheSanitaire;
+
 
         return $this;
     }
@@ -202,6 +202,13 @@ class InformationsMineur
                 $autorisationSorty->setInformationsMineur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setFicheSanitaires(string $ficheSanitaires): self
+    {
+        $this->ficheSanitaires = $ficheSanitaires;
 
         return $this;
     }

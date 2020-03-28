@@ -2,6 +2,7 @@
 {{ form_row(form.droitImage, {'label': 'Accordez-vous la diffusion de son image ? '}) }}
 {{ form_row(form.autorisationTransportMedical, {'label': 'Est-ce que ce mineur dispose de l\'autorisation médicale de sortir ? '}) }}
 {{ form_row(form.autorisationSortieSeul, {'label': 'Accordez-vous à ce mineur la possibilité qu\'il puisse sortir sans votre accompagnement ? '}) }}
+{{ form_row(form.ficheSanitaires, {'label': 'Veuillez renseigner la fiche sanitaire du mineur (fichier au format PDF) '}) }}
 {{ form_row(form._token) }}
 <button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
 <input type="hidden" name="token" value="{{ csrf_token('infosMineur') }}"/>
