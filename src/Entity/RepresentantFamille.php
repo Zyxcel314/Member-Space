@@ -46,7 +46,7 @@ class RepresentantFamille implements UserInterface, \Serializable, EquatableInte
     private $noMobile;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $noFixe;
 

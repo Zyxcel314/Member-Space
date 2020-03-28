@@ -27,8 +27,11 @@ class RepresentantFamilleType extends AbstractType
             ->add('ville')
             ->add('codePostal',NumberType::class)
             ->add('adresse')
-            ->add('noFixe',  TelType::class)
-            ->add('noMobile', TelType::class)
+            ->add('noFixe',  TelType::class,
+                [ 'required' => false,
+                    'attr' => ['maxlength' => 10]])
+            ->add('noMobile', TelType::class,
+                [ 'attr' => ['maxlength' => 10]])
             ->add('dateNaissance', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true
