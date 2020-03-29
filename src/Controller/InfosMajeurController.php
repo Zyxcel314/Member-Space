@@ -46,47 +46,83 @@ use Twig\Environment;
  */
 class InfosMajeurController extends AbstractController
 {
+    public function hasRepresentantDroits(RegistryInterface $doctrine, $representant, $membre)
+    {
+        $membresRepresentant = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $representant->getId()], ['id' => 'ASC']);
+        foreach ( $membresRepresentant as $membreRepresentant )
+        {
+            if ( $membreRepresentant->getId() == $membre->getId() )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/membre/{id}/informationsMajeur", name="InfosMajeur.show")
      */
     public function showInfosMajeurUSER(Request $request, Environment $twig, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
-        $infosMajeur = $doctrine->getRepository(InformationMajeur::class)->findOneBy(array('membre_famille' => $membreFamille));
-        return new Response($twig->render('front_office/membre_famille/majeur/showInfosMajeur.html.twig', [
-            'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'infosMajeur' => $infosMajeur,
-        ]));
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
+            $infosMajeur = $doctrine->getRepository(InformationMajeur::class)->findOneBy(array('membre_famille' => $membreFamille));
+            return new Response($twig->render('front_office/membre_famille/majeur/showInfosMajeur.html.twig', [
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'infosMajeur' => $infosMajeur,
+            ]));
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "voir"
+            ]);
+        }
     }
 
     /**
      * @Route("/membre/{id}/ajouterInfosMajeur", name="InfosMajeur.add")
      */
-    public function addInfosMajeurUSER(Request $request, MembreFamille $membreFamille) : Response
+    public function addInfosMajeurUSER(RegistryInterface $doctrine, Request $request, MembreFamille $membreFamille) : Response
     {
         $infosMajeur = new InformationMajeur();
-
-        $form = $this->createForm(InfosMajeurType::class, $infosMajeur);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $infosMajeur
-                ->setMembreFamille($membreFamille);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($infosMajeur);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du majeur ajoutées !');
+            $form = $this->createForm(InfosMajeurType::class, $infosMajeur);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $infosMajeur
+                    ->setMembreFamille($membreFamille);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($infosMajeur);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du majeur ajoutées !');
+
+                return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+            }
+
+            return $this->render('front_office/membre_famille/majeur/addInfosMajeur.html.twig', [
+                'infosMajeur' => $infosMajeur,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/membre_famille/majeur/addInfosMajeur.html.twig', [
-            'infosMajeur' => $infosMajeur,
-            'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'form' => $form->createView(),
-        ]);
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "ajouter"
+            ]);
+        }
     }
 
     /**
@@ -95,26 +131,37 @@ class InfosMajeurController extends AbstractController
     public function editInfosMajeurUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
         $infosMajeur = $doctrine->getRepository(InformationMajeur::class)->findOneBy(array('membre_famille' => $membreFamille));
-
-        $form = $this->createForm(InfosMajeurType::class, $infosMajeur);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($infosMajeur);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du majeur modifiées !');
+            $form = $this->createForm(InfosMajeurType::class, $infosMajeur);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($infosMajeur);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du majeur modifiées !');
+
+                return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+            }
+
+            return $this->render('front_office/membre_famille/majeur/editInfosMajeur.html.twig', [
+                'infosMajeur' => $infosMajeur,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/membre_famille/majeur/editInfosMajeur.html.twig', [
-            'infosMajeur' => $infosMajeur,
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+            'representant' => $representant,
             'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'form' => $form->createView(),
-        ]);
+            'nomOperation' => "modifier"
+            ]);
+        }
     }
 
     /**
@@ -123,23 +170,34 @@ class InfosMajeurController extends AbstractController
     public function deleteInfosMajeurUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille)
     {
         $infosMajeur = $doctrine->getRepository(InformationMajeur::class)->findOneBy(array('membre_famille' => $membreFamille));
-
-        try {
-            if ( $infosMajeur != null )
-            {
-                $infosMajeur->setMembreFamille(null);
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
+            try {
+                if ( $infosMajeur != null )
+                {
+                    $infosMajeur->setMembreFamille(null);
+                }
+                $doctrine->getEntityManager()->remove($infosMajeur);
+            } catch (ORMException $e) {
             }
-            $doctrine->getEntityManager()->remove($infosMajeur);
-        } catch (ORMException $e) {
-        }
-        try {
-            $doctrine->getEntityManager()->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
-        $this->addFlash('succes', 'Informations du majeur supprimées !');
+            try {
+                $doctrine->getEntityManager()->flush();
+            } catch (OptimisticLockException $e) {
+            } catch (ORMException $e) {
+            }
+            $this->addFlash('succes', 'Informations du majeur supprimées !');
 
-        return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+            return $this->redirectToRoute('InfosMajeur.show', ['id' => $membreFamille->getId()]);
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "modifier"
+            ]);
+        }
     }
 
 

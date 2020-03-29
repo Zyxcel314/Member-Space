@@ -49,67 +49,104 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 class InfosMineurController extends AbstractController
 {
+    public function hasRepresentantDroits(RegistryInterface $doctrine, $representant, $membre)
+    {
+        $membresRepresentant = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $representant->getId()], ['id' => 'ASC']);
+        foreach ( $membresRepresentant as $membreRepresentant )
+        {
+            if ( $membreRepresentant->getId() == $membre->getId() )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/membre/{id}/informationsMineur", name="InfosMineur.show")
      */
-    public function showInfosMineurUSER(Request $request, Environment $twig, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
+    public function showInfosMineurUSER(Environment $twig, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
-        $infosMineur = $doctrine->getRepository(InformationsMineur::class)->findOneBy(array('membre_famille' => $membreFamille));
-        return new Response($twig->render('front_office/membre_famille/mineur/showInfosMineur.html.twig', [
-            'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'infosMineur' => $infosMineur,
-        ]));
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
+            $infosMineur = $doctrine->getRepository(InformationsMineur::class)->findOneBy(array('membre_famille' => $membreFamille));
+            return new Response($twig->render('front_office/membre_famille/mineur/showInfosMineur.html.twig', [
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'infosMineur' => $infosMineur,
+            ]));
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "voir"
+            ]);
+        }
     }
 
     /**
      * @Route("/membre/{id}/ajouterInfosMineur", name="InfosMineur.add")
      */
-    public function addInfosMineurUSER(Request $request, MembreFamille $membreFamille) : Response
+    public function addInfosMineurUSER(RegistryInterface $doctrine, Request $request, MembreFamille $membreFamille) : Response
     {
         $infosMineur = new InformationsMineur();
-
-        $form = $this->createForm(InfosMineurType::class, $infosMineur);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $fichier = $form->get('ficheSanitaires')->getData();
-            $slugger = new AsciiSlugger();
 
-            if ($fichier) {
-                $originalFilename = pathinfo($fichier->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$fichier->guessExtension();
+            $form = $this->createForm(InfosMineurType::class, $infosMineur);
+            $form->handleRequest($request);
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $fichier->move(
-                        $this->getParameter('ficheSanitaires_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $fichier = $form->get('ficheSanitaires')->getData();
+                $slugger = new AsciiSlugger();
+
+                if ($fichier) {
+                    $originalFilename = pathinfo($fichier->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$fichier->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $fichier->move(
+                            $this->getParameter('ficheSanitaires_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                    }
+
+                    $infosMineur->addFicheSanitaire($newFilename);
                 }
 
-                $infosMineur->addFicheSanitaire($newFilename);
+                $infosMineur
+                    ->setMembreFamille($membreFamille);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($infosMineur);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du mineur ajoutées !');
+
+                return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
             }
 
-            $infosMineur
-                ->setMembreFamille($membreFamille);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($infosMineur);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du mineur ajoutées !');
-
-            return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
+            return $this->render('front_office/membre_famille/mineur/addInfosMineur.html.twig', [
+                'infosMineur' => $infosMineur,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/membre_famille/mineur/addInfosMineur.html.twig', [
-            'infosMineur' => $infosMineur,
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+            'representant' => $representant,
             'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'form' => $form->createView(),
-        ]);
+            'nomOperation' => "ajouter"
+            ]);
+        }
     }
 
     /**
@@ -117,27 +154,39 @@ class InfosMineurController extends AbstractController
      */
     public function editInfosMineurUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
         $infosMineur = $doctrine->getRepository(InformationsMineur::class)->findOneBy(array('membre_famille' => $membreFamille));
 
-        $form = $this->createForm(InfosMineurType::class, $infosMineur);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($infosMineur);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du mineur modifiées !');
+            $form = $this->createForm(InfosMineurType::class, $infosMineur);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
+            if ( $form->isSubmitted() && $form->isValid() )
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($infosMineur);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du mineur modifiées !');
+
+                return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
+            }
+
+            return $this->render('front_office/membre_famille/mineur/editInfosMineur.html.twig', [
+                'infosMineur' => $infosMineur,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser()->getId(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/membre_famille/mineur/editInfosMineur.html.twig', [
-            'infosMineur' => $infosMineur,
-            'membre' => $membreFamille,
-            'representant' => $this->getUser()->getId(),
-            'form' => $form->createView(),
-        ]);
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "modifier"
+            ]);
+        }
     }
 
     /**
@@ -146,23 +195,35 @@ class InfosMineurController extends AbstractController
     public function deleteInfosMineurUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille)
     {
         $infosMineur = $doctrine->getRepository(InformationsMineur::class)->findOneBy(array('membre_famille' => $membreFamille));
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
 
-        try {
-            if ( $infosMineur != null )
-            {
-                $infosMineur->setMembreFamille(null);
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
+            try {
+                if ( $infosMineur != null )
+                {
+                    $infosMineur->setMembreFamille(null);
+                }
+                $doctrine->getEntityManager()->remove($infosMineur);
+            } catch (ORMException $e) {
             }
-            $doctrine->getEntityManager()->remove($infosMineur);
-        } catch (ORMException $e) {
-        }
-        try {
-            $doctrine->getEntityManager()->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
-        $this->addFlash('succes', 'Informations du mineur supprimées !');
+            try {
+                $doctrine->getEntityManager()->flush();
+            } catch (OptimisticLockException $e) {
+            } catch (ORMException $e) {
+            }
+            $this->addFlash('succes', 'Informations du mineur supprimées !');
 
-        return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
+            return $this->redirectToRoute('InfosMineur.show', ['id' => $membreFamille->getId()]);
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "supprimer"
+            ]);
+        }
     }
 
 

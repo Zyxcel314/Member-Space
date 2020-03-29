@@ -43,47 +43,84 @@ use Twig\Environment;
  */
 class ResponsableLegalController extends AbstractController
 {
+    public function hasRepresentantDroits(RegistryInterface $doctrine, $representant, $membre)
+    {
+        $membresRepresentant = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $representant->getId()], ['id' => 'ASC']);
+        foreach ( $membresRepresentant as $membreRepresentant )
+        {
+            if ( $membreRepresentant->getId() == $membre->getId() )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/membre/{id}/informationsResponsable", name="InfosResponsable.show")
      */
     public function showInfosResponsableUSER(Request $request, Environment $twig, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
         $responsable = $doctrine->getRepository(InformationResponsableLegal::class)->findOneBy(array('membre_famille' => $membreFamille));
-        return new Response($twig->render('front_office/responsable_legal/showInfosResponsableLegal.html.twig', [
-            'membre' => $membreFamille,
-            'representant' => $this->getUser(),
-            'responsable' => $responsable,
-        ]));
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
+            return new Response($twig->render('front_office/responsable_legal/showInfosResponsableLegal.html.twig', [
+                'membre' => $membreFamille,
+                'representant' => $this->getUser(),
+                'responsable' => $responsable,
+            ]));
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "voir"
+            ]);
+        }
     }
 
     /**
      * @Route("/membre/{id}/ajouterInfosResponsable", name="InfosResponsable.add")
      */
-    public function addInfosResponsableUSER(Request $request, MembreFamille $membreFamille) : Response
+    public function addInfosResponsableUSER(RegistryInterface $doctrine, Request $request, MembreFamille $membreFamille) : Response
     {
         $responsable = new InformationResponsableLegal();
-
-        $form = $this->createForm(InfosResponsableLegalType::class, $responsable);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $responsable
-                ->setMembreFamille($membreFamille);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($responsable);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du responsable ajoutées !');
 
-            return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+            $form = $this->createForm(InfosResponsableLegalType::class, $responsable);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $responsable
+                    ->setMembreFamille($membreFamille);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($responsable);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du responsable ajoutées !');
+
+                return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+            }
+
+            return $this->render('front_office/responsable_legal/addInfosResponsableLegal.html.twig', [
+                'responsable' => $responsable,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/responsable_legal/addInfosResponsableLegal.html.twig', [
-            'responsable' => $responsable,
-            'membre' => $membreFamille,
-            'representant' => $this->getUser(),
-            'form' => $form->createView(),
-        ]);
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "ajouter"
+            ]);
+        }
     }
 
     /**
@@ -92,26 +129,38 @@ class ResponsableLegalController extends AbstractController
     public function editInfosResponsableUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille) : Response
     {
         $responsable = $doctrine->getRepository(InformationResponsableLegal::class)->findOneBy(array('membre_famille' => $membreFamille));
-
-        $form = $this->createForm(InfosResponsableLegalType::class, $responsable);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($responsable);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Informations du responsable modifiées !');
 
-            return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+            $form = $this->createForm(InfosResponsableLegalType::class, $responsable);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($responsable);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Informations du responsable modifiées !');
+
+                return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+            }
+
+            return $this->render('front_office/responsable_legal/editInfosResponsableLegal.html.twig', [
+                'responsable' => $responsable,
+                'membre' => $membreFamille,
+                'representant' => $this->getUser(),
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/responsable_legal/editInfosResponsableLegal.html.twig', [
-            'responsable' => $responsable,
-            'membre' => $membreFamille,
-            'representant' => $this->getUser(),
-            'form' => $form->createView(),
-        ]);
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "modifier"
+            ]);
+        }
     }
 
     /**
@@ -120,23 +169,35 @@ class ResponsableLegalController extends AbstractController
     public function deleteInfosResponsableUSER(Request $request, RegistryInterface $doctrine, MembreFamille $membreFamille)
     {
         $responsable = $doctrine->getRepository(InformationResponsableLegal::class)->findOneBy(array('membre_famille' => $membreFamille));
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
+        {
 
-        try {
-            if ( $responsable != null )
-            {
-                $responsable->setMembreFamille(null);
+            try {
+                if ( $responsable != null )
+                {
+                    $responsable->setMembreFamille(null);
+                }
+                $doctrine->getEntityManager()->remove($responsable);
+            } catch (ORMException $e) {
             }
-            $doctrine->getEntityManager()->remove($responsable);
-        } catch (ORMException $e) {
-        }
-        try {
-            $doctrine->getEntityManager()->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
-        $this->addFlash('succes', 'Informations du reponsable supprimées !');
+            try {
+                $doctrine->getEntityManager()->flush();
+            } catch (OptimisticLockException $e) {
+            } catch (ORMException $e) {
+            }
+            $this->addFlash('succes', 'Informations du reponsable supprimées !');
 
-        return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+            return $this->redirectToRoute('InfosResponsable.show', ['id' => $membreFamille->getId()]);
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "modifier"
+            ]);
+        }
     }
 
 

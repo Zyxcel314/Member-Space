@@ -45,6 +45,19 @@ use Twig\Environment;
  */
 class MembreFamilleController extends AbstractController
 {
+    public function hasRepresentantDroits(RegistryInterface $doctrine, $representant, $membre)
+    {
+        $membresRepresentant = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $representant->getId()], ['id' => 'ASC']);
+        foreach ( $membresRepresentant as $membreRepresentant )
+        {
+            if ( $membreRepresentant->getId() == $membre->getId() )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/membre", name="Membre.show", methods={"GET"})
      */
@@ -56,6 +69,7 @@ class MembreFamilleController extends AbstractController
         date_sub($date, date_interval_create_from_date_string('18 years'));
         return $this->render('front_office/membre_famille/showMembres.html.twig', ['membresFamille' => $membres, 'dateMajorite'=>$date]);
     }
+
     /**
      * @Route("/membre/ajouterMembre", name="Membre.add")
      */
@@ -114,41 +128,52 @@ class MembreFamilleController extends AbstractController
         $representant = $doctrine->getRepository(RepresentantFamille::class)->find($idRepresentant);
         //$responsableLegaux = $doctrine->getRepository(InformationResponsableLegal::class)->findBy([], ['id' => 'ASC']);
 
-        $form = $this->createForm(MembreFamilleType::class, $membreFamille);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $dateNaissance = $membreFamille->getDateNaissance();
-            $dateActuelle = new \DateTime(date('Y-m-d'));
-            $dateMajorite = date_sub($dateActuelle, date_interval_create_from_date_string('18 years'));
-            if ( $dateNaissance < $dateMajorite ) {
+            $form = $this->createForm(MembreFamilleType::class, $membreFamille);
+            $form->handleRequest($request);
+
+            if ( $form->isSubmitted() && $form->isValid())
+            {
+                $dateNaissance = $membreFamille->getDateNaissance();
+                $dateActuelle = new \DateTime(date('Y-m-d'));
+                $dateMajorite = date_sub($dateActuelle, date_interval_create_from_date_string('18 years'));
+                if ( $dateNaissance < $dateMajorite ) {
+                    $membreFamille
+                        ->setCategorie('Majeur')
+                        ->setNoClient($idRepresentant . 'MJ');
+                } else {
+                    $membreFamille
+                        ->setCategorie('Mineur')
+                        ->setNoClient($idRepresentant . 'MN');
+                }
+                $dateActuelle = new \DateTime(date('Y-m-d'));
                 $membreFamille
-                    ->setCategorie('Majeur')
-                    ->setNoClient($idRepresentant . 'MJ');
-            } else {
-                $membreFamille
-                    ->setCategorie('Mineur')
-                    ->setNoClient($idRepresentant . 'MN');
+                    ->setRepresentantFamille($representant)
+                    ->setDateMAJ($dateActuelle);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($membreFamille);
+                $entityManager->flush();
+                $this->addFlash('succes', 'Membre modifié !');
+
+                return $this->redirectToRoute('Membre.show');
             }
-            $dateActuelle = new \DateTime(date('Y-m-d'));
-            $membreFamille
-                ->setRepresentantFamille($representant)
-                ->setDateMAJ($dateActuelle);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($membreFamille);
-            $entityManager->flush();
-            $this->addFlash('succes', 'Membre modifié !');
-
-            return $this->redirectToRoute('Membre.show');
+            return $this->render('front_office/membre_famille/editMembre.html.twig', [
+                'membreFamille' => $membreFamille,
+                'representant' => $representant,
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('front_office/membre_famille/editMembre.html.twig', [
-            'membreFamille' => $membreFamille,
-            'representant' => $representant,
-            'form' => $form->createView(),
-        ]);
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "modifier"
+            ]);
+        }
     }
 
     /**
@@ -159,23 +184,35 @@ class MembreFamilleController extends AbstractController
         if ( !$this->isCsrfTokenValid('membre_famille_delete', $request->request->get('token')) ) {
             throw new InvalidCsrfTokenException('ERREUR : Clé CSRF invalide');
         }
-        $responsableLegal = $doctrine->getRepository(InformationResponsableLegal::class)->findOneBy(array('membre_famille' => $membreFamille));
-        if ( $responsableLegal != null )
+        $representant = $doctrine->getRepository(RepresentantFamille::class)->find($this->getUser()->getId());
+        if ( $this->hasRepresentantDroits($doctrine, $representant, $membreFamille) )
         {
-            $responsableLegal->setMembreFamille(null);
-        }
-        try {
-            $doctrine->getEntityManager()->remove($membreFamille);
-        } catch (ORMException $e) {
-        }
-        try {
-            $doctrine->getEntityManager()->flush();
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
-        $this->addFlash('succes', 'Membre supprimé !');
+            $responsableLegal = $doctrine->getRepository(InformationResponsableLegal::class)->findOneBy(array('membre_famille' => $membreFamille));
+            if ( $responsableLegal != null )
+            {
+                $responsableLegal->setMembreFamille(null);
+            }
+            try {
+                $doctrine->getEntityManager()->remove($membreFamille);
+            } catch (ORMException $e) {
+            }
+            try {
+                $doctrine->getEntityManager()->flush();
+            } catch (OptimisticLockException $e) {
+            } catch (ORMException $e) {
+            }
+            $this->addFlash('succes', 'Membre supprimé !');
 
-        return $this->redirectToRoute('Membre.show');
+            return $this->redirectToRoute('Membre.show');
+        }
+        else
+        {
+            return $this->render('erreurs/representant_noDroits.html.twig', [
+                'representant' => $representant,
+                'membre' => $membreFamille,
+                'nomOperation' => "supprimer"
+            ]);
+        }
     }
 
 

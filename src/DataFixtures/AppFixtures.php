@@ -140,36 +140,36 @@ class AppFixtures extends Fixture
     {
         $dispositions = [
             // Droits du SUPER_ADMIN
-            ['id' => 1, 'id_gestionnaire' => 1, 'id_droits' => 1],
+            ['id' => 1, 'id_gestionnaire' => 1, 'id_droit' => 1],
 
             // Droits du Gestionnaire1
-            ['id' => 2, 'id_gestionnaire' => 2, 'id_droits' => 2],
-            ['id' => 3, 'id_gestionnaire' => 2, 'id_droits' => 3],
-            ['id' => 4, 'id_gestionnaire' => 2, 'id_droits' => 4],
-            ['id' => 5, 'id_gestionnaire' => 2, 'id_droits' => 5],
-            ['id' => 6, 'id_gestionnaire' => 2, 'id_droits' => 6],
-            ['id' => 7, 'id_gestionnaire' => 2, 'id_droits' => 7],
-            ['id' => 8, 'id_gestionnaire' => 2, 'id_droits' => 8],
-            ['id' => 9, 'id_gestionnaire' => 2, 'id_droits' => 9],
-            ['id' => 10, 'id_gestionnaire' => 2, 'id_droits' => 10],
+            ['id' => 2, 'id_gestionnaire' => 2, 'id_droit' => 2],
+            ['id' => 3, 'id_gestionnaire' => 2, 'id_droit' => 3],
+            ['id' => 4, 'id_gestionnaire' => 2, 'id_droit' => 4],
+            ['id' => 5, 'id_gestionnaire' => 2, 'id_droit' => 5],
+            ['id' => 6, 'id_gestionnaire' => 2, 'id_droit' => 6],
+            ['id' => 7, 'id_gestionnaire' => 2, 'id_droit' => 7],
+            ['id' => 8, 'id_gestionnaire' => 2, 'id_droit' => 8],
+            ['id' => 9, 'id_gestionnaire' => 2, 'id_droit' => 9],
+            ['id' => 10, 'id_gestionnaire' => 2, 'id_droit' => 10],
 
             // Droits du Gestionnaire2
-            ['id' => 11, 'id_gestionnaire' => 3, 'id_droits' => 2],
-            ['id' => 12, 'id_gestionnaire' => 3, 'id_droits' => 6],
-            ['id' => 13, 'id_gestionnaire' => 3, 'id_droits' => 7],
-            ['id' => 14, 'id_gestionnaire' => 3, 'id_droits' => 8],
-            ['id' => 15, 'id_gestionnaire' => 3, 'id_droits' => 9],
+            ['id' => 11, 'id_gestionnaire' => 3, 'id_droit' => 2],
+            ['id' => 12, 'id_gestionnaire' => 3, 'id_droit' => 6],
+            ['id' => 13, 'id_gestionnaire' => 3, 'id_droit' => 7],
+            ['id' => 14, 'id_gestionnaire' => 3, 'id_droit' => 8],
+            ['id' => 15, 'id_gestionnaire' => 3, 'id_droit' => 9],
 
             // Droits du Gestionnaire3
-            ['id' => 16, 'id_gestionnaire' => 4, 'id_droits' => 2],
-            ['id' => 17, 'id_gestionnaire' => 4, 'id_droits' => 6],
-            ['id' => 18, 'id_gestionnaire' => 4, 'id_droits' => 7],
+            ['id' => 16, 'id_gestionnaire' => 4, 'id_droit' => 2],
+            ['id' => 17, 'id_gestionnaire' => 4, 'id_droit' => 6],
+            ['id' => 18, 'id_gestionnaire' => 4, 'id_droit' => 7],
         ];
 
         foreach ($dispositions as $disposition)
         {
             $gestionnaire = $manager->getRepository(Gestionnaires::class)->find(['id' => $disposition['id_gestionnaire']]);
-            $droits = $manager->getRepository(Droits::class)->find(['id' => $disposition['id_droits']]);
+            $droits = $manager->getRepository(Droits::class)->find(['id' => $disposition['id_droit']]);
             $newDispositions = new Dispositions();
             if ( $gestionnaire ) {
                 $newDispositions->setGestionnaire($gestionnaire);
@@ -185,23 +185,23 @@ class AppFixtures extends Fixture
     public function loadRepresentantsFamilles(ObjectManager $manager)
     {
         $representants = [
-            ['id ' => 1, 'login' => 'Thomas', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-              'nom' => 'MATTONE', 'prenom' => 'Thomas', 'adresse' => 'Belfort', 'nomobile' => '01010101', 'nofixe' => '01111111' , 'mail' => 'thomas@gmail.com',
+            ['id ' => 1, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+              'nom' => 'MATTONE', 'prenom' => 'Thomas', 'adresse' => 'une adresse', 'ville' => 'Belfort', 'codepostal' => '90000', 'nomobile' => '01010101', 'nofixe' => '01111111' , 'mail' => 'thomas@gmail.com',
               'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01'],
-            ['id ' => 2, 'login' => 'Zaid', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-            'nom' => 'ALAA HAZID', 'prenom' => 'Zaid', 'adresse' => 'Belfort', 'nomobile' => '02020202', 'nofixe' => '02222222' , 'mail' => 'zaid@gmail.com',
+            ['id ' => 2, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+            'nom' => 'ALAA HAZID', 'prenom' => 'Zaid', 'adresse' => 'une adresse', 'ville' => 'Belfort', 'codepostal' => '90000', 'nomobile' => '02020202', 'nofixe' => '02222222' , 'mail' => 'zaid@gmail.com',
             'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01'],
-            ['id ' => 3, 'login' => 'Nathan', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-                'nom' => 'JAUGEY', 'prenom' => 'Nathan', 'adresse' => 'Belfort', 'nomobile' => '03030303', 'nofixe' => '03333333' , 'mail' => 'nathan@gmail.com',
+            ['id ' => 3, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+                'nom' => 'JAUGEY', 'prenom' => 'Nathan', 'adresse' => 'une adresse', 'ville' => 'Belfort', 'codepostal' => '90000', 'nomobile' => '03030303', 'nofixe' => '03333333' , 'mail' => 'nathan@gmail.com',
                 'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01'],
-            ['id ' => 4, 'login' => 'Brayan', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-                'nom' => 'BIOUT', 'prenom' => 'Brayan', 'adresse' => 'Belfort', 'nomobile' => '04040404', 'nofixe' => '04444444' , 'mail' => 'brayan@gmail.com',
+            ['id ' => 4, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+                'nom' => 'BIOUT', 'prenom' => 'Brayan', 'adresse' => 'une adresse', 'ville' => 'Belfort', 'codepostal' => '90000', 'nomobile' => '04040404', 'nofixe' => '04444444' , 'mail' => 'brayan@gmail.com',
                 'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01'],
-            ['id ' => 5, 'login' => 'Adam', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-                'nom' => 'MEGNAI', 'prenom' => 'Adam', 'adresse' => 'Belfort', 'nomobile' => '05050505', 'nofixe' => '05555555' , 'mail' => 'adam@gmail.com',
+            ['id ' => 5, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+                'nom' => 'MEGNAI', 'prenom' => 'Adam', 'adresse' => 'une adresse', 'ville' => 'Belfort', 'codepostal' => '90000', 'nomobile' => '05050505', 'nofixe' => '05555555' , 'mail' => 'adam@gmail.com',
                 'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01'],
-            ['id ' => 6, 'login' => 'Ted', 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
-                'nom' => 'PERROS', 'prenom' => 'Ted', 'adresse' => 'Villars les Paumés', 'nomobile' => '06060606', 'nofixe' => '06666666' , 'mail' => 'ted@hotmail.fr',
+            ['id ' => 6, 'motdepasse' => '$2y$13$zW/YYlmBo9.9TaEi0L7wq./cV7Sbjvj7S0.Wu.PyOR0Qu8goTPljW',
+                'nom' => 'PERROS', 'prenom' => 'Ted', 'adresse' => 'une adresse', 'ville' => 'Villars les Paumés', 'codepostal' => '25310', 'nomobile' => '06060606', 'nofixe' => '06666666' , 'mail' => 'ted@hotmail.fr',
                 'datenaissance' => '2000-01-01', 'datefinadhesion' => '2020-01-01']
         ];
 
@@ -209,11 +209,12 @@ class AppFixtures extends Fixture
         {
             $newRepresentant = new RepresentantFamille();
             $newRepresentant
-                ->setLogin($representant['login'])
                 ->setMotdepasse($representant['motdepasse'])
                 ->setNom($representant['nom'])
                 ->setPrenom($representant['prenom'])
                 ->setAdresse($representant['adresse'])
+                ->setVille($representant['ville'])
+                ->setCodePostal($representant['codepostal'])
                 ->setNoMobile($representant['nomobile'])
                 ->setNoFixe($representant['nofixe'])
                 ->setMail($representant['mail'])
