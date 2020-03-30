@@ -110,7 +110,11 @@ class RepresentantFamilleController extends AbstractController
             $form->get('dateNaissance')->addError(new FormError('Il faut être majeur pour s\'insrire'));
             $majeur = false;
         }
-        if ($form->isSubmitted() && $form->isValid() && $passwordsmatch && $majeur)
+        $exists = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $form->get('mail')->getData()]) != null;
+        if($exists)
+            $form->get('mail')->addError(new FormError("Cette adresse mail est déja utilisée"));
+
+        if ($form->isSubmitted() && $form->isValid() && $passwordsmatch && $majeur && !$exists)
         {
             $hash = $encoder->encodePassword($representantFamille, $form->get('motDePasse')->getData());
             $representantFamille->setMotdepasse($hash);
