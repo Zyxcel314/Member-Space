@@ -82,6 +82,70 @@ class RepresentantFamilleController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/representant/reinitialiser", name="Representant.demandeResetPassword", methods={"GET","POST"})
+     */
+    public function demandeResetPassword(Request $request, UserPasswordEncoderInterface $encoder): Response
+    {
+        if($request->isMethod('GET')) {
+            return $this->render('security/demandeResetPassword.html.twig');
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $request->get('mail')]);
+        if($user == null) {
+            return $this->render('security/demandeResetPassword.html.twig', ['erreur' => 'Cette adresse mail n\'existe pas']);
+        }
+        if(!$user->getEstActive()){
+            return $this->render('security/demandeResetPassword.html.twig', ['erreur' => 'Veuillez d\'abord activer le compte depuis votre boite mail']);
+        }
+
+        $mail = new PHPMailer(true);
+        //Generation d'un token
+        $token = $this->genenererTokenMail();
+        $user->setMailTokenVerification($token);
+        $entityManager->flush();
+
+        //Server settings
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host = $_SERVER['HOTE'];                    // Set the SMTP server to send through
+        $mail->SMTPAuth = $_SERVER['SMTPAuth'];                                   // Enable SMTP authentication
+        $mail->Username = $_SERVER['Username'];                     // SMTP username
+        $mail->Password = $_SERVER['Password'];                               // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port = $_SERVER['Port'];                                    // TCP port to connect to
+
+        //Recipients
+        $mail->setFrom('odysseeducirquemail@gmail.com', 'Activation Odyssee du cirque');
+        $mail->addAddress($request->get('mail'));     // Add a recipient
+
+        // Content
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = 'Reinitialisation du mot de passe';
+        $mail->Body = "<br><a href='localhost:8000/representant/reinitialiser/" . $token . "'>Cliquez ici</a> sur le lien pour activer votre compte http://localhost:8000/representant/reinitialiser/".$token ;
+
+        $mail->send();
+        return $this->render('security/demandeResetPassword.html.twig', ['retour' => 'Un mail avec un lien de reinitialisation du mot de passe à été envoyé à '.$request->get('mail')]);
+    }
+
+    /**
+     * @Route("/representant/reinitialiser/{token}", name="Representant.reinitialiserMotDePasse", methods={"GET","POST"})
+     */
+    public function reinitialiserMotDePasse(Request $request, UserPasswordEncoderInterface $encoder, $token): Response
+    {
+        $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mailTokenVerification' => $token]);
+        if($request->isMethod('GET')) {
+            return $this->render('security/nouveauMotDePasse.html.twig',['mail'=>$representant->getMail()]);
+        }
+        if(strcmp($request->get("mdp1"),$request->get("mdp2"))!=0) {
+            return $this->render('security/nouveauMotDePasse.html.twig',['mail'=>$representant->getMail(),'erreur'=>'Les deux mot de passes ne correspondent pas']);
+        }
+
+        $hash = $encoder->encodePassword($representant, $request->get('mdp1'));
+        $representant->setMotdepasse($hash);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->render('security/nouveauMotDePasse.html.twig',['retour'=>'Le mot de passe de '.$representant->getMail().' a été modifié vous pouvez désormais vous connecter avec votre nouveau mot de passe']);
+    }
+
 
     /**
      * @Route("/representant/inscription", name="Representant.ajouter", methods={"GET","POST"})
@@ -97,7 +161,6 @@ class RepresentantFamilleController extends AbstractController
             ->add('confirmermdp', PasswordType::class,['label' => 'Confirmez', "mapped"=>false])
             ->add('save', SubmitType::class, ['label' => 'Créer un compte']);
         $form->handleRequest($request);
-        dump($form->get('motDePasse')->getData());
         $passwordsmatch = strcmp($form->get("motDePasse")->getData(),$form->get("confirmermdp")->getData())==0;
         if(!$passwordsmatch){
             $form->get('confirmermdp')->addError(new FormError('Les deux mots de passes ne correspondent pas'));
@@ -118,7 +181,6 @@ class RepresentantFamilleController extends AbstractController
         {
             $hash = $encoder->encodePassword($representantFamille, $form->get('motDePasse')->getData());
             $representantFamille->setMotdepasse($hash);
-            dump($encoder->isPasswordValid($representantFamille,"nohannohan"));
 
             $representantFamille->setDateFinAdhesion(new \DateTime());
             $entityManager = $this->getDoctrine()->getManager();
@@ -152,30 +214,28 @@ class RepresentantFamilleController extends AbstractController
     }
 
     public function sendConfirmationEmail($email,$token) {
-
         // Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
 
-            //Server settings
-            $mail->isSMTP();                                            // Send using SMTP
-            $mail->Host = 'smtp.gmail.com';                    // Set the SMTP server to send through
-            $mail->SMTPAuth = true;                                   // Enable SMTP authentication
-            $mail->Username = 'odysseeducirquemail@gmail.com';                     // SMTP username
-            $mail->Password = 'vivelesclowns';                               // SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
-            $mail->Port = 587;                                    // TCP port to connect to
+        //Server settings
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host = $_SERVER['HOTE'];                    // Set the SMTP server to send through
+        $mail->SMTPAuth = $_SERVER['SMTPAuth'];                                   // Enable SMTP authentication
+        $mail->Username = $_SERVER['Username'];                     // SMTP username
+        $mail->Password = $_SERVER['Password'];                               // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port = $_SERVER['Port'];                                    // TCP port to connect to
 
-            //Recipients
-            $mail->setFrom('odysseeducirquemail@gmail.com', 'Activation Odyssee du cirque');
-            $mail->addAddress($email);     // Add a recipient
+        //Recipients
+        $mail->setFrom('odysseeducirquemail@gmail.com', 'Activation Odyssee du cirque');
+        $mail->addAddress($email);     // Add a recipient
 
-            // Content
-            $mail->isHTML(true);                                  // Set email format to HTML
-            $mail->Subject = 'Activation compte';
-            $mail->Body = "<br><a href='localhost:8000/representant/activer/" . $token . "'>Cliquez ici</a>sur le lien pour activer votre compte http://localhost:8000/representant/activer/".$token ;
+        // Content
+        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->Subject = 'Activation compte';
+        $mail->Body = "<br><a href='localhost:8000/representant/activer/" . $token . "'>Cliquez ici</a>sur le lien pour activer votre compte http://localhost:8000/representant/activer/".$token ;
 
-            $mail->send();
-
+        $mail->send();
     }
 
     /**

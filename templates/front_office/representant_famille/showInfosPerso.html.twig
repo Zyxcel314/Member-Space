@@ -3,17 +3,14 @@
 
 {% block body %}
     <div>
-        <h2 class="mx-5 my-3"> Votre espace </h2>
+        <h2 class="mx-5 my-3"> Mon espace </h2>
         {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
     </div>
     <div class="row my-3 mx-5 shadow-lg bg-white">
         <div class="m-3 w-100">
-            <h3> Vos informations personnelles </h3>
-            <form class="mr-3 d-inline" action="{{ path("Representant.accueil") }}">
-                <button type="submit" class="btn btn-secondary"> Retourner à votre espace </button>
-            </form>
+            <h3> Mes informations personnelles </h3>
             <form class="mr-3 d-inline" action="{{ path("Representant.InfosPerso.edit") }}">
-                <button type="submit" class="btn btn-success"> Modifier vos informations personnelles </button>
+                <button type="submit" class="btn btn-success"> Modifier mes informations personnelles </button>
             </form>
         </div>
         <table class="table">

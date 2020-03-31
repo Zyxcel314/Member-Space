@@ -42,12 +42,7 @@
         S'identifier
     </button>
     <a href="{{ path('Representant.ajouter') }}" class="btn btn-secondary">Inscription</a>
-</form>
-
-<form action="{{ path('app_gestionnaire_login') }}" method="post">
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary"> Se connecter en tant que gestionnaire </button>
-    </div>
-</form>
+        <a class="btn btn-link" href="{{ path('Representant.demandeResetPassword') }}" > mot de passe oublié</a>
+        </form>
 {% endif %}
 {% endblock %}
