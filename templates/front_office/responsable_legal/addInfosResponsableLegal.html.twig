@@ -7,7 +7,7 @@
         {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
     </div>
     <div class="mx-5 my-3 shadow-lg p-3 bg-white rounded">
-        <h3 class="w-100"> Ajouetr des informations du responsable légal de {{ membre.nom }} {{ membre.prenom }} </h3>
+        <h3 class="w-100"> Ajouter les informations du responsable légal de {{ membre.nom }} {{ membre.prenom }} </h3>
         <div class="my-3">
             <form class="mr-3 d-inline" action="{{ path('InfosResponsable.show', {id: membre.id}) }}">
                 <button type="submit" class="btn btn-secondary"> Retourner à la liste des informations du responsable </button>
