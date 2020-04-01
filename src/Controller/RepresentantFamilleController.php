@@ -146,7 +146,7 @@ class RepresentantFamilleController extends AbstractController
 
         $hash = $encoder->encodePassword($representant, $request->get('mdp1'));
         $representant->setMotdepasse($hash);
-        $representant->setToken("");
+        $representant->setMailTokenVerification("");
         $this->getDoctrine()->getManager()->flush();
         return $this->render('security/nouveauMotDePasse.html.twig',['retour'=>'Le mot de passe de '.$representant->getMail().' a été modifié vous pouvez désormais vous connecter avec votre nouveau mot de passe']);
     }
