@@ -251,13 +251,14 @@ class RepresentantFamilleController extends AbstractController
         $representant->setEstActive(1);
 
         $dateMAJ = new \DateTime();
+        /*
         $membre = new MembreFamille();
         $membre
             ->setNom($representant->getNom())
             ->setPrenom($representant->getPrenom())
             ->setDateNaissance($representant->getDateNaissance())
             ->setCategorie('Majeur')
-            ->setNoClient($representant->getId().'RP')
+            ->setNoClient($representant->getId())
             ->setTraitementDonnees(0)
             ->setDateMAJ($dateMAJ)
             ->setRepresentantFamille($representant)
@@ -268,9 +269,11 @@ class RepresentantFamilleController extends AbstractController
         $info_majeur->setCommunicationResponsableLegal(0);
         $membre->setInformationMajeur($info_majeur);
 
-        $manager->persist($representant);
+
         $manager->persist($membre);
         $manager->persist($info_majeur);
+        */
+        $manager->persist($representant);
         $manager->flush();
 
         return $this->render('front_office/representant_famille/activation.html.twig', array(
