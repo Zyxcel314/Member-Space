@@ -44,7 +44,7 @@
                         <th> État civil </th>
                         <th> Représentant </th>
                         <th> Profession du responsable légal </th>
-                        <th> ID de l'enfant  </th>
+                        <th> ID de la personne  </th>
                         <th> Règlement </th>
                         <th> Date de mise à jour </th>
                         <th> État </th>
@@ -65,14 +65,22 @@
                             {{membreFamille.getRepresentantFamille().getPrenom() }}
                         </td>
                         <td>
-                            {% if membreFamille.getInformationResponsableLegals() is not empty %}
-                                <form action="{{ path("Gestionnaire.InfosResponsable.show", {id: representant.id, idMembre: membreFamille.id}) }}">
-                                    <button type="submit" class="btn btn-primary"> Informations du responsable légal </button>
-                                </form>
+                            {#Vérifie si le membre n'est pas le représentant#}
+                            {% if membreFamille.getRepresentantFamille().getPrenom() != membreFamille.getPrenom() and
+                                membreFamille.getRepresentantFamille().getNom() == membreFamille.getNom() %}
+                                {% if membreFamille.getInformationResponsableLegals() is not empty %}
+                                    <form action="{{ path("Gestionnaire.InfosResponsable.show", {id: representant.id, idMembre: membreFamille.id}) }}">
+                                        <button type="submit" class="btn btn-primary"> Informations du responsable légal </button>
+                                        <input type="hidden" name="idMembre" value="{{ membreFamille.id }}">
+                                    </form>
+                                {% else %}
+                                    <form action="{{ path("Gestionnaire.InfosResponsable.add", {id: representant.id, idMembre: membreFamille.id}) }}">
+                                        <button type="submit" class="btn btn-warning"> Associer un responsable légal </button>
+                                        <input type="hidden" name="idMembre" value="{{ membreFamille.id }}">
+                                    </form>
+                                {% endif %}
                             {% else %}
-                                <form action="{{ path("Gestionnaire.InfosResponsable.add", {id: representant.id, idMembre: membreFamille.id}) }}">
-                                    <button type="submit" class="btn btn-warning"> Associer un responsable légal </button>
-                                </form>
+                                <span> Cette personne est le représentant de cette famille </span>
                             {% endif %}
                         </td>
                         {% if membreFamille.dateNaissance | date('Y-m-d') > dateMajorite | date('Y-m-d') %}

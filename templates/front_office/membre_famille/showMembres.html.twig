@@ -21,7 +21,6 @@
                 <button type="submit" class="btn btn-primary"> Ajouter un membre </button>
             </form>
         </div>
-        {#{ //TODO: A rendre plus beau et responsive #}
         <div class="w-100">
             {% for membreFamille in membresFamille if membresFamille is not empty %}
                 <div class="rounded-circle text-center" style="display: inline-block; background-image: linear-gradient(orange, orangered); height: 350px; width: 350px; ">
@@ -37,14 +36,18 @@
 
                     <p class="m-0 p-0"> Né(e) le : {{membreFamille.dateNaissance() | date('d/m/Y')}} </p>
 
-                    {% if membreFamille.getInformationResponsableLegals() is not empty %}
-                        <form action="{{ path("InfosResponsable.show", {id: membreFamille.id}) }}">
-                            <button type="submit" class="btn btn-primary"> Informations du responsable </button>
-                        </form>
-                    {% else %}
-                        <form action="{{ path("InfosResponsable.add", {id: membreFamille.id}) }}">
-                            <button type="submit" class="btn btn-warning"> Associer un responsable légal </button>
-                        </form>
+                    {#Vérifie si le membre n'est pas le représentant#}
+                    {% if membreFamille.getRepresentantFamille().getPrenom() != membreFamille.getPrenom() and
+                        membreFamille.getRepresentantFamille().getNom() == membreFamille.getNom() %}
+                        {% if membreFamille.getInformationResponsableLegals() is not empty %}
+                            <form action="{{ path("InfosResponsable.show", {id: membreFamille.id}) }}">
+                                <button type="submit" class="btn btn-primary"> Informations du responsable </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path("InfosResponsable.add", {id: membreFamille.id}) }}">
+                                <button type="submit" class="btn btn-warning"> Associer un responsable légal </button>
+                            </form>
+                        {% endif %}
                     {% endif %}
 
                     {% if membreFamille.dateNaissance|date('Y-m-d') > dateMajorite|date('Y-m-d') %}
@@ -68,22 +71,18 @@
                             </form>
                         {% endif %}
                     {% endif %}
-
-                    {#ReglementActivite.reglerActivites#}
-                    {% if membreFamille.getReglementActivite() == false %}
-                        <form action="">
-                            <button type="submit" class="btn btn-primary"> Payer les activités auquelles ce membre a participé </button>
-                        </form>
-                    {% else %}
-                        <span> Les activitées auxquelles ce membre a participé ont été payées ! </span>
-                    {% endif %}
                     <form action="{{ path("Membre.edit", {id: membreFamille.id}) }}">
                         <button type="submit" class="btn btn-success"> Modifier </button>
                     </form>
-                    <form action="{{ path('Membre.delete', {id: membreFamille.id}) }}" method="POST">
-                        <input type="hidden" name="token" value="{{ csrf_token('membre_famille_delete') }}">
-                        <button type="submit" class="btn btn-danger"> Supprimer </button>
-                    </form>
+
+                    {#Vérifie si le membre n'est pas le représentant#}
+                    {% if membreFamille.getRepresentantFamille().getPrenom() != membreFamille.getPrenom() and
+                        membreFamille.getRepresentantFamille().getNom() == membreFamille.getNom() %}
+                        <form action="{{ path('Membre.delete', {id: membreFamille.id}) }}" method="POST">
+                            <input type="hidden" name="token" value="{{ csrf_token('membre_famille_delete') }}">
+                            <button type="submit" class="btn btn-danger"> Supprimer </button>
+                        </form>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

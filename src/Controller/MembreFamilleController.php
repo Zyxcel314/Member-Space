@@ -244,7 +244,7 @@ class MembreFamilleController extends AbstractController
         $listeDroits = $doctrine->getRepository(Droits::class)->findAll();
         $droitNecessaire = $this->droitNecessaire($listeDroits, "INFOS_VOIR");
 
-        if ( $this->verifierDroits($dispositions, "INFOS_VOIR") )
+        if ( $this->hasDroits($dispositions, "INFOS_VOIR") )
         {
             $membres = $doctrine->getRepository(MembreFamille::class)->findBy(['representant_famille' => $representantFamille], ['id' => 'ASC']);
             $dateActuelle = new \DateTime(date('Y-m-d'));

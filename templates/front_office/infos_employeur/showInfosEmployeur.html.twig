@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+{% block title %} Employeur - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Mon espace </h2>
+        {% include 'front_office/representant_famille/espaceRepresentant.html.twig' %}
+    </div>
+    <div class="row my-3 mx-5 shadow-lg bg-white">
+    {% if infosEmployeur is empty %}
+        <div class="m-3 w-100">
+            <h3 class="text-danger"> Les informations concernant l'employeur de ce responsable n'ont pas été renseignées ! </h3>
+            <form class="mr-3 d-inline" action="{{ path("InfosResponsable.show", {id: membre.id}) }}">
+                <button type="submit" class="btn btn-secondary"> Retourner aux informations du responsable </button>
+            </form>
+            <form class="mr-3 d-inline" action="{{ path("InfosEmployeur.add", {id: membre.id, idResponsable: responsable.id}) }}">
+                <button type="submit" class="btn btn-warning"> Ajouter les informations de l'employeur </button>
+            </form>
+        </div>
+    {% else %}
+        <div class="m-3 w-100">
+            <h3> Informations de l'employeur du responsable {{ representant.nom }} {{ representant.prenom }} </h3>
+            <form class="mr-3 d-inline" action="{{ path("InfosResponsable.show", {id: membre.id}) }}">
+                <button type="submit" class="btn btn-secondary"> Retourner aux informations du responsable </button>
+            </form>
+            <form class="mr-3 d-inline" action="{{ path("InfosEmployeur.edit", {id: membre.id, idResponsable: responsable.id}) }}">
+                <button type="submit" class="btn btn-success"> Modifier les informations de l'employeur </button>
+            </form>
+            <form class="mr-3 d-inline" action="{{ path("InfosEmployeur.delete", {id: membre.id, idResponsable: responsable.id}) }}">
+                <button type="submit" class="btn btn-danger"> Supprimer les informations de l'employeur </button>
+            </form>
+        </div>
+        <div class="w-100">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th> Nom </th>
+                        <td>{{ infosEmployeur.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th> Ville </th>
+                        <td>{{ infosEmployeur.ville }}</td>
+                    </tr>
+                    <tr>
+                        <th> Pays </th>
+                        <td>{{ infosEmployeur.pays }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -36,6 +36,23 @@
                         <th> Profession </th>
                         <td>{{ responsable.profession }}</td>
                     </tr>
+                    <tr>
+                        <th> Employeur </th>
+                        <td>
+                            {% if responsable.getInformationEmployeurs() is not empty %}
+                                {% for infosEmployeur in responsable.getInformationEmployeurs() %}
+                                    {{ infosEmployeur.getNom() }}
+                                {% endfor %}
+                                <form class="mr-3 d-inline" action="{{ path("InfosEmployeur.show", {id: membre.id, idResponsable: responsable.id}) }}">
+                                    <button type="submit" class="btn btn-primary"> Consulter les informations de l'employeur </button>
+                                </form>
+                            {% else %}
+                                <form class="mr-3 d-inline" action="{{ path("InfosEmployeur.add", {id: membre.id, idResponsable: responsable.id}) }}">
+                                    <button type="submit" class="btn btn-warning"> Ajouter les informations de l'employeur </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
                 </body>
             </table>
         {% endif %}

@@ -151,7 +151,6 @@ class RepresentantFamilleController extends AbstractController
         return $this->render('security/nouveauMotDePasse.html.twig',['retour'=>'Le mot de passe de '.$representant->getMail().' a été modifié vous pouvez désormais vous connecter avec votre nouveau mot de passe']);
     }
 
-
     /**
      * @Route("/representant/inscription", name="Representant.ajouter", methods={"GET","POST"})
      */
@@ -167,7 +166,7 @@ class RepresentantFamilleController extends AbstractController
             ->add('save', SubmitType::class, ['label' => 'Créer un compte']);
         $form->handleRequest($request);
         $passwordsmatch = strcmp($form->get("motDePasse")->getData(),$form->get("confirmermdp")->getData())==0;
-        if(!$passwordsmatch){
+        if( !$passwordsmatch ){
             $form->get('confirmermdp')->addError(new FormError('Les deux mots de passes ne correspondent pas'));
         }
         $dateNaissance = $representantFamille->getDateNaissance();
@@ -195,7 +194,7 @@ class RepresentantFamilleController extends AbstractController
                 ->setPrenom($representantFamille->getPrenom())
                 ->setDateNaissance($representantFamille->getDateNaissance())
                 ->setCategorie('Majeur')
-                ->setNoClient($representantFamille->getId() . 'RP')
+                ->setNoClient($representantFamille->getId().'RP')
                 ->setTraitementDonnees(0)
                 ->setDateMAJ($dateActuelle)
                 ->setRepresentantFamille($representantFamille)
@@ -246,21 +245,19 @@ class RepresentantFamilleController extends AbstractController
     /**
      * @Route("/representant/activer/{token}", name="Representant.activer")
      */
-    public function activationUser(ObjectManager $manager, $token) {
+    public function activationUser(ObjectManager $manager, $token)
+    {
         $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mailTokenVerification' => $token]);
-
         $representant->setEstActive(1);
 
         $dateMAJ = new \DateTime();
-
-
         $membre = new MembreFamille();
         $membre
-            ->setNoClient(0)
-            ->setCategorie('Majeur')
             ->setNom($representant->getNom())
             ->setPrenom($representant->getPrenom())
             ->setDateNaissance($representant->getDateNaissance())
+            ->setCategorie('Majeur')
+            ->setNoClient($representant->getId().'RP')
             ->setTraitementDonnees(0)
             ->setDateMAJ($dateMAJ)
             ->setRepresentantFamille($representant)
@@ -271,8 +268,9 @@ class RepresentantFamilleController extends AbstractController
         $info_majeur->setCommunicationResponsableLegal(0);
         $membre->setInformationMajeur($info_majeur);
 
-        $manager->persist($membre);
         $manager->persist($representant);
+        $manager->persist($membre);
+        $manager->persist($info_majeur);
         $manager->flush();
 
         return $this->render('front_office/representant_famille/activation.html.twig', array(
@@ -355,18 +353,20 @@ class RepresentantFamilleController extends AbstractController
 
             $passwordsmatch = strcmp($form->get("motDePasse")->getData(), $form->get("confirmermdp")->getData()) == 0;
             dump($passwordsmatch);
-            if (!$passwordsmatch) {
+            if ( !$passwordsmatch ) {
                 $form->get('confirmermdp')->addError(new FormError('Les deux mots de passes ne correspondent pas'));
             }
             $dateNaissance = $representantFamille->getDateNaissance();
             $dateActuelle = new \DateTime(date('Y-m-d'));
             $dateMajorite = date_sub($dateActuelle, date_interval_create_from_date_string('18 years'));
             $majeur = true;
-            if ($dateNaissance > $dateMajorite) {
+            if ( $dateNaissance > $dateMajorite)
+            {
                 $form->get('dateNaissance')->addError(new FormError('Il faut que le représentant soit majeur pour l\'ajouter dans la base de données'));
                 $majeur = false;
             }
-            if ($form->isSubmitted() && $form->isValid() && $passwordsmatch && $majeur) {
+            if ( $form->isSubmitted() && $form->isValid() && $passwordsmatch && $majeur )
+            {
                 $token = $this->genenererTokenMail();
                 $representantFamille->setMailTokenVerification($token);
                 $hash = $encoder->encodePassword($representantFamille, $representantFamille->getMotdepasse());
@@ -376,7 +376,6 @@ class RepresentantFamilleController extends AbstractController
                 $membre = new MembreFamille();
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($representantFamille);
-                /*
                 $membre
                     ->setNom($representantFamille->getNom())
                     ->setPrenom($representantFamille->getPrenom())
@@ -387,8 +386,11 @@ class RepresentantFamilleController extends AbstractController
                     ->setDateMAJ($dateActuelle)
                     ->setRepresentantFamille($representantFamille)
                     ->setReglementActivite(0);
+                $infosMajeur = new InformationMajeur();
+                $infosMajeur->setMail($representantFamille->getMail());
+                $infosMajeur->setCommunicationResponsableLegal(0);
+                $membre->setInformationMajeur($infosMajeur);
                 $entityManager->persist($membre);
-                */
                 $entityManager->flush();
                 $this->addFlash('success', 'Représentant de famille ajouté !');
 

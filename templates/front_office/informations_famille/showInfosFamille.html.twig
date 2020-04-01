@@ -9,9 +9,10 @@
     <div class="row my-3 mx-5 shadow-lg bg-white">
         {% if infosFamille is empty %}
             <div class="m-3 w-100">
-                <h3 class="text-danger"> Les informations concernant votre famille n'ont pas été renseignées ! </h3>
+                <h3> Les informations concernant votre famille n'ont pas été renseignées ! </h3>
+                <p> Notez que renseigner ces informations n'est pas obligatoire </p>
                 <form class="mr-3 d-inline" action="{{ path("InfosFamille.add") }}">
-                    <button type="submit" class="btn btn-warning"> Ajouter vos informations familiales </button>
+                    <button type="submit" class="btn btn-primary"> Ajouter vos informations familiales </button>
                 </form>
             </div>
         {% else %}

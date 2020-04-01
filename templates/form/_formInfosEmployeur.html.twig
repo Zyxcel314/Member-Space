@@ -1,0 +1,5 @@
+{{ form_row(form.nom, {'label': 'Nom de l\'entreprise : '}) }}
+{{ form_row(form.ville, {'label': 'Ville où se situe l\'entreprise : '}) }}
+{{ form_row(form.pays, {'label': 'Pays où se situe l\'entreprise : '}) }}
+<button class="btn btn-primary"> {{ button_label | default('Confirmer') }} </button>
+<input type="hidden" name="token" value="{{ csrf_token('infos_employeur') }}"/>

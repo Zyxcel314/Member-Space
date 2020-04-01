@@ -29,7 +29,7 @@ class InformationResponsableLegal
     private $membre_famille;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InformationEmployeur", mappedBy="informations_responsable_famille")
+     * @ORM\OneToMany(targetEntity="App\Entity\InformationEmployeur", mappedBy="informations_responsable_famille")
      */
     private $informationEmployeurs;
 
@@ -74,7 +74,7 @@ class InformationResponsableLegal
     {
         if (!$this->informationEmployeurs->contains($informationEmployeur)) {
             $this->informationEmployeurs[] = $informationEmployeur;
-            $informationEmployeur->addInformationsResponsableFamille($this);
+            $informationEmployeur->setInformationsResponsableFamille($this);
         }
 
         return $this;
@@ -84,7 +84,10 @@ class InformationResponsableLegal
     {
         if ($this->informationEmployeurs->contains($informationEmployeur)) {
             $this->informationEmployeurs->removeElement($informationEmployeur);
-            $informationEmployeur->removeInformationsResponsableFamille($this);
+            // set the owning side to null (unless already changed)
+            if ($informationEmployeur->getInformationsResponsableFamille() === $this) {
+                $informationEmployeur->setInformationsResponsableFamille(null);
+            }
         }
 
         return $this;

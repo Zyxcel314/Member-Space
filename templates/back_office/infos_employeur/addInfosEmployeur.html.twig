@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block title %} Ajouter un employeur - Odyssée du cirque {% endblock %}
+
+{% block body %}
+    <div>
+        <h2 class="mx-5 my-3"> Espace du représentant {{ representant.nom }} {{ representant.prenom }} </h2>
+        {% include 'back_office/gestionnaire/espaceGestionnaire.html.twig' %}
+    </div>
+    <div class="mx-5 my-3 shadow-lg p-3 bg-white rounded">
+        <h3 class="w-100"> Ajouter un employeur au responsable {{ representant.nom }} {{ representant.prenom }} </h3>
+        <div class="my-3">
+            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosEmployeur.show", {id: representant.id, idMembre: membre.id, idResponsable: responsable.id}) }}">
+                <button type="submit" class="btn btn-secondary"> Retourner aux informations de l'employeur </button>
+                <input type="hidden" name="idMembre" value="{{ membre.id }}">
+                <input type="hidden" name="idResponsable" value="{{ responsable.id }}">
+            </form>
+        </div>
+        {{ form_start(form) }}
+        {{ include('form/_formInfosEmployeur.html.twig', {'button_label': 'Ajouter'}) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

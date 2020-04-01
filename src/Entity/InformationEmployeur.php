@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,14 +33,9 @@ class InformationEmployeur
     private $pays;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InformationResponsableLegal", inversedBy="informationEmployeurs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\InformationResponsableLegal", inversedBy="informationEmployeurs")
      */
     private $informations_responsable_famille;
-
-    public function __construct()
-    {
-        $this->informations_responsable_famille = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -84,28 +78,14 @@ class InformationEmployeur
         return $this;
     }
 
-    /**
-     * @return Collection|InformationResponsableLegal[]
-     */
-    public function getInformationsResponsableFamille(): Collection
+    public function getInformationsResponsableFamille(): ?InformationResponsableLegal
     {
         return $this->informations_responsable_famille;
     }
 
-    public function addInformationsResponsableFamille(InformationResponsableLegal $informationsResponsableFamille): self
+    public function setInformationsResponsableFamille(?InformationResponsableLegal $informationsResponsableFamille): self
     {
-        if (!$this->informations_responsable_famille->contains($informationsResponsableFamille)) {
-            $this->informations_responsable_famille[] = $informationsResponsableFamille;
-        }
-
-        return $this;
-    }
-
-    public function removeInformationsResponsableFamille(InformationResponsableLegal $informationsResponsableFamille): self
-    {
-        if ($this->informations_responsable_famille->contains($informationsResponsableFamille)) {
-            $this->informations_responsable_famille->removeElement($informationsResponsableFamille);
-        }
+        $this->informations_responsable_famille = $informationsResponsableFamille;
 
         return $this;
     }

@@ -31,11 +31,12 @@
                 <thead class="thead-dark">
                     <tr>
                         <th> ID </th>
-                        <th> Pseudonyme </th>
                         <th> Adresse mail </th>
                         <th> Nom </th>
                         <th> Prénom </th>
                         <th> Adresse </th>
+                        <th> Code postal </th>
+                        <th> Ville </th>
                         <th> Numéro de mobile </th>
                         <th> Numéro de fixe </th>
                         <th> Date de naissance </th>
@@ -50,11 +51,12 @@
                     <tbody>
                         <tr>
                             <td> {{ representant.id }} </td>
-                            <td> {{ representant.login }} </td>
                             <td> {{ representant.mail }}</td>
                             <td> {{ representant.nom }} </td>
                             <td> {{ representant.prenom }} </td>
                             <td> {{ representant.adresse }} </td>
+                            <td> {{ representant.codePostal }} </td>
+                            <td> {{ representant.ville }} </td>
                             <td> {{ representant.noMobile }} </td>
                             <td> {{ representant.noFixe }} </td>
                             <td> {{ representant.dateNaissance | date('d/m/Y') }} </td>

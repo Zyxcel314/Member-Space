@@ -40,6 +40,27 @@
                     <th> Profession </th>
                     <td>{{ responsable.profession }}</td>
                 </tr>
+                <tr>
+                    <th> Employeur </th>
+                    <td>
+                        {% if responsable.getInformationEmployeurs() is not empty %}
+                            {% for infosEmployeur in responsable.getInformationEmployeurs() %}
+                                {{ infosEmployeur.getNom() }}
+                            {% endfor %}
+                            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosEmployeur.show", {id: representant.id, idMembre: membre.id, idResponsable: responsable.id}) }}">
+                                <button type="submit" class="btn btn-primary"> Consulter les informations de l'employeur </button>
+                                <input type="hidden" name="idMembre" value="{{ membre.id }}">
+                                <input type="hidden" name="idResponsable" value="{{ responsable.id }}">
+                            </form>
+                        {% else %}
+                            <form class="mr-3 d-inline" action="{{ path("Gestionnaire.InfosEmployeur.add", {id: representant.id, idMembre: membre.id, idResponsable: responsable.id}) }}">
+                                <button type="submit" class="btn btn-warning"> Ajouter les informations de l'employeur </button>
+                                <input type="hidden" name="idMembre" value="{{ membre.id }}">
+                                <input type="hidden" name="idResponsable" value="{{ responsable.id }}">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
             </tbody>
         </table>
     {% endif %}
