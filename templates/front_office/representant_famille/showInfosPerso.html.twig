@@ -12,6 +12,10 @@
             <form class="mr-3 d-inline" action="{{ path("Representant.InfosPerso.edit") }}">
                 <button type="submit" class="btn btn-success"> Modifier mes informations personnelles </button>
             </form>
+            <form class="mr-3 d-inline" method="post" action="{{ path("Representant.demandeResetPassword") }}">
+                <input type="hidden" name="mail" value="{{ representant.mail }}">
+                <input type="submit" class="btn btn-secondary" value="Demande de changement de mot de passe">
+            </form>
         </div>
         <table class="table">
             <tbody>

@@ -17,9 +17,6 @@
     {% else %}
         <div class="m-3 w-100">
             <h3> Membres de votre famille </h3>
-            <form class="mr-3 d-inline" action="{{ path("Representant.accueil") }}">
-                <button type="submit" class="btn btn-secondary"> Retourner à votre espace </button>
-            </form>
             <form class="mr-3 d-inline" action="{{ path("Membre.add") }}">
                 <button type="submit" class="btn btn-primary"> Ajouter un membre </button>
             </form>
@@ -74,7 +71,7 @@
 
                     {#ReglementActivite.reglerActivites#}
                     {% if membreFamille.getReglementActivite() == false %}
-                        <form action="{{ path("Membre.add") }}">
+                        <form action="">
                             <button type="submit" class="btn btn-primary"> Payer les activités auquelles ce membre a participé </button>
                         </form>
                     {% else %}

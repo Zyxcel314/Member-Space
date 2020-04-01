@@ -71,7 +71,7 @@ class RepresentantFamilleController extends AbstractController
         if ( $form->isSubmitted() && $form->isValid() )
         {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('succes', 'Informations personnelles modifiées ! ');
+            $this->addFlash('success', 'Informations personnelles modifiées ! ');
 
             return $this->redirectToRoute('Representant.InfosPerso.show');
         }
@@ -90,6 +90,7 @@ class RepresentantFamilleController extends AbstractController
         if($request->isMethod('GET')) {
             return $this->render('security/demandeResetPassword.html.twig');
         }
+        dump($request->get('mail'));
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mail' => $request->get('mail')]);
         if($user == null) {
@@ -133,6 +134,9 @@ class RepresentantFamilleController extends AbstractController
     public function reinitialiserMotDePasse(Request $request, UserPasswordEncoderInterface $encoder, $token): Response
     {
         $representant = $this->getDoctrine()->getManager()->getRepository(RepresentantFamille::class)->findOneBy(['mailTokenVerification' => $token]);
+        if($representant == null){
+            return $this->render('security/nouveauMotDePasse.html.twig',['retour'=>'Token invalide']);
+        }
         if($request->isMethod('GET')) {
             return $this->render('security/nouveauMotDePasse.html.twig',['mail'=>$representant->getMail()]);
         }
@@ -142,6 +146,7 @@ class RepresentantFamilleController extends AbstractController
 
         $hash = $encoder->encodePassword($representant, $request->get('mdp1'));
         $representant->setMotdepasse($hash);
+        $representant->setToken("");
         $this->getDoctrine()->getManager()->flush();
         return $this->render('security/nouveauMotDePasse.html.twig',['retour'=>'Le mot de passe de '.$representant->getMail().' a été modifié vous pouvez désormais vous connecter avec votre nouveau mot de passe']);
     }
@@ -247,6 +252,7 @@ class RepresentantFamilleController extends AbstractController
         $representant->setEstActive(1);
 
         $dateMAJ = new \DateTime();
+
 
         $membre = new MembreFamille();
         $membre
@@ -370,19 +376,21 @@ class RepresentantFamilleController extends AbstractController
                 $membre = new MembreFamille();
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($representantFamille);
+                /*
                 $membre
                     ->setNom($representantFamille->getNom())
                     ->setPrenom($representantFamille->getPrenom())
                     ->setDateNaissance($representantFamille->getDateNaissance())
                     ->setCategorie('Majeur')
-                    ->setNoClient($representantFamille->getId() . 'RP')
+                    ->setNoClient($representantFamille->getId() )
                     ->setTraitementDonnees(0)
                     ->setDateMAJ($dateActuelle)
                     ->setRepresentantFamille($representantFamille)
                     ->setReglementActivite(0);
                 $entityManager->persist($membre);
+                */
                 $entityManager->flush();
-                $this->addFlash('succes', 'Représentant de famille ajouté !');
+                $this->addFlash('success', 'Représentant de famille ajouté !');
 
                 return $this->redirectToRoute('Gestionnaire.ListeFamilles.show');
             }
@@ -420,7 +428,7 @@ class RepresentantFamilleController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('succes', 'Représentant de famille modifié !');
+                $this->addFlash('success', 'Représentant de famille modifié !');
 
                 return $this->redirectToRoute('Gestionnaire.ListeFamilles.show');
             }
@@ -468,7 +476,7 @@ class RepresentantFamilleController extends AbstractController
             } catch (OptimisticLockException $e) {
             } catch (ORMException $e) {
             }
-            $this->addFlash('succes', 'Représentant supprimé !');
+            $this->addFlash('success', 'Représentant supprimé !');
 
             return $this->redirectToRoute('Gestionnaire.ListeFamilles.show');
         }
